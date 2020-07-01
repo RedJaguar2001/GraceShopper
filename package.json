@@ -4,7 +4,12 @@
   "description": "Grace Shopper Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:client": "webpack --watch",
+    "seed": "node ./src/db/seed.js",
+    "server:dev": "node-dev --respawn ./index.js",
+    "build": "webpack --mode=\"production\"",
+    "start": "node  ./index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +21,29 @@
   "bugs": {
     "url": "https://github.com/RedJaguar2001/GraceShopper/issues"
   },
-  "homepage": "https://github.com/RedJaguar2001/GraceShopper#readme"
+  "homepage": "https://github.com/RedJaguar2001/GraceShopper#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "faker": "^4.1.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "chalk": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-dev": "^4.0.0",
+    "nodemon": "^2.0.4",
+    "pg": "^8.2.1",
+    "react": "^16.13.1",
+    "react-copy-to-clipboard": "^5.0.2",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-share": "^4.2.0",
+    "semantic-ui-react": "^0.88.2"
+  }
 }
