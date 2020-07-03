@@ -1,6 +1,6 @@
 const { Client } = require('pg');
 
-const client = new Client('postgres://localhost:5432/graceshopper-dev');
+const client = new Client(process.env.DATABASE_URL || 'postgres://localhost:5432/graceshopper-dev');
 
 async function getAllProducts() {
     const { rows } = await client.query(`
@@ -18,6 +18,50 @@ async function getAllUsers() {
         `);
 
     return rows;
+}
+
+async function getProductById(productId) {
+    try {
+        const { rows: [product] } = await client.query(`
+            SELECT *
+            FROM products
+            WHERE id=$1;
+            `, [productId]);
+
+        if(!product) {
+            throw {
+                name: 'ProductNotFoundError',
+                description: 'Could not find product with that productId'
+            }
+        }
+
+        return product;
+    } catch(error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+async function getUserById(userId) {
+    try {
+        const { rows: [user] } = await client.query(`
+            SELECT *
+            FROM users
+            WHERE id=$1;
+            `, [userId]);
+
+        if(!user) {
+            throw {
+                name: 'UserNotFoundError',
+                description: 'Could not find user with that userId'
+            }
+        }
+
+        return user
+    } catch(error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 async function createProduct({
@@ -119,4 +163,6 @@ module.exports = {
     updateProduct,
     updateUser,
     createUser,
+    getProductById,
+    getUserById,
 }

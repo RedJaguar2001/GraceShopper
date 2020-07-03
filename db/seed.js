@@ -6,6 +6,8 @@ const {
     createUser,
     updateProduct,
     updateUser,
+    getProductById,
+    getUserById,
 } = require('./index');
 
 async function dropTables() {
@@ -77,6 +79,7 @@ async function createInitialProduct() {
         // console.log('Starting to create initial product...');
 
         await createProduct({title: 'American Cheese', description: 'Goes great with burgers!', price: '2.99', inventory: '10'});
+        await createProduct({title: 'String Cheese', description: 'Stringy', price: '.99', inventory: '25'});
 
         // console.log('Done creating initial product');
     } catch(error) {
@@ -116,6 +119,9 @@ async function testDB() {
             inventory: '5'
         });
         console.log('updateProduct result:', updatedProduct);
+
+        const getProduct = await getProductById(2);
+        console.log('gotten product:', getProduct);
 
         const users = await getAllUsers();
         console.log('getAllUsers result:', users);
