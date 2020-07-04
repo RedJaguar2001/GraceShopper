@@ -8,7 +8,7 @@ const {
   updateUser,
   getProductById,
   getUserById,
-} = require("../../db/index");
+} = require("./index");
 
 async function dropTables() {
   try {
@@ -175,4 +175,5 @@ async function testDB() {
   }
 }
 
-rebuildDB().then(testDB);
+rebuildDB()
+  .then(testDB);
