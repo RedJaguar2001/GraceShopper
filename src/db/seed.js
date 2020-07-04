@@ -15,6 +15,8 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     await client.query(`
+            DROP TABLE IF EXISTS products_categories;
+            DROP TABLE IF EXISTS categories;
             DROP TABLE IF EXISTS products;
             DROP TABLE IF EXISTS users;
             `);
@@ -83,7 +85,7 @@ async function createInitialUsers() {
     await createUser({
       name: "Brian B",
       username: "brian",
-      password: "brian",
+      password: "password",
       email: "brian",
     });
     await createUser({
