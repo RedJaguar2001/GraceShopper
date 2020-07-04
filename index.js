@@ -1,14 +1,14 @@
 require("dotenv").config();
 
 const express = require("express");
-const { db } = require("./src/db");
+const { client } = require("./src/db");
 const path = require("path");
 const BodyParser = require("body-parser");
 const apiRouter = require("./src/api");
 const server = express();
 const { PORT = 3000 } = process.env;
 
-db.connect();
+client.connect();
 
 server.use(BodyParser.json());
 server.use(express.static(path.join(__dirname, "./dist")));
