@@ -1,14 +1,14 @@
 const {
   client,
   getAllProducts,
-  getAllUsers,
   createProduct,
-  createUser,
   updateProduct,
   updateUser,
   getProductById,
   getUserById,
 } = require("./index");
+
+const {getAllUsers, createDetails, createUser, getUserInfo} = require("./user")
 
 async function dropTables() {
   try {
@@ -21,6 +21,7 @@ async function dropTables() {
       DROP TABLE IF EXISTS categories;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS userDetails;
     `);
 
     console.log("Done dropping tables...");
@@ -53,6 +54,19 @@ async function createTables() {
               email varchar(255) UNIQUE NOT NULL
           );
     `);
+
+    await client.query(`
+    CREATE TABLE userDetails (
+        id SERIAL PRIMARY KEY,
+        fulladdress varchar(255) NOT NULL,
+        billingaddress varchar(255) NOT NULL,
+        cCard NUMERIC NOT NULL,
+        fullname varchar(255) NOT NULL,
+        phonenumber NUMERIC NOT NULL
+        );
+    `);
+
+
 
     await client.query(`
           CREATE TABLE categories (
@@ -142,6 +156,22 @@ async function createInitialProduct() {
   }
 }
 
+async function createUserDetails() {
+  try {
+    await createDetails({
+      fulladdress: "715 Ridge San Luis Obispo, CA 93405",
+	    billingaddress: "715 Ridge San Luis Obispo, CA 93405",
+      cCard: "1234567890123456",
+      fullname: "Patrick-V Herrera",
+      phonenumber:"8057103189"
+    });
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function rebuildDB(force = true) {
   try {
     client.connect();
@@ -153,6 +183,7 @@ async function rebuildDB(force = true) {
     await createTables();
     await createInitialProduct();
     await createInitialUsers();
+    await createUserDetails()
   } catch (error) {
     console.error(error);
     throw error;
@@ -181,6 +212,9 @@ async function testDB() {
 
     const users = await getAllUsers();
     console.log("getAllUsers result:", users);
+
+    const userinfo = await getUserInfo();
+    console.log ("User Info is...", userinfo)
 
     console.log("Done testing database...");
   } catch (error) {

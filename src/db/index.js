@@ -1,22 +1,9 @@
-const { Client } = require("pg");
-const chalk = require("chalk");
-const connectionString =
-  process.env.DATABASE_URL || "postgres://localhost:5432/graceshopper-dev";
-const client = new Client(connectionString);
+const { client } = require('./client')
 
 async function getAllProducts() {
   const { rows } = await client.query(`
         SELECT id, title, description, price, inventory
         FROM products;
-        `);
-
-  return rows;
-}
-
-async function getAllUsers() {
-  const { rows } = await client.query(`
-        SELECT id, name, username, password, email
-        FROM users;
         `);
 
   return rows;
@@ -97,26 +84,6 @@ async function createProduct({ title, description, price, inventory }) {
   }
 }
 
-async function createUser({ name, username, password, email }) {
-  try {
-    const {
-      rows: [user],
-    } = await client.query(
-      `
-            INSERT INTO users (name, username, password, email)
-            VALUES ($1, $2, $3, $4)
-            ON CONFLICT (username) DO NOTHING
-            RETURNING *;
-            `,
-      [name, username, password, email]
-    );
-
-    return user;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
 
 async function updateProduct(id, fields = {}) {
   const setString = Object.keys(fields)
@@ -298,11 +265,9 @@ async function deleteProductCategory(productId, categoryId) {
 module.exports = {
   client,
   getAllProducts,
-  getAllUsers,
   createProduct,
   updateProduct,
   updateUser,
-  createUser,
   getProductById,
   getUserById,
   createCategory,
