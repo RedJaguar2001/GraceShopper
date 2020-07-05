@@ -15,11 +15,13 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     await client.query(`
-            DROP TABLE IF EXISTS products_categories;
-            DROP TABLE IF EXISTS categories;
-            DROP TABLE IF EXISTS products;
-            DROP TABLE IF EXISTS users;
-            `);
+      DROP TABLE IF EXISTS reviews;
+      DROP TABLE IF EXISTS products_categories;
+      DROP TABLE IF EXISTS product_categories;
+      DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS products;
+      DROP TABLE IF EXISTS users;
+    `);
 
     console.log("Done dropping tables...");
   } catch (error) {
@@ -33,38 +35,48 @@ async function createTables() {
     console.log("Starting to build tables...");
 
     await client.query(`
-        CREATE TABLE products (
-            id SERIAL PRIMARY KEY,
-            title varchar(255) UNIQUE NOT NULL,
-            description varchar(255) NOT NULL,
-            price NUMERIC NOT NULL,
-            inventory INTEGER NOT NULL
-            );
-        `);
+          CREATE TABLE products (
+              id SERIAL PRIMARY KEY,
+              title varchar(255) UNIQUE NOT NULL,
+              description varchar(255) NOT NULL,
+              price NUMERIC NOT NULL,
+              inventory INTEGER NOT NULL
+          );
+    `);
 
     await client.query(`
-        CREATE TABLE users (
-            id SERIAL PRIMARY KEY,
-            name varchar(255) NOT NULL,
-            username varchar(255) UNIQUE NOT NULL,
-            password varchar(255) NOT NULL,
-            email varchar(255) UNIQUE NOT NULL
-            );
-        `);
+          CREATE TABLE users (
+              id SERIAL PRIMARY KEY,
+              name varchar(255) NOT NULL,
+              username varchar(255) UNIQUE NOT NULL,
+              password varchar(255) NOT NULL,
+              email varchar(255) UNIQUE NOT NULL
+          );
+    `);
 
     await client.query(`
-        CREATE TABLE categories (
+          CREATE TABLE categories (
             id SERIAL PRIMARY KEY,
             name varchar(255) UNIQUE NOT NULL
             );
-        `);
+    `);
 
     await client.query(`
-        CREATE TABLE products_categories (
+          CREATE TABLE product_categories (
             id SERIAL PRIMARY KEY,
             product_id INTEGER REFERENCES products(id),
             category_id INTEGER REFERENCES categories(id)
-        );
+          );
+    `);
+
+    await client.query(`
+            CREATE TABLE reviews (
+              id SERIAL PRIMARY KEY,
+              name varchar(255) NOT NULL,
+              rating integer NOT NULL DEFAULT 5 CONSTRAINT min_max CHECK (rating > 0 AND rating <= 5),
+              user_id INTEGER REFERENCES users(id),
+              product_id INTEGER REFERENCES products(id)
+            );
     `);
 
     console.log("Done building tables...");
@@ -135,7 +147,7 @@ async function rebuildDB(force = true) {
     client.connect();
 
     if (force) {
-        await dropTables();
+      await dropTables();
     }
 
     await createTables();
@@ -177,5 +189,4 @@ async function testDB() {
   }
 }
 
-rebuildDB()
-  .then(testDB);
+rebuildDB().then(testDB);
