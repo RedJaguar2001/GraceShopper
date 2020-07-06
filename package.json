@@ -5,12 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:dev": "nodemon ./src/db/seed.js",
     "start:client": "webpack --watch",
-    "seed": "node ./src/db/seed.js",
-    "server:dev": "node-dev --respawn ./index.js",
+    "seed": "node ./server/db/seed.js",
+    "server:dev": "node-dev --respawn ./server/",
     "build": "webpack --mode=\"production\"",
-    "start": "node ./index.js"
+    "start": "node ./server/"
   },
   "repository": {
     "type": "git",
