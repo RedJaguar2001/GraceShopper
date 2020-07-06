@@ -1,6 +1,4 @@
-const { client } = require('./client')
-
-
+const { client } = require("./client");
 
 async function createUser({ name, username, password, email }) {
   try {
@@ -23,7 +21,6 @@ async function createUser({ name, username, password, email }) {
   }
 }
 
-
 async function getAllUsers() {
   const { rows } = await client.query(`
         SELECT id, name, username, password, email
@@ -33,19 +30,23 @@ async function getAllUsers() {
   return rows;
 }
 
-
-
-async function createDetails({ fulladdress, billingaddress, cCard, fullname, phonenumber }) {
+async function createDetails({
+  fullAddress,
+  billingAddress,
+  cCard,
+  fullName,
+  phoneNumber,
+}) {
   try {
     const {
       rows: [userDetails],
     } = await client.query(
       `
-            INSERT INTO userdetails (fulladdress, billingaddress, cCard, fullname, phonenumber)
+            INSERT INTO user_details (full_address, billing_address, credit_card, full_name, phone_number)
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
             `,
-      [fulladdress, billingaddress, cCard, fullname, phonenumber]
+      [fullAddress, billingAddress, cCard, fullName, phoneNumber]
     );
 
     return userDetails;
@@ -57,13 +58,16 @@ async function createDetails({ fulladdress, billingaddress, cCard, fullname, pho
 
 async function getUserInfo() {
   const { rows } = await client.query(`
-        SELECT id, fulladdress, billingaddress, cCard, fullname, phonenumber
-        FROM userdetails;
+        SELECT id, full_address, billing_address, credit_card, full_name, phone_number
+        FROM user_details;
         `);
 
   return rows;
 }
 
 module.exports = {
-  createUser, getAllUsers, createDetails, getUserInfo
-}
+  createUser,
+  getAllUsers,
+  createDetails,
+  getUserInfo,
+};

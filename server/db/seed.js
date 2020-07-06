@@ -6,9 +6,13 @@ const {
   updateUser,
   getProductById,
   getUserById,
+  getAllUsers,
+  createDetails,
+  createUser,
+  getUserInfo
 } = require("./index");
 
-const {getAllUsers, createDetails, createUser, getUserInfo} = require("./user")
+// const {getAllUsers, createDetails, createUser, getUserInfo} = require("./users")
 
 async function dropTables() {
   try {
@@ -21,7 +25,7 @@ async function dropTables() {
       DROP TABLE IF EXISTS categories;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
-      DROP TABLE IF EXISTS userDetails;
+      DROP TABLE IF EXISTS user_details;
     `);
 
     console.log("Done dropping tables...");
@@ -56,13 +60,13 @@ async function createTables() {
     `);
 
     await client.query(`
-    CREATE TABLE userDetails (
+    CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
-        fulladdress varchar(255) NOT NULL,
-        billingaddress varchar(255) NOT NULL,
-        cCard NUMERIC NOT NULL,
-        fullname varchar(255) NOT NULL,
-        phonenumber NUMERIC NOT NULL
+        full_address varchar(255) NOT NULL,
+        billing_address varchar(255) NOT NULL,
+        credit_card NUMERIC NOT NULL,
+        full_name varchar(255) NOT NULL,
+        phone_number NUMERIC NOT NULL
         );
     `);
 
@@ -156,14 +160,15 @@ async function createInitialProduct() {
   }
 }
 
+
 async function createUserDetails() {
   try {
     await createDetails({
-      fulladdress: "715 Ridge San Luis Obispo, CA 93405",
-	    billingaddress: "715 Ridge San Luis Obispo, CA 93405",
+      fullAddress: "715 Ridge San Luis Obispo, CA 93405",
+	    billingAddress: "715 Ridge San Luis Obispo, CA 93405",
       cCard: "1234567890123456",
-      fullname: "Patrick-V Herrera",
-      phonenumber:"8057103189"
+      fullName: "Patrick-V Herrera",
+      phoneNumber:"8057103189"
     });
 
   } catch (error) {
@@ -213,8 +218,8 @@ async function testDB() {
     const users = await getAllUsers();
     console.log("getAllUsers result:", users);
 
-    const userinfo = await getUserInfo();
-    console.log ("User Info is...", userinfo)
+    const userInfo = await getUserInfo();
+    console.log ("User Info is...", userInfo)
 
     console.log("Done testing database...");
   } catch (error) {
