@@ -1,5 +1,8 @@
 const { client } = require('./client');
 
+//GetAllCategories
+//GetCategoryById
+
 async function createCategory(categoryName) {
     if (!categoryName) {
       return null;
@@ -121,6 +124,7 @@ async function createCategory(categoryName) {
 
   module.exports = {
       createCategory,
+      createCategories,
       deleteCategory,
       createProductCategory,
       deleteProductCategory

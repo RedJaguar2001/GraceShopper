@@ -153,4 +153,5 @@ module.exports = {
   getUserById,
   ...require('./users'),
   ...require('./categories'),
+  ...require('./reviews')
 };
