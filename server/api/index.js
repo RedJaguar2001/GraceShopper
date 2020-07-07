@@ -9,4 +9,7 @@ apiRouter.get('/', async(req, res, next) => {
     next();
 })
 
+const userRouter = require('./user');
+apiRouter.use('/user', userRouter);
+
 module.exports = apiRouter;
