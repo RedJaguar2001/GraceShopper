@@ -19,6 +19,8 @@ async function dropTables() {
       DROP TABLE IF EXISTS products_categories;
       DROP TABLE IF EXISTS product_categories;
       DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS carts_products;
+      DROP TABLE IF EXISTS carts;
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS users;
       DROP TABLE IF EXISTS user_details;
@@ -90,6 +92,23 @@ async function createTables() {
               user_id INTEGER REFERENCES users(id),
               product_id INTEGER REFERENCES products(id)
             );
+    `);
+
+    await client.query(`
+    CREATE TABLE carts (
+      id SERIAL PRIMARY KEY,
+      users_id INTEGER REFERENCES users(id),
+      total_price NUMERIC,
+      is_complete BOOLEAN DEFAULT false
+      );
+    `);
+
+    await client.query(`
+    CREATE TABLE carts_products (
+      id SERIAL PRIMARY KEY,
+      product_id INTEGER REFERENCES products(id),
+      carts_id INTEGER REFERENCES carts(id)
+      );
     `);
 
     console.log("Done building tables...");
