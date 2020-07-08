@@ -6,6 +6,7 @@ const { client } = require("./db");
 const path = require("path");
 const bodyParser = require("body-parser");
 const apiRouter = require("./api");
+
 const server = express();
 const PORT = process.env.PORT || 3000;
 
@@ -17,8 +18,11 @@ server.listen(PORT, () =>
 
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, "./dist")));
-server.use("/api", apiRouter);
+server.use("/graceshopper", apiRouter);
 
+server.listen(PORT, () =>
+  console.log(chalk.red(`Big Brother can see you on port ${PORT}`))
+);
 
 server.get("/health", (req, res, next) => {
   res.send("Server is active");

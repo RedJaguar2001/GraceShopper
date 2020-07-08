@@ -3,16 +3,12 @@ const {
   getAllProducts,
   createProduct,
   updateProduct,
-  updateUser,
   getProductById,
-  getUserById,
   getAllUsers,
   createDetails,
   createUser,
   getUserInfo
 } = require("./index");
-
-// const {getAllUsers, createDetails, createUser, getUserInfo} = require("./users")
 
 async function dropTables() {
   try {
@@ -70,8 +66,6 @@ async function createTables() {
               );
     `);
 
-
-
     await client.query(`
           CREATE TABLE categories (
             id SERIAL PRIMARY KEY,
@@ -90,7 +84,8 @@ async function createTables() {
     await client.query(`
             CREATE TABLE reviews (
               id SERIAL PRIMARY KEY,
-              name varchar(255) NOT NULL,
+              title varchar(255) NOT NULL,
+              body varchar (255),
               rating integer NOT NULL DEFAULT 5 CONSTRAINT min_max CHECK (rating > 0 AND rating <= 5),
               user_id INTEGER REFERENCES users(id),
               product_id INTEGER REFERENCES products(id)
@@ -178,7 +173,6 @@ async function createInitialProduct() {
     throw error;
   }
 }
-
 
 async function createUserDetails() {
   try {
