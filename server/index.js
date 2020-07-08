@@ -12,10 +12,6 @@ const PORT = process.env.PORT || 3000;
 
 client.connect();
 
-server.listen(PORT, () =>
-  console.log(chalk.green(`Big Brother can see you on port ${PORT}`))
-);
-
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, "./dist")));
 server.use("/graceshopper", apiRouter);
