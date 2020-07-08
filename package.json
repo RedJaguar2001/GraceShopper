@@ -9,7 +9,7 @@
     "seed": "node ./server/db/seed.js",
     "server:dev": "node-dev --respawn ./server/",
     "build": "webpack --mode=\"production\"",
-    "start": "node ./server/"
+    "start": "node ./server/index.js"
   },
   "repository": {
     "type": "git",
