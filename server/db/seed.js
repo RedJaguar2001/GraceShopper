@@ -56,14 +56,14 @@ async function createTables() {
     `);
 
     await client.query(`
-    CREATE TABLE user_details (
-        id SERIAL PRIMARY KEY,
-        full_address varchar(255) NOT NULL,
-        billing_address varchar(255) NOT NULL,
-        credit_card NUMERIC NOT NULL,
-        full_name varchar(255) NOT NULL,
-        phone_number NUMERIC NOT NULL
-        );
+          CREATE TABLE user_details (
+              id SERIAL PRIMARY KEY,
+              full_address varchar(255) NOT NULL,
+              billing_address varchar(255) NOT NULL,
+              credit_card NUMERIC NOT NULL,
+              full_name varchar(255) NOT NULL,
+              phone_number NUMERIC NOT NULL
+              );
     `);
 
     await client.query(`
@@ -138,8 +138,8 @@ async function createInitialProduct() {
     await createProduct({
       title: "American Cheese",
       description: "Goes great with burgers!",
-      price: "2.99",
-      inventory: "10",
+      price: "17.76",
+      inventory: "50",
     });
     await createProduct({
       title: "String Cheese",
@@ -147,6 +147,25 @@ async function createInitialProduct() {
       price: ".99",
       inventory: "25",
     });
+    await createProduct({
+      title: 'Nacho Cheese',
+      description: "It's my cheese! Nacho cheese!",
+      price: '3.49',
+      inventory: '25'
+    });
+    await createProduct({
+      title: 'Pepperjack Cheese',
+      description: 'Monterey Jack with a little kick',
+      price: '4.99',
+      inventory: '10'
+    });
+    await createProduct({
+      title: 'Swiss Cheese',
+      description: 'holy',
+      price: '2.00',
+      inventory: '12'
+    })
+
 
     // console.log('Done creating initial product');
   } catch (error) {
