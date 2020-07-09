@@ -7,7 +7,9 @@ const {
   getAllUsers,
   createDetails,
   createUser,
-  getUserInfo
+  getUserInfo,
+  createCategory,
+  getAllCategories,
 } = require("./index");
 
 async function dropTables() {
@@ -209,6 +211,35 @@ async function createUserDetails() {
   }
 }
 
+async function createInitialCategories() {
+  try {
+    await createCategory({
+      categoryName: 'Stinky'
+    });
+    await createCategory({
+      categoryName: 'Aged'
+    });
+    await createCategory({
+      categoryName: 'Hard'
+    });
+    await createCategory({
+      categoryName: 'Soft'
+    });
+    await createCategory({
+      categoryName: 'Smokey'
+    });
+    await createCategory({
+      categoryName: 'Fresh'
+    });
+    
+    console.log('done creating initial categories')
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
 async function rebuildDB(force = true) {
   try {
     client.connect();
@@ -220,7 +251,8 @@ async function rebuildDB(force = true) {
     await createTables();
     await createInitialProduct();
     await createInitialUsers();
-    await createUserDetails()
+    await createUserDetails();
+    await createInitialCategories();
   } catch (error) {
     console.error(error);
     throw error;
@@ -252,6 +284,9 @@ async function testDB() {
 
     const userInfo = await getUserInfo();
     console.log ("User Info is...", userInfo)
+
+    const categories = await getAllCategories();
+    console.log("getAllCategories results: ", categories);
 
     console.log("Done testing database...");
   } catch (error) {
