@@ -18,6 +18,6 @@ apiRouter.use((error, req, res, next) => {
 }) 
 
 const userRouter = require('./user');
-apiRouter.use('/user', userRouter);
+apiRouter.use('/', userRouter);
 
 module.exports = apiRouter;
