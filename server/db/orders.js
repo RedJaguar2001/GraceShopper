@@ -33,17 +33,69 @@ async function getAllCarts() {
 }
 
 // deleteCart
-async function deleteCart() {
-  const {rows} = await client.query(`
-  DELETE id, productId, price, quantity
-  FROM carts
+async function deleteCart(cartId) {
+  if (!cartId) {
+    return false;
+  }
+
+  await client.query(`
+  DELETE FROM cart
+  WHERE $1=cartId;
   `)
 }
 
 //updateCart(patch)
+async function updateCart(id, fields = {}) {
+  const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(", ");
+
+  if (setString.length === 0) {
+    return;
+  }
+
+  try {
+    const {
+      rows: [cart],
+    } = await client.query(
+      `Update carts
+    SET ${setString}
+    WHERE id=${id}
+    RETURNING *;
+    `, Object.values(fields)
+    );
+    return carts;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function getCartById(cartId) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(`
+    SELECT * FROM carts
+    WHERE id=$1;
+    `, [cartId]
+    );
+
+    if(!cart) {
+      throw {
+        name: "CartNotFoundError",
+        description: "Could not find cart with that cartId",
+      };
+    }
+    return cart;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 module.exports = {
-  createCart, 
+  createCart,
   getAllCarts,
   deleteCart,
+  updateCart,
+  getCartById,
 }

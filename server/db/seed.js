@@ -101,16 +101,18 @@ async function createTables() {
       id SERIAL PRIMARY KEY,
       users_id INTEGER REFERENCES users(id),
       total_price NUMERIC,
-      is_complete BOOLEAN DEFAULT false
+      checked_out BOOLEAN DEFAULT false
       );
     `);
 
     await client.query(`
-    CREATE TABLE carts_products (
-      id SERIAL PRIMARY KEY,
-      product_id INTEGER REFERENCES products(id),
-      carts_id INTEGER REFERENCES carts(id)
-      );
+      CREATE TABLE carts_products (
+        id SERIAL PRIMARY KEY,
+        product_id INTEGER REFERENCES products(id),
+        carts_id INTEGER REFERENCES carts(id)
+        quantity INTEGER NOT NULL,
+        price NUMERIC NOT NULL
+        );
     `);
 
     console.log("Done building tables...");
@@ -136,9 +138,9 @@ async function createInitialUsers() {
     });
     await createUser({
       name: "Jasmine H",
-      username: "jasmine",
-      password: "jasmine",
-      email: "jasmine",
+      username: "jasmineh",
+      password: "jasmine123",
+      email: "jasmine@redjags.com",
     });
     await createUser({
       name: "Patrick H",
@@ -231,7 +233,7 @@ async function createInitialCategories() {
     await createCategory({
       categoryName: 'Fresh'
     });
-    
+
     console.log('done creating initial categories')
   } catch (error) {
     throw error;
