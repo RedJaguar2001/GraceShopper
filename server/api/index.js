@@ -9,15 +9,20 @@ apiRouter.get('/', async(req, res, next) => {
     next();
 })
 
-
-const productsRouter = require('./products');
-apiRouter.use('/products', productsRouter);
-
 apiRouter.use((error, req, res, next) => {
     res.send(error);
 }) 
 
+const productsRouter = require('./products');
+apiRouter.use('/products', productsRouter);
+
 const userRouter = require('./user');
 apiRouter.use('/user', userRouter);
+
+const categoryRouter = require('./categories');
+apiRouter.use('/category', categoryRouter);
+
+const reviewRouter = require('./reviews');
+apiRouter.use('/review', reviewRouter);
 
 module.exports = apiRouter;
