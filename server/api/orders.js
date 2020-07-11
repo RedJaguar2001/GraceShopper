@@ -8,9 +8,42 @@ const { createCart,
   getCartById,
 } = require('../db/orders');
 
-server.get('/', (req, res, next)=> {
-  console.log('Inside Orders Router GET/');
-  res.send({
-    mesage: "You successfully reached orders GET/"
-  })
+server.use((req, res, next) =>{
+  console.log('A request is being made to /orders');
+  next();
+});
+
+server.get('/', async (req, res, next)=> {
+  const orders = await getAllCarts();
+  res.send({ orders });
+});
+
+server.patch('/:ordersId', async (req, rest, next) => {
+  const { orderId } = req.params;
+  const {productId,price, quantity } = req.body
+  const updateFields = {};
+
+  if (productId){
+    updateFields.productId = productId;
+  }
+
+  if (price){
+    updateFields.price = price;
+  }
+
+  if (quantity){
+    updateFields.quantity = quantity;
+  }
+
+  try {
+    //THIS NEEDS INFO
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+
 })
+
+
+module.exports = server;
