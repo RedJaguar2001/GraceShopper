@@ -1,33 +1,55 @@
-const express = require('express');
-const userRoute = express.Router();
-const { createUser, getAllUsers, getUserInfo } = require('../db');
+const express = require('express')
+const userRouter = express()
+const { createUser, getAllUsers, getUserInfo } = require('../db/users');
 
-userRoute.use('/', (req, res, next)=>{
-  console.log('Entered SearchResults Router GET / ');
-
-  next();
+userRouter.get("/userrouterhealth", (req, res, next)=>{
+  console.log('Entered User Router GET / ');
+  res.send({
+  message: "You successfully reach User Health which seems fine"
+  })
+  next()
 })
 
-userRoute.get('/', async(req, res)=>{
-    
-    const users = await getAllUsers();
+userRouter.post("/", async (req, res, next) => {
+  const {name, username, password, email} = req.body;
+  try {
+      const createdauser = await createUser({
+        name, username, password, email
+      })
+      res.send({
+          message: 'new user created',
+          data: createdauser,
+          status: true
+      })
+  } catch (error) {
+      next(error)
+  }
+})
 
-    res.send({users});
+userRouter.get('/allusers', async(req, res, next)=>{
+  const { allusers } = req.params;
+  try {
+  const users =  await getAllUsers(allusers);
+    res.send({
+      users,
+      message: 'successfully retrieved users'
+    })
+  } catch ({ error}) {
+    next({ error});
+  }
 });
 
-userRoute.get('/userdetails', async(req, res, next)=>{
-    const { userdetails } = req.params;
+  userRouter.get('/userdetails', async(req, res, next)=>{
+    const { userDetails } = req.params;
     try {
-
-    const userinfo = await getUserInfo(userdetails);
+    const userInfo = await getUserInfo(userDetails);
       res.send({
-        userinfo,
+        userInfo,
         message: 'successfully retrieved users info'
       })
     } catch ({ error}) {
       next({ error});
     }
-});
+  });
 
-
-module.exports= userRoute;
+module.exports= userRouter

@@ -1,14 +1,23 @@
 const { client } = require("./client");
 
+async function getAllReviews() {
+  const { rows } = await client.query(`
+    SELECT *
+    FROM reviews;
+  `);
+
+  return rows;
+}
+
 async function getReviewById(reviewId) {
   try {
     const {
       rows: [review],
     } = await client.query(
       `
-            SELECT *
-            FROM reviews
-            WHERE id=$1;
+      SELECT *
+      FROM reviews
+      WHERE id=$1;
         `,
       [reviewId]
     );
@@ -26,7 +35,7 @@ async function getReviewById(reviewId) {
   }
 }
 
-//getReviewsByUserId - Don't think this works? need to get multiple reviews.
+//getReviewsByUserId - Will this works? need to get multiple reviews.
 async function getReviewsByUserId(userId) {
   try {
     const {
@@ -54,6 +63,31 @@ async function getReviewsByUserId(userId) {
 }
 
 //getReviewsByProductId
+async function getReviewsByUserId(productId) {
+  try {
+    const {
+      rows: [reviews],
+    } = await client.query(
+      `
+      SELECT *
+      FROM reviews
+      WHERE product_id=$1;
+      `,
+      [productId]
+    );
+
+    if (!reviews) {
+      throw {
+        name: "ReviewByUserIdNotFoundError",
+        description: `Couldn't find review with userId: ${userId}`,
+      };
+    }
+
+    return reviews;
+  } catch (error) {
+    throw error;
+  }
+}
 
 //createReview
 async function createReview({ title, body, rating, userId, productId }) {
@@ -65,7 +99,7 @@ async function createReview({ title, body, rating, userId, productId }) {
     rows: [review],
   } = await client.query(
     `
-        INSERT INTO reviews(title, rating, user_id, product_id)
+        INSERT INTO reviews(title, body, rating, user_id, product_id)
         VALUES ($1, $2, $3, $4, $5)
         RETURNING *;
     `,
@@ -107,6 +141,7 @@ async function updateReview(id, fields = {}) {
 //deleteReview needed? Are we going to allow deleting them?
 
 module.exports = {
+  getAllReviews,
   getReviewById,
   getReviewsByUserId,
   createReview,

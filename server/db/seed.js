@@ -13,6 +13,9 @@ const {
   createImage,
   getAllImages,
   getImageById,
+  getAllReviews,
+  createReview,
+  updateReview,
 } = require("./index");
 
 async function dropTables() {
@@ -113,16 +116,18 @@ async function createTables() {
       id SERIAL PRIMARY KEY,
       users_id INTEGER REFERENCES users(id),
       total_price NUMERIC,
-      is_complete BOOLEAN DEFAULT false
+      checked_out BOOLEAN DEFAULT false
       );
     `);
 
     await client.query(`
-    CREATE TABLE carts_products (
-      id SERIAL PRIMARY KEY,
-      product_id INTEGER REFERENCES products(id),
-      carts_id INTEGER REFERENCES carts(id)
-      );
+      CREATE TABLE carts_products (
+        id SERIAL PRIMARY KEY,
+        product_id INTEGER REFERENCES products(id),
+        carts_id INTEGER REFERENCES carts(id)
+        quantity INTEGER NOT NULL,
+        price NUMERIC NOT NULL
+        );
     `);
 
     console.log("Done building tables...");
@@ -160,9 +165,9 @@ async function createInitialUsers() {
     });
     await createUser({
       name: "Jasmine H",
-      username: "jasmine",
-      password: "jasmine",
-      email: "jasmine",
+      username: "jasmineh",
+      password: "jasmine123",
+      email: "jasmine@redjags.com",
     });
     await createUser({
       name: "Patrick H",
@@ -210,7 +215,12 @@ async function createInitialProduct() {
       price: '2.00',
       inventory: '12'
     })
-
+    await createProduct({
+      title: "Blue Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "13",
+    });
 
     // console.log('Done creating initial product');
   } catch (error) {
@@ -255,14 +265,33 @@ async function createInitialCategories() {
     await createCategory({
       categoryName: 'Fresh'
     });
-    
+
     console.log('done creating initial categories')
   } catch (error) {
     throw error;
   }
 }
 
-
+async function createInitialReviews() {
+  try {
+    await createReview({
+      title: 'This cheese stinks',
+      body: 'I think this cheese has gone bad, delicious though.',
+      rating: 4,
+      userId: 1,
+      productId: 6,
+    })
+    await createReview({
+      title: 'low quality',
+      body: 'rips to shreds when I pull on it',
+      rating: 2,
+      userId: 2,
+      productId: 2,
+    })
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function rebuildDB(force = true) {
   try {
@@ -278,6 +307,7 @@ async function rebuildDB(force = true) {
     await createUserDetails();
     await createInitialCategories();
     await createInitialImages();
+    await createInitialReviews();
   } catch (error) {
     console.error(error);
     throw error;
@@ -315,6 +345,10 @@ async function testDB() {
 
     const images = await getAllImages();
     console.log('getAllImages...', images);
+
+    const reviews = await getAllReviews();
+    console.log("getAllReviews results: ", reviews);
+
 
     console.log("Done testing database...");
   } catch (error) {
