@@ -52,12 +52,12 @@ userRoute.get('/allusers', async(req, res, next)=>{
 });
 
   userRoute.get('/userdetails', async(req, res, next)=>{
-    const { userdetails } = req.params;
+    const { userDetails } = req.params;
     try {
 
-    const userinfo = await getUserInfo(userdetails);
+    const userInfo = await getUserInfo(userDetails);
       res.send({
-        userinfo,
+        userInfo,
         message: 'successfully retrieved users info'
       })
     } catch ({ error}) {

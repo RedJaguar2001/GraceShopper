@@ -10,6 +10,9 @@ const {
   getUserInfo,
   createCategory,
   getAllCategories,
+  getAllReviews,
+  createReview,
+  updateReview,
 } = require("./index");
 
 async function dropTables() {
@@ -188,7 +191,12 @@ async function createInitialProduct() {
       price: '2.00',
       inventory: '12'
     })
-
+    await createProduct({
+      title: "Blue Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "13",
+    });
 
     // console.log('Done creating initial product');
   } catch (error) {
@@ -240,7 +248,26 @@ async function createInitialCategories() {
   }
 }
 
-
+async function createInitialReviews() {
+  try {
+    await createReview({
+      title: 'This cheese stinks',
+      body: 'I think this cheese has gone bad, delicious though.',
+      rating: 4,
+      userId: 1,
+      productId: 6,
+    })
+    await createReview({
+      title: 'low quality',
+      body: 'rips to shreds when I pull on it',
+      rating: 2,
+      userId: 2,
+      productId: 2,
+    })
+  } catch (error) {
+    throw error;
+  }
+}
 
 async function rebuildDB(force = true) {
   try {
@@ -255,6 +282,7 @@ async function rebuildDB(force = true) {
     await createInitialUsers();
     await createUserDetails();
     await createInitialCategories();
+    await createInitialReviews();
   } catch (error) {
     console.error(error);
     throw error;
@@ -289,6 +317,9 @@ async function testDB() {
 
     const categories = await getAllCategories();
     console.log("getAllCategories results: ", categories);
+
+    const reviews = await getAllReviews();
+    console.log("getAllReviews results: ", reviews);
 
     console.log("Done testing database...");
   } catch (error) {
