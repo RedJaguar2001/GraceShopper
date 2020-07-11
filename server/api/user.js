@@ -1,37 +1,21 @@
-const express = require('express')
-const userRoute = express()
-const port = 3000
-const { createUser, getAllUsers, getUserInfo } = require('../db/users');
+const express = require('express');
+const userRoute = express.Router();
+const { createUser, getAllUsers, getUserInfo } = require('../db');
 
-
-
-userRoute.get('/', (req, res, next)=>{
+userRoute.use('/', (req, res, next)=>{
   console.log('Entered SearchResults Router GET / ');
-  res.send({
-  message: "You successfully reach search results GET/"
 
-  })
-  next()
-
+  next();
 })
 
-userRoute.get('/allusers', async(req, res, next)=>{
+userRoute.get('/', async(req, res)=>{
+    
+    const users = await getAllUsers();
 
-  const { allusers } = req.params;
-
-  try {
-  const users =  await getAllUsers(allusers);
-    res.send({
-      users,
-      message: 'successfully retrieved users'
-    })
-  } catch ({ error}) {
-    next({ error});
-  
-  }
+    res.send({users});
 });
 
-  userRoute.get('/userdetails', async(req, res, next)=>{
+userRoute.get('/userdetails', async(req, res, next)=>{
     const { userdetails } = req.params;
     try {
 
@@ -42,9 +26,8 @@ userRoute.get('/allusers', async(req, res, next)=>{
       })
     } catch ({ error}) {
       next({ error});
-    
     }
-  });
+});
 
 
-module.exports= userRoute
+module.exports= userRoute;

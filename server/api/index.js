@@ -13,11 +13,12 @@ apiRouter.get('/', async(req, res, next) => {
 const productsRouter = require('./products');
 apiRouter.use('/products', productsRouter);
 
+const userRoute = require('./user');
+apiRouter.use('/users', userRoute);
+
 apiRouter.use((error, req, res, next) => {
     res.send(error);
 }) 
 
-const userRouter = require('./user');
-apiRouter.use('/user', userRouter);
 
 module.exports = apiRouter;

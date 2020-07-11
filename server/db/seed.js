@@ -10,6 +10,9 @@ const {
   getUserInfo,
   createCategory,
   getAllCategories,
+  createImage,
+  getAllImages,
+  getImageById,
 } = require("./index");
 
 async function dropTables() {
@@ -17,6 +20,7 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     await client.query(`
+      DROP TABLE IF EXISTS images;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS products_categories;
       DROP TABLE IF EXISTS product_categories;
@@ -38,6 +42,14 @@ async function dropTables() {
 async function createTables() {
   try {
     console.log("Starting to build tables...");
+
+    await client.query(`
+          CREATE TABLE images (
+            id SERIAL PRIMARY KEY,
+            title varchar(255) UNIQUE NOT NULL,
+            img_src varchar(255) NOT NULL
+          );
+    `)
 
     await client.query(`
           CREATE TABLE products (
@@ -115,6 +127,18 @@ async function createTables() {
 
     console.log("Done building tables...");
   } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+async function createInitialImages() {
+  try {
+    await createImage({
+      title: 'cheese',
+      img_src: 'https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg'
+    })
+  } catch(error) {
     console.error(error);
     throw error;
   }
@@ -253,6 +277,7 @@ async function rebuildDB(force = true) {
     await createInitialUsers();
     await createUserDetails();
     await createInitialCategories();
+    await createInitialImages();
   } catch (error) {
     console.error(error);
     throw error;
@@ -287,6 +312,9 @@ async function testDB() {
 
     const categories = await getAllCategories();
     console.log("getAllCategories results: ", categories);
+
+    const images = await getAllImages();
+    console.log('getAllImages...', images);
 
     console.log("Done testing database...");
   } catch (error) {
