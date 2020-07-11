@@ -1,6 +1,5 @@
 const express = require('express')
-const server = express()
-const port = 3000
+const server = express.Router()
 const { createCart,
   getAllCarts,
   deleteCart,
@@ -41,9 +40,7 @@ server.patch('/:ordersId', async (req, rest, next) => {
     console.error(error);
     throw error;
   }
-
-
-})
+});
 
 
 module.exports = server;

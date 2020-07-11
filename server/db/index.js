@@ -5,5 +5,6 @@ module.exports = {
   ...require('./users'),
   ...require('./categories'),
   ...require('./products'),
-  ...require('./reviews')
+  ...require('./reviews'),
+  ...require('./images'),
 };
