@@ -5,14 +5,34 @@ const { createUser, getAllUsers, getUserInfo } = require('../db/users');
 
 
 
-userRoute.get('/', (req, res, next)=>{
-  console.log('Entered SearchResults Router GET / ');
+userRoute.get("/userrouterhealth", (req, res, next)=>{
+  console.log('Entered User Router GET / ');
   res.send({
-  message: "You successfully reach search results GET/"
+  message: "You successfully reach User Health which seems fine"
 
   })
   next()
 
+})
+
+userRoute.post("/", async (req, res, next) => {
+  const {name, username, password, email} = req.body;
+
+  try {
+      
+      const createdauser = await createUser({
+        name, username, password, email
+ 
+      })
+
+      res.send({
+          message: 'new user created',
+          data: createdauser,
+          status: true
+      })
+  } catch (error) {
+      next(error)
+  }
 })
 
 userRoute.get('/allusers', async(req, res, next)=>{
