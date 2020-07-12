@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 client.connect();
 
 server.use(bodyParser.json());
-server.use(express.static(path.join(__dirname, "./dist")));
+server.use(express.static(path.join(__dirname, "../dist")));
 server.use("/graceshopper", apiRouter);
 
 server.listen(PORT, () =>

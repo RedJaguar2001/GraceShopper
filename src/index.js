@@ -1,24 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+// import {} from "./components";
 
-
-
-const App = () =>{
-
-  const [] = useState([]);
-
+const App = () => {
+  // const [] = useState([]);
 
   return (
-    <div>
-      <nav>
-
-      </nav>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <h1>Hello World</h1>
+        </nav>
+      </div>
+    </Router>
   );
 };
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('app')
-  );
+ReactDOM.render(<App />, document.getElementById("app"));
