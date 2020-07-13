@@ -3,6 +3,13 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 // import {} from "./components";
 
+
+import {
+  Products,
+  SearchBar,
+  Order
+} from './components';
+
 const App = () => {
   // const [] = useState([]);
 
@@ -10,9 +17,12 @@ const App = () => {
     <Router>
       <div>
         <nav>
-          <h1>Hello World</h1>
+          <h1>GraceShopper - Meat and Cheese</h1>
         </nav>
       </div>
+      <SearchBar />
+      <Products />
+      <Order />
     </Router>
   );
 };
