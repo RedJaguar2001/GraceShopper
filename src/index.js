@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-// import {} from "./components";
+import {ProductCardGroup} from "./components";
+import Axios from "axios";
 
 
 import {
@@ -11,14 +12,18 @@ import {
 } from './components';
 
 const App = () => {
-  // const [] = useState([]);
+  const [products, setProducts] = useState([]);
 
   return (
     <Router>
       <div>
         <nav>
-          <h1>GraceShopper - Meat and Cheese</h1>
+          <h1>Cheese Wizards</h1>
         </nav>
+        <ProductCardGroup
+        products={products}
+        setProducts={setProducts}
+        />
       </div>
       <SearchBar />
       <Products />
