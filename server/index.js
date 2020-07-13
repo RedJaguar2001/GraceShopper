@@ -14,7 +14,7 @@ client.connect();
 
 server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, "../dist")));
-server.use("/graceshopper", apiRouter);
+server.use("/api", apiRouter);
 
 server.listen(PORT, () =>
   console.log(chalk.red(`Big Brother can see you on port ${PORT}`))

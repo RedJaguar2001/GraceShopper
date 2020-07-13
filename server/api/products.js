@@ -11,7 +11,13 @@ productsRouter.use((req, res, next) => {
 productsRouter.get('/', async (req, res) => {
     const products = await getAllProducts();
 
-    res.send({products});
+    console.log('got products: ', products);
+
+    res.send({
+        message: 'Successfully retrieved products',
+        products,
+        status: true
+    });
 });
 
 productsRouter.patch('/:productId', async (req, res, next) => {
