@@ -26,4 +26,7 @@ apiRouter.use('/categories', categoryRouter);
 const reviewRouter = require('./reviews');
 apiRouter.use('/reviews', reviewRouter);
 
+const imagesRouter = require('./images');
+apiRouter.use('/images', imagesRouter);
+
 module.exports = apiRouter;
