@@ -4,6 +4,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 import {ProductCardGroup} from "./components";
 import Axios from "axios";
 
+
+import {
+  Products,
+  SearchBar,
+  Order
+} from './components';
+
 const App = () => {
   const [products, setProducts] = useState([]);
 
@@ -18,6 +25,9 @@ const App = () => {
         setProducts={setProducts}
         />
       </div>
+      <SearchBar />
+      <Products />
+      <Order />
     </Router>
   );
 };

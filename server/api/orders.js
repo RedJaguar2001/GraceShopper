@@ -17,7 +17,7 @@ server.get('/', async (req, res, next)=> {
   res.send({ orders });
 });
 
-server.patch('/:ordersId', async (req, rest, next) => {
+server.patch('/:ordersId', async (req, res, next) => {
   const { orderId } = req.params;
   const {productId,price, quantity } = req.body
   const updateFields = {};
@@ -35,12 +35,34 @@ server.patch('/:ordersId', async (req, rest, next) => {
   }
 
   try {
-    //THIS NEEDS INFO
+    const cart = await getOrderById(orderId);
+
+    if(cart) {
+      const updatedOrder = await updateOrder(orderId, updateFields);
+      res.send({order: updatedOrder});
+    } else {
+      next({
+        name: 'UpdateOrderError',
+        desription: 'Error updating Order',
+      })
+    }
   } catch (error) {
     console.error(error);
     throw error;
   }
 });
 
+server.delete('/:id'), async (req, res, next) => {
+  const { id } = req.params;
+  try{
+    const deletedOrder = await deletedOrder(id);
+    res.send({
+      message: `deleting order ${deletedOrder ? 'succesful' : 'failed'}`,
+      status: deletedOrder
+    })
+  } catch (error) {
+    next(error)
+  }
+}
 
 module.exports = server;
