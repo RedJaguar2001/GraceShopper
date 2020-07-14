@@ -8,7 +8,7 @@ const productCard = (prod) => {
   console.log("product: ", product);
   return (
     <Card key={id}>
-      <Image src="https://via.placeholder.com/250" wrapped ui={false} />
+      <Image src="https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg" wrapped ui={false} />
       <Card.Content>
         <Card.Header>{title}</Card.Header>
         <Card.Meta>Quantity: {inventory}</Card.Meta>

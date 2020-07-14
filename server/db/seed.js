@@ -16,6 +16,7 @@ const {
   getAllReviews,
   createReview,
   updateReview,
+  createProductImage,
 } = require("./index");
 
 async function dropTables() {
@@ -23,6 +24,7 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     await client.query(`
+      DROP TABLE IF EXISTS products_images;
       DROP TABLE IF EXISTS images;
       DROP TABLE IF EXISTS reviews;
       DROP TABLE IF EXISTS products_categories;
@@ -46,78 +48,87 @@ async function createTables() {
   try {
     console.log("Starting to build tables...");
 
+    
     await client.query(`
-          CREATE TABLE images (
-            id SERIAL PRIMARY KEY,
-            title varchar(255) UNIQUE NOT NULL,
-            img_src varchar(255) NOT NULL
-          );
-    `)
+      CREATE TABLE images (
+        id SERIAL PRIMARY KEY,
+        title varchar(255) UNIQUE NOT NULL,
+        img_src varchar(255) NOT NULL
+        );
+      `)
+      
+    await client.query(`
+      CREATE TABLE products (
+        id SERIAL PRIMARY KEY,
+        title varchar(255) UNIQUE NOT NULL,
+        description varchar(255) NOT NULL,
+        price NUMERIC NOT NULL,
+        inventory INTEGER NOT NULL
+        );
+      `);
 
     await client.query(`
-          CREATE TABLE products (
-              id SERIAL PRIMARY KEY,
-              title varchar(255) UNIQUE NOT NULL,
-              description varchar(255) NOT NULL,
-              price NUMERIC NOT NULL,
-              inventory INTEGER NOT NULL
-          );
+      CREATE TABLE products_images (
+        "productId" INTEGER REFERENCES products(id),
+        "imageId" INTEGER REFERENCES images(id),
+        UNIQUE ("productId", "imageId")
+        );
+      `)
+        
+    await client.query(`
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        name varchar(255) NOT NULL,
+        username varchar(255) UNIQUE NOT NULL,
+        password varchar(255) NOT NULL,
+        email varchar(255) UNIQUE NOT NULL
+        );
     `);
 
     await client.query(`
-          CREATE TABLE users (
-              id SERIAL PRIMARY KEY,
-              name varchar(255) NOT NULL,
-              username varchar(255) UNIQUE NOT NULL,
-              password varchar(255) NOT NULL,
-              email varchar(255) UNIQUE NOT NULL
-          );
+      CREATE TABLE user_details (
+        id SERIAL PRIMARY KEY,
+        full_address varchar(255) NOT NULL,
+        billing_address varchar(255) NOT NULL,
+        credit_card NUMERIC NOT NULL,
+        full_name varchar(255) NOT NULL,
+        phone_number NUMERIC NOT NULL
+        );
     `);
 
     await client.query(`
-          CREATE TABLE user_details (
-              id SERIAL PRIMARY KEY,
-              full_address varchar(255) NOT NULL,
-              billing_address varchar(255) NOT NULL,
-              credit_card NUMERIC NOT NULL,
-              full_name varchar(255) NOT NULL,
-              phone_number NUMERIC NOT NULL
-              );
+      CREATE TABLE categories (
+        id SERIAL PRIMARY KEY,
+        name varchar(255) UNIQUE NOT NULL
+        );
     `);
 
     await client.query(`
-          CREATE TABLE categories (
-            id SERIAL PRIMARY KEY,
-            name varchar(255) UNIQUE NOT NULL
-            );
+      CREATE TABLE product_categories (
+        id SERIAL PRIMARY KEY,
+        product_id INTEGER REFERENCES products(id),
+        category_id INTEGER REFERENCES categories(id)
+        );
     `);
 
     await client.query(`
-          CREATE TABLE product_categories (
-            id SERIAL PRIMARY KEY,
-            product_id INTEGER REFERENCES products(id),
-            category_id INTEGER REFERENCES categories(id)
-          );
+      CREATE TABLE reviews (
+        id SERIAL PRIMARY KEY,
+        title varchar(255) NOT NULL,
+        body varchar (255),
+        rating integer NOT NULL DEFAULT 5 CONSTRAINT min_max CHECK (rating > 0 AND rating <= 5),
+        user_id INTEGER REFERENCES users(id),
+        product_id INTEGER REFERENCES products(id)
+        );
     `);
 
     await client.query(`
-            CREATE TABLE reviews (
-              id SERIAL PRIMARY KEY,
-              title varchar(255) NOT NULL,
-              body varchar (255),
-              rating integer NOT NULL DEFAULT 5 CONSTRAINT min_max CHECK (rating > 0 AND rating <= 5),
-              user_id INTEGER REFERENCES users(id),
-              product_id INTEGER REFERENCES products(id)
-            );
-    `);
-
-    await client.query(`
-    CREATE TABLE carts (
-      id SERIAL PRIMARY KEY,
-      users_id INTEGER REFERENCES users(id),
-      total_price NUMERIC,
-      checked_out BOOLEAN DEFAULT false
-      );
+      CREATE TABLE carts (
+        id SERIAL PRIMARY KEY,
+        users_id INTEGER REFERENCES users(id),
+        total_price NUMERIC,
+        checked_out BOOLEAN DEFAULT false
+        );
     `);
 
     await client.query(`
@@ -293,6 +304,26 @@ async function createInitialReviews() {
   }
 }
 
+async function createInitialImage() {
+  try {
+    console.log('Starting to create image...');
+
+    const image = await createImage({
+      title: 'Swiss Cheese',
+      img_src: 'https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg'
+    });
+
+    const products = await getAllProducts();
+
+    await createProductImage(5, image.id);
+
+    console.log('Finished creating image');
+  } catch(error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 async function rebuildDB(force = true) {
   try {
     client.connect();
@@ -308,6 +339,7 @@ async function rebuildDB(force = true) {
     await createInitialCategories();
     await createInitialImages();
     await createInitialReviews();
+    await createInitialImage();
   } catch (error) {
     console.error(error);
     throw error;
@@ -348,7 +380,6 @@ async function testDB() {
 
     const reviews = await getAllReviews();
     console.log("getAllReviews results: ", reviews);
-
 
     console.log("Done testing database...");
   } catch (error) {
