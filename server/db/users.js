@@ -121,6 +121,27 @@ async function updateUser(id, fields = {}) {
   }
 }
 
+async function getUserByUsername(username) {
+  try {
+    const { rows: [ user ] } = await client.query(`
+      SELECT *
+      FROM users
+      WHERE username=$1
+    `, [ username ]);
+
+    if (!user) {
+      throw {
+        name: "UserNotFoundError",
+        message: "A user with that username does not exist"
+      }
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -128,4 +149,5 @@ module.exports = {
   getUserInfo,
   updateUser,
   getUserById,
+  getUserByUsername
 };
