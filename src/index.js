@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import {ProductCardGroup} from "./components";
+import {ProductCardGroup, ImageExampleFloated,} from "./components";
 import Axios from "axios";
 
 
 import {
   Products,
-  SearchBar,
-  Order
+  // SearchBar,
+  // Order
 } from './components';
+import Homepage from "./components/Home";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -20,14 +21,17 @@ const App = () => {
         <nav>
           <h1>Cheese Wizards</h1>
         </nav>
+        
+       <ImageExampleFloated/>
         <ProductCardGroup
         products={products}
         setProducts={setProducts}
         />
       </div>
-      <SearchBar />
+
+      {/* <SearchBar /> */}
       <Products />
-      <Order />
+      {/* <Order /> */}
     </Router>
   );
 };
