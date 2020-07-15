@@ -150,34 +150,52 @@ async function updateUser(id, fields = {}) {
   }
 }
 
-async function doesUserExist(username, email) {
-  if (
-    typeof username !== "string"
-    || typeof email !== "string"
-  ) {
-    throw new Error("username and email must be strings.");
+async function doesUserExist(username = "", email = "") {
+  if (!username.length && !email.length) {
+    throw new Error("You must provide username or email.");
   }
 
-  const usernameQuery = await client.query(`
-    SELECT id FROM users
-    WHERE username = $1;
-  `, [username]);
+  if (username.length) {
+      const usernameQuery = await client.query(`
+        SELECT id FROM users
+        WHERE username = $1;
+      `, [username]);
 
-  if (usernameQuery.rows.length > 0) {
-    return [true, "username"];
+    if (usernameQuery.rows.length > 0) {
+      return [true, "username"];
+    }
   }
 
-  const emailQuery = await client.query(`
-    SELECT id FROM users
-    WHERE email = $1;
-  `, [email]);
+  if (email.length) {
+    const emailQuery = await client.query(`
+      SELECT id FROM users
+      WHERE email = $1;
+    `, [email]);
 
-  if (emailQuery.rows.length > 0) {
-    return [true, "email"];
+    if (emailQuery.rows.length > 0) {
+      return [true, "email"];
+    }
   }
 
   return [false, ""];
 }
+
+const login = async (email, password) => {
+  const { rows: [user] } = await client.query(`
+    SELECT * FROM users
+    WHERE email = $1;
+  `, [email]);
+
+ ;
+
+  if (!(await bcrypt.compare(password, user.password)))
+    return [null, ""];
+
+  return [
+    user,
+    await promisifiedSign(user.id)
+  ];
+};
 
 module.exports = {
   createUser,
@@ -186,5 +204,6 @@ module.exports = {
   getUserInfo,
   updateUser,
   getUserById,
-  doesUserExist
+  doesUserExist,
+  login
 };
