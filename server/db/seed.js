@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const {
   client,
   getAllProducts,
@@ -52,7 +54,7 @@ async function createTables() {
             title varchar(255) UNIQUE NOT NULL,
             img_src varchar(255) NOT NULL
           );
-    `)
+    `);
 
     await client.query(`
           CREATE TABLE products (
@@ -224,7 +226,7 @@ async function createInitialProduct() {
       description: 'holy',
       price: '2.00',
       inventory: '12'
-    })
+    });
     await createProduct({
       title: "Blue Cheese",
       description: "smells like old socks, tastes also like old socks",
@@ -276,7 +278,7 @@ async function createInitialCategories() {
       categoryName: 'Fresh'
     });
 
-    console.log('done creating initial categories')
+    console.log('done creating initial categories');
   } catch (error) {
     throw error;
   }
@@ -290,14 +292,14 @@ async function createInitialReviews() {
       rating: 4,
       userId: 1,
       productId: 6,
-    })
+    });
     await createReview({
       title: 'low quality',
       body: 'rips to shreds when I pull on it',
       rating: 2,
       userId: 2,
       productId: 2,
-    })
+    });
   } catch (error) {
     throw error;
   }
@@ -348,7 +350,7 @@ async function testDB() {
     console.log("getAllUsers result:", users);
 
     const userInfo = await getUserInfo();
-    console.log ("User Info is...", userInfo)
+    console.log ("User Info is...", userInfo);
 
     const categories = await getAllCategories();
     console.log("getAllCategories results: ", categories);
