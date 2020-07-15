@@ -22,6 +22,15 @@ const promisifiedSign = (id) => new Promise((resolve, reject) => {
   });
 });
 
+const promisifiedVerify = (token) => new Promise((resolve, reject) => {
+  jwt.verify(token, process.env.SECRET, (error, decoded) => {
+    if (error)
+      reject(error);
+    else
+      resolve(decoded);
+  });
+});
+
 async function createUser({ name, username, password, email }) {
   // always hash passwords before storing them in DBs
   // storing plain text passwords is VERY BAD PRACTICE
@@ -197,6 +206,19 @@ const login = async (email, password) => {
   ];
 };
 
+const loginWithToken = async (token = "") => {
+  if (
+    typeof token !== "string"
+    || !token.length
+  ) {
+    return null;
+  }
+
+  const { id } = await promisifiedVerify(token);
+
+  return getUserById(id);
+};
+
 module.exports = {
   createUser,
   getAllUsers,
@@ -205,5 +227,6 @@ module.exports = {
   updateUser,
   getUserById,
   doesUserExist,
-  login
+  login,
+  loginWithToken
 };
