@@ -9,10 +9,6 @@ apiRouter.get('/', async(req, res, next) => {
     next();
 });
 
-apiRouter.use((error, req, res, next) => {
-    res.send(error);
-});
-
 
 const productsRouter = require('./products');
 apiRouter.use('/products', productsRouter);
@@ -28,5 +24,11 @@ apiRouter.use('/reviews', reviewRouter);
 
 const imagesRouter = require('./images');
 apiRouter.use('/images', imagesRouter);
+
+
+apiRouter.use((error, req, res, next) => {
+    res.send(error);
+});
+
 
 module.exports = apiRouter;
