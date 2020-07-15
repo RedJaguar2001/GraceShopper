@@ -3,33 +3,38 @@ const jwt = require("jsonwebtoken");
 
 const { client } = require("./client");
 
-// turn a callback based async function into a promise
-const promisifiedHash = (password) => new Promise((resolve, reject) => {
-  bcrypt.hash(password, 10, (error, hash) => {
+const promisifiedHash = (password) => new Promise(
+  (resolve, reject) => {
+    bcrypt.hash(password, 10, (error, hash) => {
+        if (error)
+          reject(error);
+        else
+          resolve(hash);
+    });
+  }
+);
+
+const promisifiedSign = (id) => new Promise(
+  (resolve, reject) => {
+    jwt.sign({ id }, process.env.SECRET, (error, token) => {
       if (error)
         reject(error);
       else
-        resolve(hash);
-  });
-});
+        resolve(token);
+    });
+  }
+);
 
-const promisifiedSign = (id) => new Promise((resolve, reject) => {
-  jwt.sign({ id }, process.env.SECRET, (error, token) => {
-    if (error)
-      reject(error);
-    else
-      resolve(token);
-  });
-});
-
-const promisifiedVerify = (token) => new Promise((resolve, reject) => {
-  jwt.verify(token, process.env.SECRET, (error, decoded) => {
-    if (error)
-      reject(error);
-    else
-      resolve(decoded);
-  });
-});
+const promisifiedVerify = (token) => new Promise(
+  (resolve, reject) => {
+    jwt.verify(token, process.env.SECRET, (error, decoded) => {
+      if (error)
+        reject(error);
+      else
+        resolve(decoded);
+    });
+  }
+);
 
 async function createUser({ name, username, password, email }) {
   // always hash passwords before storing them in DBs
@@ -41,11 +46,11 @@ async function createUser({ name, username, password, email }) {
     rows: [user],
   } = await client.query(
     `
-          INSERT INTO users (name, username, password, email)
-          VALUES ($1, $2, $3, $4)
-          ON CONFLICT (email) DO NOTHING
-          RETURNING *;
-          `,
+      INSERT INTO users (name, username, password, email)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (email) DO NOTHING
+      RETURNING *;
+    `,
     [name, username, hashedPassword, email]
   );
 
@@ -159,12 +164,13 @@ async function updateUser(id, fields = {}) {
   }
 }
 
+// eslint-disable-next-line complexity
 async function doesUserExist(username = "", email = "") {
-  if (!username.length && !email.length) {
+  if (!username && !email) {
     throw new Error("You must provide username or email.");
   }
 
-  if (username.length) {
+  if (username && username.length) {
       const usernameQuery = await client.query(`
         SELECT id FROM users
         WHERE username = $1;
@@ -175,7 +181,7 @@ async function doesUserExist(username = "", email = "") {
     }
   }
 
-  if (email.length) {
+  if (email && email.length) {
     const emailQuery = await client.query(`
       SELECT id FROM users
       WHERE email = $1;
@@ -189,7 +195,11 @@ async function doesUserExist(username = "", email = "") {
   return [false, ""];
 }
 
-const login = async (email, password) => {
+const login = async (email = "", password = "") => {
+  if (!email || !password) {
+    return [null, ""];
+  }
+
   const { rows: [user] } = await client.query(`
     SELECT * FROM users
     WHERE email = $1;
@@ -207,10 +217,7 @@ const login = async (email, password) => {
 };
 
 const loginWithToken = async (token = "") => {
-  if (
-    typeof token !== "string"
-    || !token.length
-  ) {
+  if (!token) {
     return null;
   }
 
