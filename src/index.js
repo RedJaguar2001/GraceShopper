@@ -27,7 +27,7 @@ const App = () => {
         products={products}
         setProducts={setProducts} />
         {/* <ProductDetails
-        product={}/> */}
+        productId={2}/> */}
       </div>
     </Router>
   );

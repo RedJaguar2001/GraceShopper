@@ -11,14 +11,20 @@ import {
   Image,
 } from "semantic-ui-react";
 
-{
-  /* <Header as="h2">{title}</Header>
-<p>{description}</p> */
-}
+const productDetails = ({productId}) => {
+  console.log('product ID: ', productId);
+  const [product, setProduct] = useState([]);
 
-const productDetails = (product) => {
+  useEffect(() => {
+    axios.get(`/api/products/${productId}`).then((res) => {
+      const prod = res.data.product;
+      console.log("product: ", prod);
+      return setProduct(prod);
+    });
+  }, []);
+
   const { title, description, price, inventory } = product;
-  console.log(product.product);
+  console.log(product);
 
   return (
     <Container>
@@ -34,11 +40,12 @@ const productDetails = (product) => {
                 <Card.Meta>Quantity: {inventory}</Card.Meta>
                 <Card.Description>{description}</Card.Description>
               </Card.Content>
-              <Card.Content extra>
+              <Card.Content>
                 <a>
                   <Icon name="dollar" />
                   {price}
                 </a>
+                <Button>Add to Cart</Button>
               </Card.Content>
             </Card>
           </Grid.Column>
