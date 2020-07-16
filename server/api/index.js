@@ -5,20 +5,16 @@ const apiRouter = express.Router();
 
 apiRouter.get('/', async(req, res, next) => {
     res.send({message: "You've reached /api"});
-    
-    next();
-})
 
-apiRouter.use((error, req, res, next) => {
-    res.send(error);
-}) 
+    next();
+});
 
 
 const productsRouter = require('./products');
 apiRouter.use('/products', productsRouter);
 
 const userRouter = require('./user');
-apiRouter.use('/user', userRouter);
+apiRouter.use('/users', userRouter);
 
 const categoryRouter = require('./categories');
 apiRouter.use('/categories', categoryRouter);
@@ -28,5 +24,11 @@ apiRouter.use('/reviews', reviewRouter);
 
 const imagesRouter = require('./images');
 apiRouter.use('/images', imagesRouter);
+
+
+apiRouter.use((error, req, res, next) => {
+    res.send(error);
+});
+
 
 module.exports = apiRouter;

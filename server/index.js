@@ -1,4 +1,4 @@
-// require("dotenv").config();
+require("dotenv").config();
 
 const chalk = require("chalk");
 const express = require("express");
@@ -6,6 +6,7 @@ const { client } = require("./db");
 const path = require("path");
 const bodyParser = require("body-parser");
 const apiRouter = require("./api");
+
 
 const server = express();
 const PORT = process.env.PORT || 3000;
