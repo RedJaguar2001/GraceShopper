@@ -26,8 +26,8 @@ const App = () => {
         <Products
         products={products}
         setProducts={setProducts} />
-        {/* <ProductDetails
-        productId={2}/> */}
+        <ProductDetails
+        productId={2}/>
       </div>
     </Router>
   );

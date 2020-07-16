@@ -140,9 +140,19 @@ async function createTables() {
 async function createInitialImages() {
   try {
     await createImage({
-      title: 'cheese',
+      title: 'Swiss cheese',
       img_src: 'https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg'
-    })
+    });
+
+    await createImage({
+      title: 'String Cheese',
+      img_src: 'https://vaya.in/recipes/wp-content/uploads/2018/06/String-Cheese.jpg'
+    });
+
+    await createImage({
+      title: 'Nacho Cheese',
+      img_src: 'https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG'
+    });
   } catch(error) {
     console.error(error);
     throw error;
