@@ -4,7 +4,11 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import Axios from "axios";
 
-import { Products, SearchBar, Order, ProductDetails } from "./components";
+import {
+  Products,
+  SearchBar,
+  Order
+} from './index';
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -12,25 +16,22 @@ const App = () => {
   useEffect(() => {
     axios.get("/api/products").then((res) => {
       const prodList = res.data.products;
-      console.log("product List: ", prodList);
+      // console.log('product List: ', prodList);
       return setProducts(prodList);
     });
   }, []);
 
   return (
-    <Router>
       <div>
         <nav>
           <h1>Cheese Wizards</h1>
         </nav>
         <Products
         products={products}
-        setProducts={setProducts} />
-        <ProductDetails
-        productId={2}/>
+        setProducts={setProducts}
+        />
       </div>
-    </Router>
   );
 };
 
-ReactDOM.render(<App />, document.getElementById("app"));
+export default App;

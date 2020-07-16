@@ -1,6 +1,6 @@
 const express = require('express');
 const productsRouter = express.Router();
-const { getAllProducts, createProduct, getProductById, updateProduct } = require('../db');
+const { getAllProducts, createProduct, getProductById, updateProduct, deleteProduct } = require('../db');
 
 productsRouter.use((req, res, next) => {
     console.log('A request is being made to /products');
@@ -18,6 +18,29 @@ productsRouter.get('/', async (req, res) => {
         products,
         status: true
     });
+});
+
+productsRouter.get("/:productId", async (req, res, next) => {
+  const { productId } = req.params;
+  console.log('entered productId', productId);
+
+  try {
+    const product = await getProductById(productId);
+
+    console.log('got product: ', product);
+
+    if (!product) {
+      return res.status(404).json({
+        error: `No product found with Id: ${product}}`,
+      });
+    }
+
+    res.send({
+      product,
+    });
+  } catch (error) {
+    throw error;
+  }
 });
 
 productsRouter.patch('/:productId', async (req, res, next) => {
@@ -50,10 +73,45 @@ productsRouter.patch('/:productId', async (req, res, next) => {
         } else {
             next({
                 name: 'UpdateProductError',
-                description: 'Error updating product'
+                message: 'Error updating product'
             })
         }
-    } catch({error}) {
+    } catch({name, message}) {
+        next({name, message})
+    }
+})
+
+productsRouter.post('/', async (req, res, next) => {
+    const {title, description, price, inventory} = req.body;
+
+    const productData = { title, description, price, inventory };
+
+    try {
+        const product = await createProduct(productData);
+
+        if(product) {
+            res.send({product});
+        } else {
+            next({
+                name: 'CreateProductError',
+                message: 'Error creating product'
+            })
+        }
+
+    } catch({name, message}) {
+        next({name, message});
+    }
+})
+
+productsRouter.delete('/:productId', async (req, res, next) => {
+    try {
+        const product = await deleteProduct(req.params.productId);
+
+        if(routine) {
+            res.send({product});
+        }
+
+    } catch(error) {
         console.error(error);
         throw error;
     }
