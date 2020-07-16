@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
-import {ProductCardGroup, ImageExampleFloated,} from "./components";
+import {ProductCardGroup, HomepageLayout,} from "./components";
 import Axios from "axios";
 
 
@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <Router>
-      <div>
+      {/* <div>
         <nav>
           <h1>Cheese Wizards</h1>
         </nav>
@@ -30,8 +30,12 @@ const App = () => {
       </div>
 
       {/* <SearchBar /> */}
-      <Products />
-      {/* <Order /> */}
+      {/* <Products />
+      <Order /> */}
+
+      <HomepageLayout>
+
+      </HomepageLayout>
     </Router>
   );
 };
