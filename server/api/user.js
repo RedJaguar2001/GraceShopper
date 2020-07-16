@@ -45,45 +45,38 @@ userRouter.post("/register", async (req, res, next) => {
       // don't send the user's password to the front end
       delete user.password;
 
+      console.log(user, token);
+
       // status 201 means resource created
       res.status(201).json({
         user,
         token
       });
   } catch (error) {
+    console.error("register error", error);
       next(error);
   }
 });
 
+// eslint-disable-next-line complexity
 userRouter.post("/login/token", async (req, res, next) => {
-  const values = {
-    token: req.body.token
-  };
+  let token = '';
 
-  // make sure we have valid data from the client
-  for (const key in values) {
-    // protect against keys on the prototype chain
-    if (values.hasOwnProperty(key)) {
-      const value = values[key];
+  const bearerHeader = req.headers.authorization;
 
-      if (
-        !value || (typeof value !== "string") || !value.trim().length
-      ) {
-        return res.status(400).json({
-          error: `${key} is required, must be a string, and cannot be empty.`
-        });
-      }
-      else
-        // trim all strings before insertion into db
-        values[key] = value.trim();
-    }
+  if (typeof bearerHeader !== "undefined") {
+    token = bearerHeader.split(' ')[1];
+  } else {
+    res.status(403).json({
+      error: "Token is required, and must be sent in an authorization bearer header."
+    });
   }
 
   try {
-    const user = await loginWithToken(req.body.token);
+    const user = await loginWithToken(token);
 
     if (!user) {
-      return res.status(401).json({
+      return res.status(403).json({
         error: "Invalid token."
       });
     }
@@ -150,65 +143,6 @@ userRouter.post("/login", async (req, res, next) => {
     next(error);
   }
 });
-
-
-// eslint-disable-next-line complexity
-userRouter.post("/login", async (req, res, next) => {
-  const values = {
-    password: req.body.password,
-    email: req.body.email
-  };
-
-  // make sure we have valid data from the client
-  for (const key in values) {
-    // protect against keys on the prototype chain
-    if (values.hasOwnProperty(key)) {
-      const value = values[key];
-
-      if (
-        !value || (typeof value !== "string") || !value.trim().length
-      ) {
-        return res.status(400).json({
-          error: `${key} is required, must be a string, and cannot be empty.`
-        });
-      }
-      else
-        // trim all strings before insertion into db
-        values[key] = value.trim();
-    }
-  }
-
-  try {
-    // make sure a user with this email exists
-    const [exists] = await doesUserExist("", values.email);
-
-    if (!exists) {
-      return res.status(404).json({
-        error: "No user with that email exists."
-      });
-    }
-
-    const [user, token] = await login(values.email, values.password);
-
-    if (!user) {
-      return res.status(401).json({
-        error: "Invalid password."
-      });
-    }
-
-    delete user.password;
-
-    res.json({
-      user,
-      token
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-
-
 
 userRouter.get('/allusers', async(req, res, next)=>{
   const { allusers } = req.params;
