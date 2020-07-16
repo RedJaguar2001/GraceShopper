@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import Axios from "axios";
 
-import { Products, SearchBar, Order, ProductDetails } from "./components";
+import { Products, SearchBar, Order, ProductDetails, HomepageLayout } from "./components";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -20,9 +20,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        <nav>
-          <h1>Cheese Wizards</h1>
-        </nav>
+        <HomepageLayout/>
         <Products
         products={products}
         setProducts={setProducts} />
