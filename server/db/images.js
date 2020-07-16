@@ -1,4 +1,5 @@
 const { client } = require('./client');
+const { getProductById } = require('./products');
 
 async function createImage({title, img_src}) {
     try {
@@ -85,10 +86,24 @@ async function deleteImage(imageId) {
     }
 };
 
+async function createProductImage(productId, imageId) {
+    try {
+        await client.query(`
+            INSERT INTO products_images("productId", "imageId")
+            VALUES ($1, $2)
+            ON CONFLICT ("productId", "imageId") DO NOTHING;
+            `, [productId, imageId]);
+    } catch(error) {
+        console.error(error);
+        throw error;
+    }
+};
+
 module.exports = {
     createImage,
     getAllImages,
     getImageById,
     updateImage,
     deleteImage,
+    createProductImage,
 }
