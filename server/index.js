@@ -21,5 +21,7 @@ server.listen(PORT, () =>
 );
 
 server.get("/health", (req, res, next) => {
-  res.send("Server is active");
+  res.send({
+    message: "Server is healthy!"
+  });
 });

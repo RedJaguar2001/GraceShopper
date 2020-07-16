@@ -21,6 +21,13 @@ async function getProductById(productId) {
               `,
         [productId]
       );
+
+      const { rows: [image] } = await client.query(`
+        SELECT images.*
+        FROM images
+        JOIN products_images ON images.id=products_images."imageId"
+        WHERE products_images."productId"=$1;
+        `, [productId]);
   
       if (!product) {
         throw {
@@ -28,6 +35,8 @@ async function getProductById(productId) {
           description: "Could not find product with that productId",
         };
       }
+
+      product.image = image;
   
       return product;
     } catch (error) {
