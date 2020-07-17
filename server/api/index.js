@@ -29,4 +29,7 @@ apiRouter.use('/reviews', reviewRouter);
 const imagesRouter = require('./images');
 apiRouter.use('/images', imagesRouter);
 
+const orderItemsRouter = require('./orderItems');
+apiRouter.use('/orderItems', orderItemsRouter);
+
 module.exports = apiRouter;
