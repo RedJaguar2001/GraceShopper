@@ -1,36 +1,30 @@
-// import React, { useState } from 'react';
-// import ProductCard from './ProductCard';
-// import Axios from 'axios';
+import React, { useState } from 'react';
+import ProductCard from './ProductCard';
+import Axios from 'axios';
 
-// const SearchBar = (props) => {
+const SearchBar = (props) => {
+console.log("in search", props.search , props.setSearch);
+  async function handleSubmit(event) {
+    event.preventDefault();
+  }
 
-//   const [title, setTitle] = useState('');
+  return (
+    <div id="search">
 
-//   const handleTitleChange = event => {
-//     setTitle( event.target.value);
-//   }
-
-//   const productFilterOnChange = (event) => {
-//     // setState({inputValue: event.target.value})
-//   }
-
-//   async function handleSubmit(event) {
-//     event.preventDefault();
-//   }
-
-//   return (
-//     <div id="search">
-
-//       <form onSubmit={ handleSubmit }>
-//       <label htmlFor="search">Search Here</label>
-//       <input type="text" placeholder="search items..." value={props.inputValue} onChange={props.productFilterOnChange}/>
-//         <button type="submit">Search</button>
-//       </form>
-//     </div>
-//   );
-// }
+      <form onSubmit={ handleSubmit }>
+      <label htmlFor="search"><h4>Search Products Here</h4></label>
+      <input
+      type="text"
+      placeholder="search items..."
+      value={props.search}
+      onChange={ (ev) => {
+        props.setSearch(ev.target.value);
+      }}
+      />
+      </form>
+    </div>
+  );
+}
 
 
-
-
-// export default SearchBar;
+export default SearchBar;

@@ -8,6 +8,14 @@ import { Products, SearchBar, Order, ProductDetails } from "./components";
 
 const App = () => {
   const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState('');
+
+  let filteredProducts = products;
+  if(search.length) {
+    filteredProducts = filteredProducts.filter((product) => {
+      return product.title.toLowerCase().startsWith(search.toLowerCase());
+    })
+  }
 
   useEffect(() => {
     axios.get("/api/products").then((res) => {
@@ -20,11 +28,12 @@ const App = () => {
   return (
     <Router>
       <div>
-        <nav>
-          <h1>Cheese Wizards</h1>
-        </nav>
+        <nav><h1>Cheese Wizards</h1></nav>
+        <SearchBar
+        search={search}
+        setSearch={setSearch} />
         <Products
-        products={products}
+        products={filteredProducts}
         setProducts={setProducts} />
         <ProductDetails
         productId={2}/>
