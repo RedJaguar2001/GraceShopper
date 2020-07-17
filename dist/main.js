@@ -83991,11 +83991,92 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./src/components/Order.js":
+/*!*********************************!*\
+  !*** ./src/components/Order.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const Order = props => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "order"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Order"));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Order);
+
+/***/ }),
+
+/***/ "./src/components/Products.js":
+/*!************************************!*\
+  !*** ./src/components/Products.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const Products = props => {
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "products"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Products"));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Products);
+
+/***/ }),
+
+/***/ "./src/components/SearchBar.js":
+/*!*************************************!*\
+  !*** ./src/components/SearchBar.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// import React, { useState } from 'react';
+// import ProductCard from './ProductCard';
+// import Axios from 'axios';
+// const SearchBar = (props) => {
+//   const [title, setTitle] = useState('');
+//   const handleTitleChange = event => {
+//     setTitle( event.target.value);
+//   }
+//   const productFilterOnChange = (event) => {
+//     // setState({inputValue: event.target.value})
+//   }
+//   async function handleSubmit(event) {
+//     event.preventDefault();
+//   }
+//   return (
+//     <div id="search">
+//       <form onSubmit={ handleSubmit }>
+//       <label htmlFor="search">Search Here</label>
+//       <input type="text" placeholder="search items..." value={props.inputValue} onChange={props.productFilterOnChange}/>
+//         <button type="submit">Search</button>
+//       </form>
+//     </div>
+//   );
+// }
+// export default SearchBar;
+
+/***/ }),
+
 /***/ "./src/components/index.js":
 /*!*********************************!*\
   !*** ./src/components/index.js ***!
   \*********************************/
-/*! exports provided: ProductCard, ProductCardGroup */
+/*! exports provided: ProductCard, ProductCardGroup, SearchBar, Products, Order */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84005,6 +84086,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony import */ var _productCardGroup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./productCardGroup */ "./src/components/productCardGroup.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ProductCardGroup", function() { return _productCardGroup__WEBPACK_IMPORTED_MODULE_1__["default"]; });
+
+/* harmony import */ var _SearchBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SearchBar */ "./src/components/SearchBar.js");
+/* harmony import */ var _SearchBar__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_SearchBar__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony reexport (default from non-harmony) */ __webpack_require__.d(__webpack_exports__, "SearchBar", function() { return _SearchBar__WEBPACK_IMPORTED_MODULE_2___default.a; });
+/* harmony import */ var _Products__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Products */ "./src/components/Products.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Products", function() { return _Products__WEBPACK_IMPORTED_MODULE_3__["default"]; });
+
+/* harmony import */ var _Order__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Order */ "./src/components/Order.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Order", function() { return _Order__WEBPACK_IMPORTED_MODULE_4__["default"]; });
+
+
+
 
 
 
@@ -84125,12 +84218,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const App = () => {
   const [products, setProducts] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Cheese Wizards")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_3__["ProductCardGroup"], {
     products: products,
     setProducts: setProducts
-  })));
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_3__["SearchBar"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_3__["Products"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components__WEBPACK_IMPORTED_MODULE_3__["Order"], null));
 };
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById("app"));
