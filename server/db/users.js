@@ -76,7 +76,6 @@ async function getAllUsers() {
 async function createDetails({
   fullAddress,
   billingAddress,
-  cCard,
   fullName,
   phoneNumber,
 }) {
@@ -85,11 +84,11 @@ async function createDetails({
       rows: [userDetails],
     } = await client.query(
       `
-            INSERT INTO user_details (full_address, billing_address, credit_card, full_name, phone_number)
-            VALUES ($1, $2, $3, $4, $5)
+            INSERT INTO user_details (full_address, billing_address, full_name, phone_number)
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
             `,
-      [fullAddress, billingAddress, cCard, fullName, phoneNumber]
+      [fullAddress, billingAddress, fullName, phoneNumber]
     );
 
     return userDetails;
@@ -101,7 +100,7 @@ async function createDetails({
 
 async function getUserInfo() {
   const { rows } = await client.query(`
-        SELECT id, full_address, billing_address, credit_card, full_name, phone_number
+        SELECT id, full_address, billing_address, full_name, phone_number
         FROM user_details;
         `);
 
