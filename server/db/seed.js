@@ -7,6 +7,7 @@ const {
   updateProduct,
   deleteProduct,
   getProductById,
+  getProductsByCategory,
   getAllUsers,
   createDetails,
   createUser,
@@ -234,6 +235,7 @@ async function createInitialProduct() {
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
       inventory: "25",
+
     });
     await createProduct({
       title: "Pepperjack Cheese",
@@ -263,6 +265,18 @@ async function createInitialProduct() {
     // console.log('Done creating initial product');
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+}
+
+async function createProductCategory(productId, category_id){
+  try {
+    await client.query(`
+    INSERT INTO product_categories("productId", category_id)
+    VALUES ($1, $2)
+    ON CONFLICT ("productId", category_id) DO NOTHING;
+    `, [productId, category_id]);
+  } catch (error) {
     throw error;
   }
 }
@@ -399,6 +413,9 @@ async function testDB() {
 
     const getProduct = await getProductById(2);
     console.log("gotten product:", getProduct);
+
+    const ProductsByCategory = await getProductsByCategory();
+    console.log("productsByCategory:", ProductsByCategory);
 
     const users = await getAllUsers();
     console.log("getAllUsers result:", users);

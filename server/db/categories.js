@@ -156,6 +156,22 @@ async function deleteProductCategory(productId, categoryId) {
   return true;
 }
 
+async function addCategoriesToProduct(productId, categoryList) {
+  try {
+    const createProductCategoryPromises = categoryList.map(
+      category => createProductCategory(productId, category.id)
+    );
+
+    await Promise.all(createProductCategoryPromises);
+    return await getProductById(productId);
+
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
 module.exports = {
   getAllCategories,
   getCategoryById,
@@ -164,4 +180,5 @@ module.exports = {
   deleteCategory,
   createProductCategory,
   deleteProductCategory,
+  addCategoriesToProduct,
 };
