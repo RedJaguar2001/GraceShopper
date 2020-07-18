@@ -65,12 +65,4 @@ server.delete('/:id'), async (req, res, next) => {
   }
 }
 
-// server.post('/api/orders/checkout', async(req, res, next)=>{
-//   try {
-//     const {token, } = req.body
-
-
-
-// })
-
 module.exports = server;

@@ -29,7 +29,7 @@ const App = () => {
     <Router>
       <div>
         <HomepageLayout/>
-        {/* <nav><h1>Cheese Wizards</h1></nav>
+        <nav><h1>Cheese Wizards</h1></nav>
         <SearchBar
         search={search}
         setSearch={setSearch} />
@@ -37,7 +37,7 @@ const App = () => {
         products={filteredProducts}
         setProducts={setProducts} />
         <ProductDetails
-        productId={2}/> */}
+        productId={2}/>
       </div>
     </Router>
   );
