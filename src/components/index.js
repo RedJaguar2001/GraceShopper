@@ -4,4 +4,5 @@ export { default as Products } from './Products';
 export { default as Order } from './Order';
 export { default as ProductDetails } from './productDetails';
 export {default as HomepageLayout} from './Home';
+export {default as Nav} from './Nav';
 
