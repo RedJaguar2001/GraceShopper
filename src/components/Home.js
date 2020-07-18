@@ -15,7 +15,7 @@ const HomepageLayout = () => (
     <Container text style={{ marginTop: '7em' }}>
       <Header as='h1'>WELCOME TO CHEESE WIZARDS</Header>
       <Image size='large' src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRoQDJUuzhE5MneFhgbU5Ij9gFcOCIF14Py2g&usqp=CAU'/>
-      <p>At Cheese Wiazards, we are all about the cheese</p>
+      <p>At Cheese-Wizards, we are all about the cheese</p>
       <p>
         Founded in 2015 in California, we offer the best of the best...cheese
       </p>
