@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ProductCard from './ProductCard';
 import Axios from 'axios';
 
 const SearchBar = (props) => {
