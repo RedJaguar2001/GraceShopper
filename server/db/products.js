@@ -5,7 +5,7 @@ async function getAllProducts() {
           SELECT *
           FROM products;
           `);
-  
+
     return rows;
 }
 
@@ -28,7 +28,7 @@ async function getProductById(productId) {
         JOIN products_images ON images.id=products_images."imageId"
         WHERE products_images."productId"=$1;
         `, [productId]);
-  
+
       if (!product) {
         throw {
           name: "ProductNotFoundError",
@@ -37,12 +37,30 @@ async function getProductById(productId) {
       }
 
       product.image = image;
-  
+
       return product;
     } catch (error) {
       console.error(error);
       throw error;
     }
+  }
+
+//connect product to product_category, and then product_category to category by the appropriate keys, then just select the product.id where category.name is correct
+async function getProductsByCategory(categoryName) {
+  try {
+    const { rows: productIds } = await client.query(`
+      SELECT products.id FROM products
+      JOIN product_categories ON products.id=product_categories.product_Id
+      JOIN categories ON categories.id=product_categories.category_Id
+      WHERE categories.name=$1;
+    `, [categoryName]);
+
+    return await Promise.all(productIds.map(
+      product => getProductById(product.id)
+    ));
+  } catch (error) {
+    throw(error);
+  }
 }
 
 async function createProduct({ title, description, price, inventory }) {
@@ -58,7 +76,7 @@ async function createProduct({ title, description, price, inventory }) {
               `,
         [title, description, price, inventory]
       );
-  
+
       return product;
     } catch (error) {
       console.error(error);
@@ -70,11 +88,11 @@ async function updateProduct(id, fields = {}) {
     const setString = Object.keys(fields)
       .map((key, index) => `"${key}"=$${index + 1}`)
       .join(", ");
-  
+
     if (setString.length === 0) {
       return;
     }
-  
+
     try {
       const {
         rows: [product],
@@ -87,7 +105,7 @@ async function updateProduct(id, fields = {}) {
               `,
         Object.values(fields)
       );
-  
+
       return product;
     } catch (error) {
       console.error(error);
@@ -113,5 +131,6 @@ module.exports = {
     createProduct,
     updateProduct,
     getProductById,
+    getProductsByCategory,
     deleteProduct,
 }

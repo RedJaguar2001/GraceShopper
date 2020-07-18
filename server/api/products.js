@@ -43,7 +43,7 @@ productsRouter.get("/:productId", async (req, res, next) => {
   }
 });
 
-productsRouter.get("/:category", async (req, res, next) => {
+productsRouter.get('/:category', async (req, res, next) => {
     const { category } = req.params;
     console.log('entered product-categories', category);
 
@@ -62,6 +62,7 @@ productsRouter.get("/:category", async (req, res, next) => {
       throw error;
     }
   });
+
 
 productsRouter.patch('/:productId', async (req, res, next) => {
     const {productId} = req.params;
