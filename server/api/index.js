@@ -9,7 +9,6 @@ apiRouter.get('/', async(req, res, next) => {
     next();
 });
 
-
 const productsRouter = require('./products');
 apiRouter.use('/products', productsRouter);
 
@@ -25,10 +24,11 @@ apiRouter.use('/reviews', reviewRouter);
 const imagesRouter = require('./images');
 apiRouter.use('/images', imagesRouter);
 
+const orderItemsRouter = require('./orderItems');
+apiRouter.use('/orderItems', orderItemsRouter);
 
 apiRouter.use((error, req, res, next) => {
     res.send(error);
 });
-
 
 module.exports = apiRouter;

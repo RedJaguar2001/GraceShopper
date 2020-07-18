@@ -235,5 +235,6 @@ module.exports = {
   getUserById,
   doesUserExist,
   login,
-  loginWithToken
+  loginWithToken,
+  promisifiedVerify
 };

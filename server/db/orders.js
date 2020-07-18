@@ -3,21 +3,22 @@
 -Orders must contain line items that capture the price, current product ID and quantity
 -If a user completes an order, that order should keep the price of the item at the time when they checked out even if the price of the product later changes*/
 
-const { client } = require('./client')
+const { client } = require("./client");
 
-async function createCart(
-  productId,
-  price,
-  quantity = {}) {
+async function createCart(userId) {
   try {
     const {
-      rows: [],
-    } = await client.query(`
-      INSERT INTO cart ( id, productId, price, quantity)
-      VALUES ($1, $2, $3, $4)
+      rows: [cart], //no cart? also table should be carts I believe
+    } = await client.query(
+      `
+      INSERT INTO carts (users_id)
+      VALUES ($1)
       RETURNING *;
-      `, [id, productId, price, quantity]
-    )
+      `,
+      [userId]
+    );
+
+    return cart;
   } catch (error) {
     console.log(error);
     throw error;
@@ -25,7 +26,7 @@ async function createCart(
 }
 
 async function getAllCarts() {
-  const {rows} = await client.query(`
+  const { rows } = await client.query(`
   SELECT id, productId, price, quantity
   FROM carts;
   `);
@@ -41,12 +42,14 @@ async function deleteCart(cartId) {
   await client.query(`
   DELETE FROM cart
   WHERE $1=cartId;
-  `)
+  `);
 }
 
 //updateCart(patch)
 async function updateCart(id, fields = {}) {
-  const setString = Object.keys(fields).map((key, index) => `"${key}"=$${index + 1}`).join(", ");
+  const setString = Object.keys(fields)
+    .map((key, index) => `"${key}"=$${index + 1}`)
+    .join(", ");
 
   if (setString.length === 0) {
     return;
@@ -60,9 +63,10 @@ async function updateCart(id, fields = {}) {
     SET ${setString}
     WHERE id=${id}
     RETURNING *;
-    `, Object.values(fields)
+    `,
+      Object.values(fields)
     );
-    return carts;
+    return cart;
   } catch (error) {
     console.error(error);
     throw error;
@@ -72,14 +76,16 @@ async function updateCart(id, fields = {}) {
 async function getCartById(cartId) {
   try {
     const {
-      rows: [user],
-    } = await client.query(`
+      rows: [cart],
+    } = await client.query(
+      `
     SELECT * FROM carts
     WHERE id=$1;
-    `, [cartId]
+    `,
+      [cartId]
     );
 
-    if(!cart) {
+    if (!cart) {
       throw {
         name: "CartNotFoundError",
         description: "Could not find cart with that cartId",
@@ -92,10 +98,77 @@ async function getCartById(cartId) {
   }
 }
 
+async function getActiveCartByUserId(userId) {
+  try {
+    const {
+      rows: [cart],
+    } = await client.query(
+      `
+    SELECT * FROM carts
+    WHERE users_id=$1
+    AND checked_out=false;
+    `,
+      [userId]
+    );
+
+    if (cart) {
+      return cart;
+    }
+    return createCart(userId);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function getInactiveCartByUserId(userId) {
+  try {
+    const {
+      rows: [cart],
+    } = await client.query(
+      `
+    SELECT * FROM carts
+    WHERE users_id=$1
+    AND checked_out=true;
+    `,
+      [userId]
+    );
+
+    if (cart) {
+      return cart;
+    }
+    return createCart(userId);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function doesCartExist(userId) {
+  if (!userId) {
+    return false;
+  }
+
+  const {
+    rows: [cart],
+  } = await client.query(
+    `
+    SELECT id FROM carts
+    WHERE users_id=$1;
+    `,
+    [userId]
+  );
+
+  return !!cart;
+}
+
 module.exports = {
   createCart,
   getAllCarts,
   deleteCart,
   updateCart,
   getCartById,
-}
+  getActiveCartByUserId,
+  getInactiveCartByUserId,
+  doesCartExist,
+};
