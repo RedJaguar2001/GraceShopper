@@ -5,6 +5,7 @@ const {
   getAllProducts,
   createProduct,
   updateProduct,
+  deleteProduct,
   getProductById,
   getProductsByCategory,
   getAllUsers,
@@ -36,8 +37,9 @@ async function dropTables() {
       DROP TABLE IF EXISTS carts_products;
       DROP TABLE IF EXISTS carts;
       DROP TABLE IF EXISTS products;
-      DROP TABLE IF EXISTS users;
       DROP TABLE IF EXISTS user_details;
+      DROP TABLE IF EXISTS users;
+      
     `);
 
     console.log("Done dropping tables...");
@@ -51,7 +53,6 @@ async function createTables() {
   try {
     console.log("Starting to build tables...");
 
-
     await client.query(`
           CREATE TABLE images (
             id SERIAL PRIMARY KEY,
@@ -64,7 +65,7 @@ async function createTables() {
       CREATE TABLE products (
         id SERIAL PRIMARY KEY,
         title varchar(255) UNIQUE NOT NULL,
-        description varchar(255) NOT NULL,
+        description text NOT NULL,
         price NUMERIC NOT NULL,
         inventory INTEGER NOT NULL
         );
@@ -91,9 +92,9 @@ async function createTables() {
     await client.query(`
       CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
+        users_id integer REFERENCES users(id),
         full_address varchar(255) NOT NULL,
         billing_address varchar(255) NOT NULL,
-        credit_card NUMERIC NOT NULL,
         full_name varchar(255) NOT NULL,
         phone_number NUMERIC NOT NULL
         );
@@ -149,23 +150,26 @@ async function createTables() {
     console.error(error);
     throw error;
   }
-};
+}
 
 async function createInitialImages() {
   try {
     await createImage({
-      title: 'Swiss cheese',
-      img_src: 'https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg'
+      title: "Swiss cheese",
+      img_src:
+        "https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg",
     });
 
     await createImage({
-      title: 'String Cheese',
-      img_src: 'https://vaya.in/recipes/wp-content/uploads/2018/06/String-Cheese.jpg'
+      title: "String Cheese",
+      img_src:
+        "https://vaya.in/recipes/wp-content/uploads/2018/06/String-Cheese.jpg",
     });
 
     await createImage({
-      title: 'Nacho Cheese',
-      img_src: 'https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG'
+      title: "Nacho Cheese",
+      img_src:
+        "https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG",
     });
 
     await createImage({
@@ -224,10 +228,16 @@ async function createInitialUsers() {
 async function createInitialProduct() {
   try {
     // console.log('Starting to create initial product...');
-
+    await createProduct({
+      title: "Test Cheese",
+      description: "Don't get testy with me!",
+      price: "12.80",
+      inventory: "50",
+    });
     await createProduct({
       title: "American Cheese",
-      description: "Goes great with burgers!",
+      description:
+        "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
       price: "17.76",
       inventory: "50",
     });
@@ -238,29 +248,35 @@ async function createInitialProduct() {
       inventory: "50",
     });
     await createProduct({
-      title: 'Nacho Cheese',
+      title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
-      price: '3.49',
-      inventory: '25',
-      categoryName: 'Soft',
+      price: "3.49",
+      inventory: "25",
+
     });
     await createProduct({
-      title: 'Pepperjack Cheese',
-      description: 'Monterey Jack with a little kick',
-      price: '4.99',
-      inventory: '10'
+      title: "Pepperjack Cheese",
+      description: "Monterey Jack with a little kick",
+      price: "4.99",
+      inventory: "10",
     });
     await createProduct({
-      title: 'Swiss Cheese',
-      description: 'holy',
-      price: '2.00',
-      inventory: '12'
+      title: "Swiss Cheese",
+      description: "holy",
+      price: "2.00",
+      inventory: "12",
     });
     await createProduct({
       title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
       inventory: "13",
+    });
+    await createProduct({
+      title: "Delete-able Cheese",
+      description: "Delete me.",
+      price: "0.25",
+      inventory: "2000",
     });
 
     // console.log('Done creating initial product');
@@ -286,12 +302,11 @@ async function createUserDetails() {
   try {
     await createDetails({
       fullAddress: "715 Ridge San Luis Obispo, CA 93405",
-	    billingAddress: "715 Ridge San Luis Obispo, CA 93405",
+      billingAddress: "715 Ridge San Luis Obispo, CA 93405",
       cCard: "1234567890123456",
       fullName: "Patrick-V Herrera",
-      phoneNumber:"8057103189"
+      phoneNumber: "8057103189",
     });
-
   } catch (error) {
     console.error(error);
     throw error;
@@ -301,25 +316,25 @@ async function createUserDetails() {
 async function createInitialCategories() {
   try {
     await createCategory({
-      categoryName: 'Stinky'
+      categoryName: "Stinky",
     });
     await createCategory({
-      categoryName: 'Aged'
+      categoryName: "Aged",
     });
     await createCategory({
-      categoryName: 'Hard'
+      categoryName: "Hard",
     });
     await createCategory({
-      categoryName: 'Soft'
+      categoryName: "Soft",
     });
     await createCategory({
-      categoryName: 'Smokey'
+      categoryName: "Smokey",
     });
     await createCategory({
-      categoryName: 'Fresh'
+      categoryName: "Fresh",
     });
 
-    console.log('done creating initial categories');
+    console.log("done creating initial categories");
   } catch (error) {
     throw error;
   }
@@ -328,18 +343,25 @@ async function createInitialCategories() {
 async function createInitialReviews() {
   try {
     await createReview({
-      title: 'This cheese stinks',
-      body: 'I think this cheese has gone bad, delicious though.',
+      title: "This cheese stinks",
+      body: "I think this cheese has gone bad, delicious though.",
       rating: 4,
       userId: 1,
       productId: 6,
     });
     await createReview({
-      title: 'low quality',
-      body: 'rips to shreds when I pull on it',
+      title: "low quality",
+      body: "rips to shreds when I pull on it",
       rating: 2,
       userId: 2,
       productId: 2,
+    });
+    await createReview({
+      title: "Test Delete Review",
+      body: "If this is still in the DB, you done messed up.",
+      rating: 1,
+      userId: 3,
+      productId: 8,
     });
   } catch (error) {
     throw error;
@@ -348,7 +370,7 @@ async function createInitialReviews() {
 
 async function createInitialImage() {
   try {
-    console.log('Starting to create image...');
+    console.log("Starting to create image...");
 
     await createProductImage(1, 6);
     await createProductImage(2, 2);
@@ -356,8 +378,8 @@ async function createInitialImage() {
     await createProductImage(6, 4);
     await createProductImage(5, 1);
 
-    console.log('Finished creating image');
-  } catch(error) {
+    console.log("Finished creating image");
+  } catch (error) {
     console.error(error);
     throw error;
   }
@@ -412,16 +434,23 @@ async function testDB() {
     console.log("getAllUsers result:", users);
 
     const userInfo = await getUserInfo();
-    console.log ("User Info is...", userInfo);
+    console.log("User Info is...", userInfo);
 
     const categories = await getAllCategories();
     console.log("getAllCategories results: ", categories);
 
     const images = await getAllImages();
-    console.log('getAllImages...', images);
+    console.log("getAllImages...", images);
 
     const reviews = await getAllReviews();
     console.log("getAllReviews results: ", reviews);
+
+    const deletedProduct = await deleteProduct(8);
+    if (deletedProduct) {
+      console.log("successfully deleted product with ID: ", 8);
+    } else {
+      console.log("Deletion unsuccessful :(");
+    }
 
     console.log("Done testing database...");
   } catch (error) {

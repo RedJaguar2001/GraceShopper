@@ -17,6 +17,7 @@ server.use(bodyParser.json());
 server.use(express.static(path.join(__dirname, "../dist")));
 server.use("/api", apiRouter);
 
+
 server.listen(PORT, () =>
   console.log(chalk.red(`Big Brother can see you on port ${PORT}`))
 );
@@ -26,3 +27,10 @@ server.get("/health", (req, res, next) => {
     message: "Server is healthy!"
   });
 });
+
+server.get("*", (_, res) => {
+  res.sendFile(
+    path.join(__dirname, "..", "dist/index.html")
+  );
+});
+

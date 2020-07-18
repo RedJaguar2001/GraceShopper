@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
       <Card.Content>
         <Card.Header>{title}</Card.Header>
         <Card.Meta>Quantity: {inventory}</Card.Meta>
-        <Card.Description>{description}</Card.Description>
+        <Card.Description>{description.length > 50 ? `${description.substring(0, 50)}...` : description}</Card.Description>
       </Card.Content>
       <Card.Content extra>
         <a>
