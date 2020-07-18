@@ -5,18 +5,20 @@
 
 const { client } = require("./client");
 
-async function createCart(productId, price, quantity = {}) {
+async function createCart(userId) {
   try {
     const {
-      rows: [],
+      rows: [cart], //no cart? also table should be carts I believe
     } = await client.query(
       `
-      INSERT INTO cart ( id, productId, price, quantity)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO carts (users_id)
+      VALUES ($1)
       RETURNING *;
       `,
-      [id, productId, price, quantity]
+      [userId]
     );
+
+    return cart;
   } catch (error) {
     console.log(error);
     throw error;
@@ -96,29 +98,69 @@ async function getCartById(cartId) {
   }
 }
 
-async function getCartByUserId(userId) {
+async function getActiveCartByUserId(userId) {
   try {
     const {
       rows: [cart],
     } = await client.query(
       `
     SELECT * FROM carts
-    WHERE users_id=$1;
+    WHERE users_id=$1
+    AND checked_out=false;
     `,
       [userId]
     );
 
-    if (!cart) {
-      throw {
-        name: "CartNotFoundError",
-        description: `Could not find cart with UserId: ${userId}`,
-      };
+    if (cart) {
+      console.log('getActiveCartByUserId: ', cart);
+      return cart;
     }
-    return cart;
+    return createCart(userId);
   } catch (error) {
     console.error(error);
     throw error;
   }
+}
+
+async function getInactiveCartByUserId(userId) {
+  try {
+    const {
+      rows: [cart],
+    } = await client.query(
+      `
+    SELECT * FROM carts
+    WHERE users_id=$1
+    AND checked_out=true;
+    `,
+      [userId]
+    );
+
+    if (cart) {
+      return cart;
+    }
+    return createCart(userId);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function doesCartExist(userId) {
+  if (!userId) {
+    return false;
+  }
+
+  const {
+    rows: [cart],
+  } = await client.query(
+    `
+    SELECT id FROM carts
+    WHERE users_id=$1;
+    `,
+    [userId]
+  );
+
+  return !!cart;
 }
 
 module.exports = {
@@ -127,5 +169,7 @@ module.exports = {
   deleteCart,
   updateCart,
   getCartById,
-  getCartByUserId,
+  getActiveCartByUserId,
+  getInactiveCartByUserId,
+  doesCartExist,
 };

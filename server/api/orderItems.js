@@ -1,29 +1,79 @@
 const express = require("express");
-const orderItemsRouter = express();
+const orderItemsRouter = express.Router();
 const { promisifiedVerify } = require("../db/users");
 const {
-  createCart,
   deleteCart,
-  updateCart,
-  getCartById,
-} = require("../db/orders");
+  getActiveCartByUserId,
+  getProductQuantity,
+  createOrUpdateCartProduct,
+  getCartProductsQuantity,
+} = require("../db");
 
-// POST "api/orderItems" : Adding an item to a cart.
-// Body: { productId, quantity }
-// Create an active cart for the user if one doesn't already exist. Make sure that there is a sufficient quantity of the product to meet the purchase request. Create a new order item, or update the quantity if an order item exists for that cart and product. Make sure to update the quantity of the product (decrement). You can expect an authorization header with a token for the user whose cart this is.
+orderItemsRouter.use((req, res, next) =>{
+    console.log('A request is being made to /orderItems');
+    next();
+  });
+
+// This route creates an upsert vs insert. Meaning we could potentially update an existing cart_product or create a new one. Must be careful not to insert duplicate cart_product on the front end.
 orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
     const { productId, quantity } = req.body;
     const token = req.token;
+    const productQuantity = await getProductQuantity(productId);
+    if (productQuantity === null) {
+      throw new Error("Product not found.")
+    }
+
+    //cannot add negative items. When creating cart can only add not subtract
+    let quantityToPurchase = quantity > 0 ? quantity : 0;
+    if (productQuantity < quantityToPurchase) {
+      quantityToPurchase = productQuantity;
+    }
+
+    const {id} = await promisifiedVerify(token);
+    const cart = await getActiveCartByUserId(id);
+    const cartProduct = await createOrUpdateCartProduct(cart.id, productId, quantityToPurchase);
+    
+    res.json(cartProduct);
+
 });
 
 // PUT "api/orderItems/:orderItemId" : Updating the quantity of a users order item.
 // Body: { quantity }
-// If increasing the quantity, make sure stock is available first. If there isn't, increase as much as is available. Make sure to decrease the stock. If decreasing the purchased quantity, increase the quantity of the product. You can expect an authorization header with a token for the user whose cart this is. Make sure the ordered item exists for that user first. Make sure item belongs to active cart.
+// Make sure the ordered item exists for that user first. - done: createOrUpdateCartProduct will insert and update if the item already exists
+// Make sure item belongs to active cart. - Done getActiveCartByUserId
+// If increasing the quantity, make sure stock is available first. If there isn't, increase as much as is available. Make sure to decrease the stock. - done 
+// If decreasing the purchased quantity, increase the quantity of the product. - done
 orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
+  console.log("got this far");
     const { orderItemId } = req.params;
     const { quantity } = req.body;
     const token = req.token;
 
+    const productQuantity = await getProductQuantity(orderItemId);
+    if (productQuantity === null) {
+      throw new Error("Product not found.")
+    }
+
+    const {id} = await promisifiedVerify(token);
+    const cart = await getActiveCartByUserId(id);
+    const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
+
+    let quantityToUpdate = quantity;
+
+    //if there was an easier way to do this please let me know. My nose is bleeding...
+    if ((productQuantity - quantityToUpdate <= 0) && quantityToUpdate > 0) {
+      console.log("triggering productQuantity logic");
+      quantityToUpdate = productQuantity;
+    }
+
+    if ((cartQuantity + quantityToUpdate <= 0) && quantityToUpdate < 0) {
+      console.log("trigger carQuantity logic", cartQuantity);
+      quantityToUpdate = -cartQuantity;
+    }
+
+    const cartProduct = await createOrUpdateCartProduct(cart.id, orderItemId, quantityToUpdate);
+
+    res.json(cartProduct);
 });
 
 // DELETE "api/orderItems/:orderItemId" : Deleting an order item from the cart
@@ -52,3 +102,5 @@ function verifyToken(req, res, next) {
     res.sendStatus(403);
   }
 }
+
+module.exports = orderItemsRouter;
