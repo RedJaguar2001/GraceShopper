@@ -43,6 +43,26 @@ productsRouter.get("/:productId", async (req, res, next) => {
   }
 });
 
+productsRouter.get("/:category", async (req, res, next) => {
+    const { category } = req.params;
+    console.log('entered product-categories', category);
+
+    try {
+      const product = await getProductByCategory(category);
+      console.log('got product: ', product);
+      if (!product) {
+        return res.status(404).json({
+          error: `No product found with Id: ${product}}`,
+        });
+      }
+      res.send({
+        product,
+      });
+    } catch (error) {
+      throw error;
+    }
+  });
+
 productsRouter.patch('/:productId', async (req, res, next) => {
     const {productId} = req.params;
     const { title, description, price, inventory} = req.body;
