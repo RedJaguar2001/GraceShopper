@@ -112,7 +112,6 @@ async function getActiveCartByUserId(userId) {
     );
 
     if (cart) {
-      console.log('getActiveCartByUserId: ', cart);
       return cart;
     }
     return createCart(userId);

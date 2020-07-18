@@ -3,11 +3,11 @@ const orderItemsRouter = express.Router();
 const { verifyToken } = require("./utils");
 const { promisifiedVerify } = require("../db/users");
 const {
-  deleteCart,
   getActiveCartByUserId,
   getProductQuantity,
-  createOrUpdateCartProduct,
   getCartProductsQuantity,
+  createOrUpdateCartProduct,
+  deleteOrderItem,
 } = require("../db");
 
 orderItemsRouter.use((req, res, next) => {
@@ -42,7 +42,6 @@ orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
 });
 
 orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
-  console.log("got this far");
   const { orderItemId } = req.params;
   const { quantity } = req.body;
   const token = req.token;
@@ -63,29 +62,80 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
     quantityToUpdate = productQuantity;
   }
 
+  // thought - if(below if statement: deleteCartProduct() since it would be 0) Else(createOrUpdateCartProduct)
+
+  // if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
+  //   quantityToUpdate = -cartQuantity;
+  // }
+
+  // const cartProduct = await createOrUpdateCartProduct(
+  //   cart.id,
+  //   orderItemId,
+  //   quantityToUpdate
+  // );
+
+  // res.json(cartProduct);
+
   if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
-    quantityToUpdate = -cartQuantity;
+    const newProductQuantity = productQuantity + cartQuantity;
+    const itemDeleted = await deleteOrderItem(
+      orderItemId,
+      cart.id,
+      newProductQuantity
+    );
+
+    if (itemDeleted) {
+      res.json({
+        message: "Item successfully deleted.",
+      });
+    } else {
+      res.json({
+        message: "No item to delete.",
+      });
+    }
+  } else {
+    const cartProduct = await createOrUpdateCartProduct(
+      cart.id,
+      orderItemId,
+      quantityToUpdate
+    );
+  
+    res.json(cartProduct);
   }
 
-  const cartProduct = await createOrUpdateCartProduct(
-    cart.id,
-    orderItemId,
-    quantityToUpdate
-  );
-
-  res.json(cartProduct);
 });
 
-// DELETE "api/orderItems/:orderItemId" : Deleting an order item from the cart
-// Make sure you are dealing with an order item from an active cart for the user.
-//  You can expect an authorization header with a token for the user whose cart this is.
-//  Add all of the deleted quantity back to the stock of the product.
 orderItemsRouter.delete(
   "/:orderItemId",
   verifyToken,
   async (req, res, next) => {
     const { orderItemId } = req.params;
     const token = req.token;
+
+    const productQuantity = await getProductQuantity(orderItemId);
+    if (productQuantity === null) {
+      throw new Error("Product not found.");
+    }
+
+    const { id } = await promisifiedVerify(token);
+    const cart = await getActiveCartByUserId(id);
+    const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
+    const newProductQuantity = productQuantity + cartQuantity;
+    const itemDeleted = await deleteOrderItem(
+      orderItemId,
+      cart.id,
+      newProductQuantity
+    );
+
+    if (itemDeleted) {
+      res.json({
+        message: "Item successfully deleted.",
+      });
+    } else {
+      res.json({
+        message: "No item to delete.",
+      });
+    }
   }
 );
 
