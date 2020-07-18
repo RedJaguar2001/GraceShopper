@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Card, Icon, Image } from "semantic-ui-react";
 
-const productCard = ({ product }) => {
-  const { id, title, description, price, inventory } = product;
+const ProductCard = ({ product }) => {
+  const { id, title, description, price, inventory, image } = product;
   //   console.log("product: ", product);
   return (
     <Card key={id}>
-      <Image src="https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg" wrapped ui={false} />
+      <Image src={!image ? "https://i.ytimg.com/vi/RLhmG-LIwnE/maxresdefault.jpg" : image.img_src} wrapped ui={false} />
       <Card.Content>
         <Card.Header>{title}</Card.Header>
         <Card.Meta>Quantity: {inventory}</Card.Meta>
@@ -23,4 +23,4 @@ const productCard = ({ product }) => {
   );
 };
 
-export default productCard;
+export default ProductCard;

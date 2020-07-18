@@ -23,7 +23,7 @@ const productDetails = ({productId}) => {
     });
   }, []);
 
-  const { title, description, price, inventory } = product;
+  const { title, description, price, inventory, image } = product;
   console.log(product);
 
   return (
@@ -31,7 +31,7 @@ const productDetails = ({productId}) => {
       <Grid celled>
         <Grid.Row>
           <Grid.Column width={6}>
-            <Image src="https://via.placeholder.com/500" />
+            <Image src={!image ? "https://via.placeholder.com/500" : image.img_src} />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>

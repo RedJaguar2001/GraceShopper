@@ -167,6 +167,22 @@ async function createInitialImages() {
       title: 'Nacho Cheese',
       img_src: 'https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG'
     });
+
+    await createImage({
+      title: 'Bleu Cheese',
+      img_src: 'https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574'
+    });
+
+    await createImage({
+      title: 'PepperJack Cheese',
+      img_src: 'https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg'
+    });
+
+    await createImage({
+      title: 'American Cheese',
+      img_src: 'https://cdn.schwans.com/media/images/products/62172-1-1540.jpg'
+    });
+
   } catch(error) {
     console.error(error);
     throw error;
@@ -241,7 +257,7 @@ async function createInitialProduct() {
       inventory: '12'
     });
     await createProduct({
-      title: "Blue Cheese",
+      title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
       inventory: "13",
@@ -334,14 +350,11 @@ async function createInitialImage() {
   try {
     console.log('Starting to create image...');
 
-    const image = await createImage({
-      title: 'Swiss Cheese',
-      img_src: 'https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg'
-    });
-
-    const products = await getAllProducts();
-
-    await createProductImage(5, image.id);
+    await createProductImage(1, 6);
+    await createProductImage(2, 2);
+    await createProductImage(3, 3);
+    await createProductImage(6, 4);
+    await createProductImage(5, 1);
 
     console.log('Finished creating image');
   } catch(error) {
@@ -381,7 +394,7 @@ async function testDB() {
     console.log("getAllProducts result:", products);
 
     console.log("Calling updateProducts...");
-    const updatedProduct = await updateProduct(products[0].id, {
+    const updatedProduct = await updateProduct(products[3].id, {
       title: "Cheddar Cheese",
       description: "Yummy in my tummy",
       price: "4.99",
