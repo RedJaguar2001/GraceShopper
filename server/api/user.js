@@ -2,6 +2,9 @@ const express = require('express');
 const userRouter = express();
 const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db/users');
 
+
+
+
 userRouter.post("/register", async (req, res, next) => {
   const values = {
     name: req.body.name,
@@ -157,13 +160,18 @@ userRouter.get('/allusers', async(req, res, next)=>{
   }
 });
 
-userRouter.post('/api/user/details', async (req, res) =>{
+
+//Phone number must be passed in as a string, FYI
+userRouter.post('/details', async (req, res) =>{
   const values = {
   fullAddress: req.body.fullAddress,
   billingAddress: req.body.billingAddress,
   fullName: req.body.fullName,
   phoneNumber: req.body.phoneNumber,
+  
   };
+
+console.log(typeof values.phoneNumber)
 
   try {
     // make sure we have valid data from the client
@@ -172,11 +180,13 @@ userRouter.post('/api/user/details', async (req, res) =>{
       if (values.hasOwnProperty(key)) {
         const value = values[key];
 
+
         if (
           !value || (typeof value !== "string") || !value.trim().length
         ) {
           return res.status(400).json({
-            error: `${key} is required, must be a string, and cannot be empty.`
+            error:`${key} is required, must be a string, and cannot be empty.` 
+            
           });
         }
         else
@@ -184,14 +194,17 @@ userRouter.post('/api/user/details', async (req, res) =>{
           values[key] = value.trim();
       }
     }
-      const [user_details, token] = await getUserInfo(values);
+      const [user_details] = await getUserInfo(values);
 
-      console.log(user_details, token);
+      console.log(user_details);
+      
+     
 
       // status 201 means resource created
       res.status(201).json({
-       user_details,
-       token
+       user_details
+
+
       });
 
     } catch ({ error}) {
@@ -199,13 +212,14 @@ userRouter.post('/api/user/details', async (req, res) =>{
     }
 });
 
-  userRouter.get('/api/user/details', async(req, res, next)=>{
+  userRouter.get('/details', async(req, res, next)=>{
     const { userDetails } = req.params;
     try {
     const userInfo = await getUserInfo(userDetails);
       res.send({
         userInfo,
         message: 'successfully retrieved users info'
+        
       });
     } catch ({ error}) {
       next({ error});

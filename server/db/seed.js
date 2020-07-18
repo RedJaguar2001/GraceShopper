@@ -35,8 +35,9 @@ async function dropTables() {
       DROP TABLE IF EXISTS carts_products;
       DROP TABLE IF EXISTS carts;
       DROP TABLE IF EXISTS products;
-      DROP TABLE IF EXISTS users;
       DROP TABLE IF EXISTS user_details;
+      DROP TABLE IF EXISTS users;
+      
     `);
 
     console.log("Done dropping tables...");
@@ -90,7 +91,7 @@ async function createTables() {
     await client.query(`
       CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
-        user_id int FOREIGN KEY REFERENCES user_details(user_id)
+        users_id integer REFERENCES users(id),
         full_address varchar(255) NOT NULL,
         billing_address varchar(255) NOT NULL,
         full_name varchar(255) NOT NULL,
