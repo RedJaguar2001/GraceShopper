@@ -117,24 +117,57 @@ async function updateProduct(id, fields = {}) {
 }
 
 async function deleteProduct(productId) {
-  try {
-    await client.query(
-      `
-            DELETE FROM products
-            WHERE id=$1;
-            `,
-      [productId]
-    );
-
-    return `DELETED PRODUCT NUMBER: ${productId}`;
-  } catch (error) {
-    console.error(error);
-    throw error;
+  if (!productId) {
+    return false;
   }
+
+  await client.query(
+    `
+    DELETE FROM products_images
+    WHERE "productId"=$1;
+    `,
+    [productId]
+  );
+
+  await client.query(
+    `
+    DELETE FROM product_categories
+    WHERE product_id=$1;
+    `,
+    [productId]
+  );
+
+  await client.query(
+    `
+    DELETE FROM reviews
+    WHERE product_id=$1;
+    `,
+    [productId]
+  );
+
+  await client.query(
+    `
+    DELETE FROM carts_products
+    WHERE product_id=$1;
+    `,
+    [productId]
+  );
+
+  await client.query(
+    `
+    DELETE FROM products
+    WHERE id=$1;
+    `,
+    [productId]
+  );
+
+  return true;
 }
 
 async function getProductQuantity(productId) {
-  const { rows: [product] } = await client.query(
+  const {
+    rows: [product],
+  } = await client.query(
     `
         SELECT inventory
         FROM products
@@ -147,6 +180,7 @@ async function getProductQuantity(productId) {
 }
 
 module.exports = {
+
     getAllProducts,
     createProduct,
     updateProduct,
