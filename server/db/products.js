@@ -1,28 +1,31 @@
-const { client } = require('./client');
+const { client } = require("./client");
 
 async function getAllProducts() {
-    const { rows } = await client.query(`
+  const { rows } = await client.query(`
           SELECT *
           FROM products;
           `);
 
-    return rows;
+  return rows;
 }
 
 async function getProductById(productId) {
-    try {
-      const {
-        rows: [product],
-      } = await client.query(
-        `
+  try {
+    const {
+      rows: [product],
+    } = await client.query(
+      `
               SELECT *
               FROM products
               WHERE id=$1;
               `,
-        [productId]
-      );
+      [productId]
+    );
 
-      const { rows: [image] } = await client.query(`
+    const {
+      rows: [image],
+    } = await client.query(
+      `
         SELECT images.*
         FROM images
         JOIN products_images ON images.id=products_images."imageId"
@@ -64,11 +67,11 @@ async function getProductsByCategory(categoryName) {
 }
 
 async function createProduct({ title, description, price, inventory }) {
-    try {
-      const {
-        rows: [product],
-      } = await client.query(
-        `
+  try {
+    const {
+      rows: [product],
+    } = await client.query(
+      `
               INSERT INTO products (title, description, price, inventory)
               VALUES ($1, $2, $3, $4)
               ON CONFLICT (title) DO NOTHING
@@ -114,18 +117,35 @@ async function updateProduct(id, fields = {}) {
 }
 
 async function deleteProduct(productId) {
-    try {
-        await client.query(`
+  try {
+    await client.query(
+      `
             DELETE FROM products
             WHERE id=$1;
-            `, [productId]);
+            `,
+      [productId]
+    );
 
-        return `DELETED PRODUCT NUMBER: ${productId}`;
-    } catch(error) {
-        console.error(error);
-        throw error;
-    }
+    return `DELETED PRODUCT NUMBER: ${productId}`;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
+
+async function getProductQuantity(productId) {
+  const { rows: [product] } = await client.query(
+    `
+        SELECT inventory
+        FROM products
+        WHERE id=$1;
+        `,
+    [productId]
+  );
+
+  return product ? product.inventory : null;
+}
+
 module.exports = {
     getAllProducts,
     createProduct,
@@ -133,4 +153,5 @@ module.exports = {
     getProductById,
     getProductsByCategory,
     deleteProduct,
+    getProductQuantity
 }
