@@ -129,7 +129,6 @@ async function createTables() {
       CREATE TABLE carts (
         id SERIAL PRIMARY KEY,
         users_id INTEGER REFERENCES users(id),
-        total_price NUMERIC,
         checked_out BOOLEAN DEFAULT false
         );
     `);
@@ -140,7 +139,8 @@ async function createTables() {
         product_id INTEGER REFERENCES products(id),
         carts_id INTEGER REFERENCES carts(id),
         quantity INTEGER NOT NULL,
-        price NUMERIC NOT NULL
+        price NUMERIC NOT NULL,
+        UNIQUE (product_id, carts_id)
         );
     `);
 
@@ -219,7 +219,7 @@ async function createInitialProduct() {
       title: "String Cheese",
       description: "Stringy",
       price: ".99",
-      inventory: "25",
+      inventory: "50",
     });
     await createProduct({
       title: 'Nacho Cheese',
