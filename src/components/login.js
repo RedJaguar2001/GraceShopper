@@ -8,7 +8,7 @@ const Login = (props) => {
   const [state, setState] = useState({});
 
   const handleChange = (e, { name, value }) => {
-    setState({ [name]: value });
+    setState({ ...state, [name]: value });
     console.log(state);
   };
 
@@ -26,32 +26,32 @@ const Login = (props) => {
       const userData = res.data;
       console.log("register data: ", userData);
       localStorage.setItem("token", userData.token);
-      return setUser(userData);
+      return setUser(userData.user);
     });
   }
 
   async function handleLogin(event) {
     event.preventDefault();
     console.log(state);
-    const register = {
-      password: "password",
-      email: "test@test.test",
-    };
+    // const register = {
+    //   password: "password",
+    //   email: "test@test.test",
+    // };
 
-    axios.post("api/users/login", register).then((res) => {
+    axios.post("api/users/login", state).then((res) => {
       const userData = res.data;
       console.log("login data: ", userData);
       localStorage.setItem("token", userData.token);
-      return setUser(userData);
+      setState({});
+      setUser(userData.user);
     });
-
-    return setState({});
   }
 
   async function handleLogout(event) {
     event.preventDefault();
     console.log(event.target.value);
-    localStorage.clear();
+    localStorage.removeItem('token');
+    setUser({});
   }
 
   if (user.id) {
@@ -68,7 +68,6 @@ const Login = (props) => {
           trigger={<Button>Register</Button>}
           basic
           size="small"
-          onClose={close}
         >
           <Header content="Signup for an account" />
           <Modal.Content>
@@ -102,7 +101,6 @@ const Login = (props) => {
                 placeholder="Password"
                 name="password"
                 value={state.password}
-                onChange={handleChange}
                 required
               />
               <Form.Button content="Submit" />

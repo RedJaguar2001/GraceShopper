@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Axios from "axios";
 
-import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav } from "./components";
+import { Products, SearchBar, OrderHistory, ProductDetails, HomepageLayout, Nav } from "./components";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -36,12 +36,13 @@ const App = () => {
   
       axios.post("api/users/login/token", {}, bearer).then((res) => {
         const userData = res.data;
-        console.log('user data: ', userData);
+        // console.log('user data: ', userData);
         return setUser(userData);
       });
     }
   }, []);
 
+  console.log("in app user: ", user);
   return (
     <Router>
         <Nav 
@@ -64,6 +65,8 @@ const App = () => {
           </Route>
 
           <Route path="/products/:productId" exact component={ProductDetails} />
+
+          <Route path='/orderhistory' exact component={OrderHistory}/>
         </Switch>
     </Router>
   );
