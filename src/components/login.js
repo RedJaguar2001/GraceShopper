@@ -14,29 +14,18 @@ const Login = (props) => {
 
   async function handleRegister(event) {
     event.preventDefault();
-    console.log(state);
-    const register = {
-      name: "test",
-      username: "test",
-      password: "password",
-      email: "test@test.test",
-    };
 
-    axios.post("api/users/register", register).then((res) => {
+    axios.post("api/users/register", state).then((res) => {
       const userData = res.data;
       console.log("register data: ", userData);
       localStorage.setItem("token", userData.token);
+      setState({})
       return setUser(userData.user);
     });
   }
 
   async function handleLogin(event) {
     event.preventDefault();
-    console.log(state);
-    // const register = {
-    //   password: "password",
-    //   email: "test@test.test",
-    // };
 
     axios.post("api/users/login", state).then((res) => {
       const userData = res.data;
@@ -76,7 +65,7 @@ const Login = (props) => {
                 label="Full Name"
                 placeholder="Full Name"
                 name="name"
-                value={state.name}
+                // value={state.name}
                 onChange={handleChange}
                 required
               />
@@ -84,7 +73,7 @@ const Login = (props) => {
                 label="Username"
                 placeholder="Username"
                 name="username"
-                value={state.username}
+                // value={state.username}
                 onChange={handleChange}
                 required
               />
@@ -92,7 +81,7 @@ const Login = (props) => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                value={state.email}
+                // value={state.email}
                 onChange={handleChange}
                 required
               />
@@ -100,7 +89,7 @@ const Login = (props) => {
                 label="Password"
                 placeholder="Password"
                 name="password"
-                value={state.password}
+                // value={state.password}
                 required
               />
               <Form.Button content="Submit" />
@@ -120,7 +109,7 @@ const Login = (props) => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                value={state.email}
+                // value={state.email}
                 onChange={handleChange}
                 required
               />
@@ -128,7 +117,7 @@ const Login = (props) => {
                 label="Password"
                 placeholder="Password"
                 name="password"
-                value={state.password}
+                // value={state.password}
                 onChange={handleChange}
                 required
               />
