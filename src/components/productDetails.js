@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import {
   Container,
@@ -11,8 +12,9 @@ import {
   Image,
 } from "semantic-ui-react";
 
-const productDetails = ({productId}) => {
-  console.log('product ID: ', productId);
+const productDetails = () => {
+  const { productId } = useParams();
+  console.log("product ID: ", productId);
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
@@ -27,11 +29,13 @@ const productDetails = ({productId}) => {
   console.log(product);
 
   return (
-    <Container>
+    <Container fluid>
       <Grid celled>
         <Grid.Row>
           <Grid.Column width={6}>
-            <Image src={!image ? "https://via.placeholder.com/500" : image.img_src} />
+            <Image
+              src={!image ? "https://via.placeholder.com/1000" : image.img_src}
+            />
           </Grid.Column>
           <Grid.Column width={10}>
             <Card fluid>
@@ -41,11 +45,15 @@ const productDetails = ({productId}) => {
                 <Card.Description>{description}</Card.Description>
               </Card.Content>
               <Card.Content>
-                <a>
+                <Label size='large'>
                   <Icon name="dollar" />
                   {price}
-                </a>
-                <Button>Add to Cart</Button>
+                </Label>
+                <Button
+                  content="Add to Cart"
+                  floated="right"
+                  compact
+                />
               </Card.Content>
             </Card>
           </Grid.Column>
