@@ -8,10 +8,11 @@ import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav } from 
 
 const App = () => {
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
+  // const [user, setUser] = useState([]);
 
   let filteredProducts = products;
-  if(search.length) {
+  if (search.length) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.title.toLowerCase().startsWith(search.toLowerCase());
     });
@@ -19,11 +20,23 @@ const App = () => {
 
   useEffect(() => {
     axios.get("/api/products").then((res) => {
-      const prodList = res.data.products;
+      const prodList = res.data;
       console.log("product List: ", prodList);
       return setProducts(prodList);
     });
   }, []);
+
+  // useEffect(() => {
+  //   // const token = user.token;
+  //   const bearer = {
+  //     headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTk1MDEwMDM1fQ.WvrPH1s7oF4QSzhXac2B96wuh2-96SrNADs4WCjKeAY` },
+  //   };
+
+  //   axios.post("/login/token", bearer).then(() => {
+  //     const userData = res.data;
+  //     console.log('user data: ', userData);
+  //   });
+  // }, []);
 
   return (
     <Router>
