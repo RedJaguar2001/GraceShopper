@@ -73,8 +73,23 @@ async function deleteOrderItem(productId, cartId, quantity) {
   return true;
 }
 
+async function isCartEmpty(cartId) {
+
+  const {rows} = await client.query(
+
+    `SELECT id
+     FROM carts_products
+     WHERE product_id = $1;`,
+
+     [cartId]
+  );
+  return rows.length===0
+}
+
+
 module.exports = {
   createOrUpdateCartProduct,
   getCartProductsQuantity,
   deleteOrderItem,
-};
+  isCartEmpty
+}
