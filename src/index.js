@@ -9,7 +9,7 @@ import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav } from 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  // const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
 
   let filteredProducts = products;
   if (search.length) {
@@ -20,27 +20,33 @@ const App = () => {
 
   useEffect(() => {
     axios.get("/api/products").then((res) => {
-      const prodList = res.data;
+      const prodList = res.data.products;
       console.log("product List: ", prodList);
       return setProducts(prodList);
     });
   }, []);
 
-  // useEffect(() => {
-  //   // const token = user.token;
-  //   const bearer = {
-  //     headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTk1MDEwMDM1fQ.WvrPH1s7oF4QSzhXac2B96wuh2-96SrNADs4WCjKeAY` },
-  //   };
-
-  //   axios.post("/login/token", bearer).then(() => {
-  //     const userData = res.data;
-  //     console.log('user data: ', userData);
-  //   });
-  // }, []);
+  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTk1MTM1MTI3fQ.CGw5QGBSS3DDEevQmAKTHpJkxN9totDE2A52Z_nIxaM
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const bearer = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+  
+      axios.post("api/users/login/token", {}, bearer).then((res) => {
+        const userData = res.data;
+        console.log('user data: ', userData);
+        return setUser(userData);
+      });
+    }
+  }, []);
 
   return (
     <Router>
-        <Nav />
+        <Nav 
+        user={user}
+        setUser={setUser} />
 
         <Switch>
           <Route path="/" exact={true} component={HomepageLayout} />
