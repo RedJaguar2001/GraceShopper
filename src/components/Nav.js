@@ -11,7 +11,7 @@ const Nav = () => {
   const history = useHistory();
 
   return (
-    <Menu fixed='top' style={{
+    <Menu style={{
       backgroundColor: 'yellow',}}>
     <Container style={{
       backgroundColor: 'yellow',}}>
