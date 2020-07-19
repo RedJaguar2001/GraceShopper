@@ -5,6 +5,7 @@ const { createCart,
   deleteCart,
   updateCart,
   getCartById,
+  getActiveCartByUserId
 } = require('../db/orders');
 
 server.use((req, res, next) =>{
@@ -65,4 +66,15 @@ server.delete('/:id'), async (req, res, next) => {
   }
 }
 
+server.post("/checkout"), async(req, res, next) => {
+ try{
+const activeCart = await getActiveCartByUserId(id);
+
+
+
+ }
+
+
+
+}
 module.exports = server;

@@ -162,6 +162,9 @@ async function doesCartExist(userId) {
   return !!cart;
 }
 
+
+
+
 module.exports = {
   createCart,
   getAllCarts,
