@@ -44,16 +44,8 @@ async function getCartProductsQuantity(productId, cartId) {
   return cartProduct ? cartProduct.quantity : 0;
 }
 
-async function deleteOrderItem(productId, cartId, quantity) {
-  await client.query(
-    `
-        UPDATE products
-        SET inventory=$1
-        WHERE id=$2;
-        `,
-    [quantity, productId]
-  );
 
+async function deleteOrderItem(productId, cartId, quantity) {
   const {
     rows: [cartProduct],
   } = await client.query(
@@ -68,6 +60,15 @@ async function deleteOrderItem(productId, cartId, quantity) {
   if (cartProduct === undefined) {
     return false;
   }
+
+  await client.query(
+    `
+        UPDATE products
+        SET inventory=$1
+        WHERE id=$2;
+        `,
+    [quantity, productId]
+  );
 
   return true;
 }

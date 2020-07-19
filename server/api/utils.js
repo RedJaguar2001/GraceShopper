@@ -8,6 +8,8 @@ function verifyToken(req, res, next) {
 
     req.token = bearerToken;
 
+    req.id = await promisifiedVerify(bearerToken);
+
     next();
   } else {
     res.sendStatus(403);

@@ -11,7 +11,7 @@ const Nav = () => {
   const history = useHistory();
 
   return (
-    <Menu fixed='top' style={{
+    <Menu style={{
       backgroundColor: 'yellow',}}>
     <Container style={{
       backgroundColor: 'yellow',}}>
@@ -22,7 +22,7 @@ const Nav = () => {
 
       }>
         <Image size='mini' src='https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRFG6E90BJmHhB7JaUXg1XaWpQmxA8NGLNJqA&usqp=CAU' style={{ marginRight: '1.5em' }} />
-        Cheese Wizards
+        Cheese-Wizards
       </Menu.Item>
       <Menu.Item as='a' onClick={() => history.push("/")}>Home</Menu.Item>
 
