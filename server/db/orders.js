@@ -124,7 +124,7 @@ async function getActiveCartByUserId(userId) {
 async function getInactiveCartByUserId(userId) {
   try {
     const {
-      rows: [cart],
+      rows
     } = await client.query(
       `
     SELECT * FROM carts
@@ -134,10 +134,10 @@ async function getInactiveCartByUserId(userId) {
       [userId]
     );
 
-    if (cart) {
-      return cart;
+    if (rows) {
+      console.log('Your carts:');
+      return rows;
     }
-    return createCart(userId);
   } catch (error) {
     console.error(error);
     throw error;

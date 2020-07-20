@@ -42,8 +42,8 @@ const Nav = (props) => {
         <Dropdown.Menu>
           {[
             { text: "Products", route: "/products" },
-            { text: "User Profile", route: "/profile" },
             { text: "Cart", route: "/cart" },
+            { text: "Order History", route: "/orderhistory" },
           ].map(({ text, route }) => (
             <Dropdown.Item key={text} onClick={() => history.push(`${route}`)}>
               {text}
