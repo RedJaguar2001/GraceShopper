@@ -27,6 +27,9 @@ apiRouter.use('/images', imagesRouter);
 const orderItemsRouter = require('./orderItems');
 apiRouter.use('/orderItems', orderItemsRouter);
 
+const order = require('./orders');
+apiRouter.use('/orders', order)
+
 apiRouter.use((error, req, res, next) => {
     res.send(error);
 });

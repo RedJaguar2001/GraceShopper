@@ -11,6 +11,7 @@ const {
   
 } = require('../db/orders');
 const {verifyToken} = require('./utils')
+const {getUserInfo, createDetails } = require('../db/users')
 
 server.use((req, res, next) =>{
   console.log('A request is being made to /orders');
@@ -72,7 +73,7 @@ server.delete('/:id'), async (req, res, next) => {
 
 server.post("/checkout", verifyToken, async(req, res, next) => {
  try{
-  const activeCart = await getActiveCartByUserId(req.id);
+  const activeCart = await getActiveCartByUserId(req.id.id);
 
 
   if(await isCartEmpty(activeCart.id)){
@@ -83,14 +84,17 @@ server.post("/checkout", verifyToken, async(req, res, next) => {
   
   await updateCart(activeCart.id, {checked_out:true}) 
 
+  const {firstname, lastname, fulladdress, billingaddress, phonenumber} = req.body;
 
- res.sendStatus(200) 
- }catch(error){
+  const usersinfo = { firstname, lastname, fulladdress, billingaddress, phonenumber};
 
+  await createDetails(usersinfo);
+
+  res.sendStatus(200) 
+  }catch(error){
   next(error)
  }
 
-
-
+ 
 })
 module.exports = server;

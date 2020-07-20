@@ -11,7 +11,7 @@ function verifyToken(req, res, next) {
 
     req.token = bearerToken;
 
-    req.id = await promisifiedVerify(bearerToken);
+    req.id = promisifiedVerify(bearerToken);
 
     next();
   } else {

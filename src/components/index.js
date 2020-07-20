@@ -6,4 +6,4 @@ export { default as ProductDetails } from './productDetails';
 export { default as CartProduct } from './cartProduct';
 export {default as HomepageLayout} from './Home';
 export {default as Nav} from './Nav';
-
+export{default as FormForCheckout} from './form'

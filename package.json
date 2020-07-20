@@ -44,6 +44,7 @@
     "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^6.0.8",
     "react-router-dom": "^5.2.0",
     "react-share": "^4.2.0",
     "semantic-ui-react": "^0.88.2"

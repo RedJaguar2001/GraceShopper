@@ -93,9 +93,10 @@ async function createTables() {
       CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
         users_id integer REFERENCES users(id),
+        first_name varchar(255) NOT NULL,
+        last_name varchar(255) NOT NULL,
         full_address varchar(255) NOT NULL,
         billing_address varchar(255) NOT NULL,
-        full_name varchar(255) NOT NULL,
         phone_number NUMERIC NOT NULL
         );
     `);
@@ -303,8 +304,8 @@ async function createUserDetails() {
     await createDetails({
       fullAddress: "715 Ridge San Luis Obispo, CA 93405",
       billingAddress: "715 Ridge San Luis Obispo, CA 93405",
-      cCard: "1234567890123456",
-      fullName: "Patrick-V Herrera",
+      firstname: "Patrick-Vincent",
+      lastname: "Herrera",
       phoneNumber: "8057103189",
     });
   } catch (error) {
