@@ -1,31 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import { Button, Form, Input, Segment, Dropdown } from 'semantic-ui-react'
 
 const SearchBar = (props) => {
 console.log("in search", props.search , props.setSearch);
+const [categories, setCategories] = useState([]);
+
+
+
+  const handleSelect = (event)=>{
+    console.log(event)
+    setCategories(event);
+  }
+
   async function handleSubmit(event) {
     event.preventDefault();
   }
 
   const categoryOptions = [
-    { key: 'aged', value:'aged', text: 'aged' },
-    { key: 'fresh', value:'fresh', text: 'fresh' },
-    { key: 'hard', value:'hard', text: 'hard' },
-    { key: 'soft', value:'soft', text: 'soft'},
-    { key: 'smokey', value:'smokey', text: 'smokey'},
-    { key: 'stinky', value:'stinky', text: 'stinky'},
+    { key: 'Aged', value:'Aged', text: 'Aged' },
+    { key: 'Fresh', value:'Fresh', text: 'Fresh' },
+    { key: 'Hard', value:'Hard', text: 'Hard' },
+    { key: 'Soft', value:'Soft', text: 'Soft'},
+    { key: 'Smoky', value:'Smoky', text: 'Smoky'},
+    { key: 'Stinky', value:'Stinky', text: 'Stinky'},
   ]
+
+  useEffect(()=> {
+    Axios.get("/api/products/:category").then((res) => {
+      const categoryList =res.data.data;
+      console.log('category List: ', categoryList);
+
+      return setCategories(categoryList);
+    });
+  }, []);
+
+
 
   const  DropDownSelection = ()=>  (
     <Dropdown
-    placeholder='Select Category'
-    fluidsearch
+    placeholder='Search By Category'
+    closeOnChange
+    floating
+    fluid
+    multiple
+    search
     selection
-    options={categoryOptions.map(category => {
-      
-    })}
+    options={categoryOptions}
     />
     )
 
@@ -34,22 +56,27 @@ console.log("in search", props.search , props.setSearch);
     <div id="search">
 
       <Form onSubmit={ handleSubmit }>
-        <Form.Field inline>
-
-        <label htmlFor="search"><h4>Search Products Here</h4></label>
-        <Input
-        type="text"
-        placeholder="search items..."
-        value={props.search}
-        onChange={ (ev) => {
-          props.setSearch(ev.target.value);
-        }}
-        />
-        <label>Search By Category:</label>
-        <DropDownSelection />
-        <Input type="submit" value="Submit"/>
-        </Form.Field>
+        <Form.Group>
+          <Form.Field>
+            <Form.Input
+              label="Search By Name"
+              type="text"
+              placeholder="Search By Name"
+              value={props.search}
+              onChange={ (ev) => {
+                props.setSearch(ev.target.value);
+            }}
+            />
+            <label>Search By Category</label>
+              <DropDownSelection
+              onSelect={handleSelect}>
+              categories={categories}
+              setCategories={setCategories}
+              </DropDownSelection>
+          </Form.Field>
+          </Form.Group>
       </Form>
+
     </div>
   );
 }
