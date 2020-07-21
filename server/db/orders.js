@@ -27,7 +27,7 @@ async function createCart(userId) {
 
 async function getAllCarts() {
   const { rows } = await client.query(`
-  SELECT id, productId, price, quantity
+  SELECT *
   FROM carts;
   `);
   return rows;
