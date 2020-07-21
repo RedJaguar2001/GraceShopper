@@ -229,12 +229,6 @@ async function createInitialProduct() {
   try {
     // console.log('Starting to create initial product...');
     await createProduct({
-      title: "Test Cheese",
-      description: "Don't get testy with me!",
-      price: "12.80",
-      inventory: "50",
-    });
-    await createProduct({
       title: "American Cheese",
       description:
         "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
@@ -356,13 +350,13 @@ async function createInitialReviews() {
       userId: 2,
       productId: 2,
     });
-    await createReview({
-      title: "Test Delete Review",
-      body: "If this is still in the DB, you done messed up.",
-      rating: 1,
-      userId: 3,
-      productId: 8,
-    });
+    // await createReview({
+    //   title: "Test Delete Review",
+    //   body: "If this is still in the DB, you done messed up.",
+    //   rating: 1,
+    //   userId: 3,
+    //   productId: 8,
+    // });
   } catch (error) {
     throw error;
   }

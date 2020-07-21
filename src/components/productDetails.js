@@ -12,7 +12,6 @@ import {
 } from "semantic-ui-react";
 
 const productDetails = ({productId}) => {
-  console.log('product ID: ', productId);
   const [product, setProduct] = useState([]);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const productDetails = ({productId}) => {
   }, []);
 
   const { title, description, price, inventory, image } = product;
-  console.log(product);
 
   return (
     <Container>

@@ -4,11 +4,12 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Axios from "axios";
 
-import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav } from "./components";
+import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav, CartProduct } from "./components";
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
+  const [order, setOrder] = useState([]);
 
   let filteredProducts = products;
   if(search.length) {
@@ -48,6 +49,10 @@ const App = () => {
             <ProductDetails
               productId={2}
             />
+          </Route>
+
+          <Route path="/cart" exact>
+            <Order />
           </Route>
 
         </Switch>
