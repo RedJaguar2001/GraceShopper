@@ -74,21 +74,22 @@ async function getAllUsers() {
 }
 
 async function createDetails({
+  firstname,
+  lastname,
   fullAddress,
   billingAddress,
-  fullName,
-  phoneNumber,
+  phoneNumber
 }) {
   try {
     const {
       rows: [userDetails],
     } = await client.query(
       `
-            INSERT INTO user_details (full_address, billing_address, full_name, phone_number)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO user_details (first_name, last_name, full_address, billing_address, phone_number)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
             `,
-      [fullAddress, billingAddress, fullName, phoneNumber]
+      [firstname, lastname, fullAddress, billingAddress, phoneNumber]
     );
 
     return userDetails;
@@ -100,7 +101,7 @@ async function createDetails({
 
 async function getUserInfo() {
   const { rows } = await client.query(`
-        SELECT id, full_address, billing_address, full_name, phone_number
+        SELECT id, first_name, last_name, full_address, billing_address, phone_number
         FROM user_details;
         `);
 

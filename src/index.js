@@ -4,12 +4,17 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Axios from "axios";
 
-import { Products, SearchBar, OrderHistory, ProductDetails, HomepageLayout, Nav } from "./components";
+
+import { Products, SearchBar, OrderHistory, ProductDetails, HomepageLayout, Nav , FormForCheckout } from "./components";
+
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
+
+
+
 
   let filteredProducts = products;
   if (search.length) {
@@ -25,6 +30,7 @@ const App = () => {
       return setProducts(prodList);
     });
   }, []);
+
 
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTk1MTM1MTI3fQ.CGw5QGBSS3DDEevQmAKTHpJkxN9totDE2A52Z_nIxaM
   useEffect(() => {
@@ -48,6 +54,7 @@ const App = () => {
         <Nav 
         user={user}
         setUser={setUser} />
+
 
         <Switch>
           <Route path="/" exact={true} component={HomepageLayout} />
