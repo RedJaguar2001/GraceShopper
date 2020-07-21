@@ -2,7 +2,7 @@ const {promisifiedVerify} = require("../db/users")
 
 
 // Gets token from header and sets to req.token. Sends Forbidden(403) message if auth header is undefined.
-function verifyToken(req, res, next) {
+async function verifyToken(req, res, next) {
   const bearerHeader = req.headers["authorization"];
 
   if (typeof bearerHeader !== "undefined") {
@@ -11,7 +11,7 @@ function verifyToken(req, res, next) {
 
     req.token = bearerToken;
 
-    req.id = promisifiedVerify(bearerToken);
+    req.id =  await promisifiedVerify(bearerToken);
 
     next();
   } else {
