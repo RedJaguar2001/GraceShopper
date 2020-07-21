@@ -121,31 +121,18 @@ async function getActiveCartByUserId(userId) {
   }
 }
 
-// async function getInactiveCartByUserId(userId) {
-//   try {
-//     const { rows: carts } = await client.query(
-//       `
-//     SELECT * FROM carts
-//     WHERE users_id=$1
-//     AND checked_out=true;
-//     `,
-//       [userId]
-//     );
-
-//     if (carts.length) {
-//       return carts;
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// }
-
-async function getInactiveCartByUserId(userId) {
+// id: 2
+// price: "1"
+// product_id: 2
+// quantity: 5
+// title: "American Cheese"
+async function getOrderHistoryByUserId(userId) {
   try {
     const { rows: carts } = await client.query(
       `
-    SELECT * FROM carts
+    SELECT c.id, cp.price, cp.quantity, cp.product_id, p.title FROM carts c
+    INNER JOIN carts_products cp ON c.id=cp.carts_id
+    INNER JOIN products p ON p.id=cp.product_id
     WHERE users_id=$1
     AND checked_out=true;
     `,
@@ -153,28 +140,35 @@ async function getInactiveCartByUserId(userId) {
     );
 
     if (carts.length) {
-      console.log("Your carts:");
-      carts.map( async (cart) => {
-        try {
-          const { rows: cartProducts } = await client.query(`
-          SELECT carts_products.*
-          FROM carts_products
-          JOIN products ON carts_products.product_id = products.id
-          WHERE carts_id=$1
-          ;`, [cart.id]);
-
-          console.log(cartProducts);
-        } catch (error) {
-          throw error;
+      return Object.values(carts.reduce((acc, {id, product_id, quantity, price, title}) => {
+        const cartProduct = {
+          productId: product_id,
+          quantity,
+          price,
+          title
         }
-      });
-      return carts;
+
+        if (id in acc) {
+          acc[id].products.push(cartProduct)
+        } else {
+          acc[id] = {
+            id,
+            products: [cartProduct]
+          }
+        }
+
+        return acc;
+      }, {}));
+    } else {
+      return null;
     }
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
+
+
 
 async function doesCartExist(userId) {
   if (!userId) {
@@ -201,6 +195,6 @@ module.exports = {
   updateCart,
   getCartById,
   getActiveCartByUserId,
-  getInactiveCartByUserId,
+  getOrderHistoryByUserId,
   doesCartExist,
 };

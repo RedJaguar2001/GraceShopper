@@ -8,7 +8,7 @@ const {
   updateCart,
   getCartById,
   getActiveCartByUserId,
-  getInactiveCartByUserId,
+  getOrderHistoryByUserId,
   isCartEmpty,
 } = require("../db");
 
@@ -24,10 +24,12 @@ ordersRouter.get("/", async (req, res, next) => {
 
 ordersRouter.get("/history", verifyToken, async (req, res, next) => {
   const { id } = req.id;
-  const orders = await getInactiveCartByUserId(id);
+  const orders = await getOrderHistoryByUserId(id);
   // console.log('Your orders: ', orders);
-  if (orders != null) {
+  if (orders !== null) {
     res.json(orders);
+  } else {
+    res.json([]);
   }
 });
 
