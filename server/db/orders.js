@@ -8,7 +8,7 @@ const { client } = require("./client");
 async function createCart(userId) {
   try {
     const {
-      rows: [cart], //no cart? also table should be carts I believe
+      rows: [cart],
     } = await client.query(
       `
       INSERT INTO carts (users_id)
@@ -121,11 +121,29 @@ async function getActiveCartByUserId(userId) {
   }
 }
 
+// async function getInactiveCartByUserId(userId) {
+//   try {
+//     const { rows: carts } = await client.query(
+//       `
+//     SELECT * FROM carts
+//     WHERE users_id=$1
+//     AND checked_out=true;
+//     `,
+//       [userId]
+//     );
+
+//     if (carts.length) {
+//       return carts;
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+
 async function getInactiveCartByUserId(userId) {
   try {
-    const {
-      rows
-    } = await client.query(
+    const { rows: carts } = await client.query(
       `
     SELECT * FROM carts
     WHERE users_id=$1
@@ -134,9 +152,23 @@ async function getInactiveCartByUserId(userId) {
       [userId]
     );
 
-    if (rows) {
-      console.log('Your carts:');
-      return rows;
+    if (carts.length) {
+      console.log("Your carts:");
+      carts.map( async (cart) => {
+        try {
+          const { rows: cartProducts } = await client.query(`
+          SELECT carts_products.*
+          FROM carts_products
+          JOIN products ON carts_products.product_id = products.id
+          WHERE carts_id=$1
+          ;`, [cart.id]);
+
+          console.log(cartProducts);
+        } catch (error) {
+          throw error;
+        }
+      });
+      return carts;
     }
   } catch (error) {
     console.error(error);
@@ -161,9 +193,6 @@ async function doesCartExist(userId) {
 
   return !!cart;
 }
-
-
-
 
 module.exports = {
   createCart,

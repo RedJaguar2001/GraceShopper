@@ -385,15 +385,6 @@ async function createInitialImage() {
   }
 }
 
-async function createInactiveCarts() {
-  try {
-    
-    await 
-  } catch (error) {
-    throw error;
-  }
-}
-
 async function rebuildDB(force = true) {
   try {
     client.connect();

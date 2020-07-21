@@ -49,13 +49,15 @@ const OrderHistory = ({ user, setUser }) => {
                     Order ID: {order.id}
                   </Accordion.Title>
                   <Accordion.Content active={state.activeIndex === i}>
-                      <List floated>
-                          <List.Item>
-                              <List.Description>Blue Cheese</List.Description>
-                              <List.Content>Quantity: 3</List.Content>
-                              <List.Content>Price: 7.25</List.Content>
-                          </List.Item>
-                      </List>
+                    <Table striped>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>Blue Cheese</Table.Cell>
+                          <Table.Cell textAlign='center'>Quantity: 3</Table.Cell>
+                          <Table.Cell textAlign='right'>Price: 7.25</Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
                   </Accordion.Content>
                 </>
               );
