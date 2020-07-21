@@ -1,7 +1,6 @@
 const express = require("express");
 const orderItemsRouter = express.Router();
 const { verifyToken } = require("./utils");
-const { promisifiedVerify } = require("../db/users");
 const {
   getActiveCartByUserId,
   getProductQuantity,
@@ -18,7 +17,7 @@ orderItemsRouter.use((req, res, next) => {
 // This route creates an upsert vs insert. Meaning we could potentially update an existing cart_product or create a new one. Must be careful not to insert duplicate cart_product on the front end.
 orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
   const { productId, quantity } = req.body;
-  const id = req.id;
+  const {id} = req.id;
   const productQuantity = await getProductQuantity(productId);
   if (productQuantity === null) {
     throw new Error("Product not found.");
@@ -43,7 +42,7 @@ orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
 orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   const { orderItemId } = req.params;
   const { quantity } = req.body;
-  const id = req.id;
+  const {id} = req.id;
 
   const productQuantity = await getProductQuantity(orderItemId);
   if (productQuantity === null) {
@@ -108,7 +107,7 @@ orderItemsRouter.delete(
   verifyToken,
   async (req, res, next) => {
     const { orderItemId } = req.params;
-    const id = req.id;
+    const {id} = req.id;
 
     const productQuantity = await getProductQuantity(orderItemId);
     if (productQuantity === null) {

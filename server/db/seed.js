@@ -39,7 +39,7 @@ async function dropTables() {
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS user_details;
       DROP TABLE IF EXISTS users;
-      
+
     `);
 
     console.log("Done dropping tables...");
@@ -241,18 +241,21 @@ async function createInitialProduct() {
         "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
       price: "17.76",
       inventory: "50",
+      category: "Fresh",
     });
     await createProduct({
       title: "String Cheese",
       description: "Stringy",
       price: ".99",
       inventory: "50",
+      category: "Fresh",
     });
     await createProduct({
       title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
       inventory: "25",
+      category: "Soft",
 
     });
     await createProduct({
@@ -260,18 +263,21 @@ async function createInitialProduct() {
       description: "Monterey Jack with a little kick",
       price: "4.99",
       inventory: "10",
+      category: "Fresh"
     });
     await createProduct({
       title: "Swiss Cheese",
       description: "holy",
       price: "2.00",
       inventory: "12",
+      category: "Aged"
     });
     await createProduct({
       title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
       inventory: "13",
+      category: "Stinky"
     });
     await createProduct({
       title: "Delete-able Cheese",
