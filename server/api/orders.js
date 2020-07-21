@@ -1,11 +1,16 @@
 const express = require('express')
 const server = express.Router()
-const { createCart,
+const { 
+  createCart,
   getAllCarts,
   deleteCart,
   updateCart,
   getCartById,
+  getActiveCartByUserId,
+  isCartEmpty,
+  
 } = require('../db/orders');
+const {verifyToken} = require('./utils')
 
 server.use((req, res, next) =>{
   console.log('A request is being made to /orders');
@@ -65,4 +70,27 @@ server.delete('/:id'), async (req, res, next) => {
   }
 }
 
+server.post("/checkout", verifyToken, async(req, res, next) => {
+ try{
+  const activeCart = await getActiveCartByUserId(req.id);
+
+
+  if(await isCartEmpty(activeCart.id)){
+    return res.status(400).json({
+      error: "Cannot checkout empty cart"
+    })
+  }
+  
+  await updateCart(activeCart.id, {checked_out:true}) 
+
+
+ res.sendStatus(200) 
+ }catch(error){
+
+  next(error)
+ }
+
+
+
+})
 module.exports = server;

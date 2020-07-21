@@ -18,7 +18,7 @@ orderItemsRouter.use((req, res, next) => {
 // This route creates an upsert vs insert. Meaning we could potentially update an existing cart_product or create a new one. Must be careful not to insert duplicate cart_product on the front end.
 orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
   const { productId, quantity } = req.body;
-  const token = req.token;
+  const id = req.id;
   const productQuantity = await getProductQuantity(productId);
   if (productQuantity === null) {
     throw new Error("Product not found.");
@@ -30,7 +30,6 @@ orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
     quantityToPurchase = productQuantity;
   }
 
-  const { id } = await promisifiedVerify(token);
   const cart = await getActiveCartByUserId(id);
   const cartProduct = await createOrUpdateCartProduct(
     cart.id,
@@ -44,14 +43,13 @@ orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
 orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   const { orderItemId } = req.params;
   const { quantity } = req.body;
-  const token = req.token;
+  const id = req.id;
 
   const productQuantity = await getProductQuantity(orderItemId);
   if (productQuantity === null) {
     throw new Error("Product not found.");
   }
 
-  const { id } = await promisifiedVerify(token);
   const cart = await getActiveCartByUserId(id);
   const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
 
@@ -110,14 +108,13 @@ orderItemsRouter.delete(
   verifyToken,
   async (req, res, next) => {
     const { orderItemId } = req.params;
-    const token = req.token;
+    const id = req.id;
 
     const productQuantity = await getProductQuantity(orderItemId);
     if (productQuantity === null) {
       throw new Error("Product not found.");
     }
 
-    const { id } = await promisifiedVerify(token);
     const cart = await getActiveCartByUserId(id);
     const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
     const newProductQuantity = productQuantity + cartQuantity;
@@ -128,13 +125,11 @@ orderItemsRouter.delete(
     );
 
     if (itemDeleted) {
-      res.json({
-        message: "Item successfully deleted.",
-      });
+      //successful - No content
+      res.sendStatus(204);
     } else {
-      res.json({
-        message: "No item to delete.",
-      });
+      //Not Found
+      res.sendStatus(404);
     }
   }
 );

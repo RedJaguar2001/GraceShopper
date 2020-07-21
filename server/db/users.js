@@ -235,5 +235,5 @@ module.exports = {
   doesUserExist,
   login,
   loginWithToken,
-  promisifiedVerify
+  promisifiedVerify,
 };

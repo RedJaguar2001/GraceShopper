@@ -44,16 +44,8 @@ async function getCartProductsQuantity(productId, cartId) {
   return cartProduct ? cartProduct.quantity : 0;
 }
 
-async function deleteOrderItem(productId, cartId, quantity) {
-  await client.query(
-    `
-        UPDATE products
-        SET inventory=$1
-        WHERE id=$2;
-        `,
-    [quantity, productId]
-  );
 
+async function deleteOrderItem(productId, cartId, quantity) {
   const {
     rows: [cartProduct],
   } = await client.query(
@@ -69,11 +61,35 @@ async function deleteOrderItem(productId, cartId, quantity) {
     return false;
   }
 
+  await client.query(
+    `
+        UPDATE products
+        SET inventory=$1
+        WHERE id=$2;
+        `,
+    [quantity, productId]
+  );
+
   return true;
 }
+
+async function isCartEmpty(cartId) {
+
+  const {rows} = await client.query(
+
+    `SELECT id
+     FROM carts_products
+     WHERE product_id = $1;`,
+
+     [cartId]
+  );
+  return rows.length===0
+}
+
 
 module.exports = {
   createOrUpdateCartProduct,
   getCartProductsQuantity,
   deleteOrderItem,
-};
+  isCartEmpty
+}

@@ -45,20 +45,12 @@ const App = () => {
             />
           </Route>
 
-          <Route path="/products/:productId" exact>
-            <ProductDetails
-              productId={2}
-            />
-          </Route>
-
           <Route path="/cart" exact>
             <Order />
           </Route>
 
+          <Route path="/products/:productId" exact component={ProductDetails} />
         </Switch>
-
-
-
     </Router>
   );
 };
