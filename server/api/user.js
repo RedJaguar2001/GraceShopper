@@ -1,9 +1,6 @@
 const express = require('express');
 const userRouter = express();
-const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db/users');
-
-
-
+const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db');
 
 userRouter.post("/register", async (req, res, next) => {
   const values = {

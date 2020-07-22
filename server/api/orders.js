@@ -8,7 +8,7 @@ const {
   updateCart,
   getCartById,
   getActiveCartByUserId,
-  getInactiveCartByUserId,
+  getOrderHistoryByUserId,
   isCartEmpty,
   getUserInfo,
   createDetails
@@ -25,9 +25,14 @@ ordersRouter.get("/", async (req, res, next) => {
 });
 
 ordersRouter.get("/history", verifyToken, async (req, res, next) => {
-  const { userId } = req.id.id;
-  const orders = await getInactiveCartByUserId(userId);
-  res.send({ orders });
+  const { id } = req.id;
+  const orders = await getOrderHistoryByUserId(id);
+  // console.log('Your orders: ', orders);
+  if (orders !== null) {
+    res.json(orders);
+  } else {
+    res.json([]);
+  }
 });
 
 ordersRouter.patch("/:ordersId", async (req, res, next) => {

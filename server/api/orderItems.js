@@ -54,24 +54,9 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
 
   let quantityToUpdate = quantity;
 
-  //if there was an easier way to do this please let me know. My nose is bleeding...
   if (productQuantity - quantityToUpdate <= 0 && quantityToUpdate > 0) {
     quantityToUpdate = productQuantity;
   }
-
-  // thought - if(below if statement: deleteCartProduct() since it would be 0) Else(createOrUpdateCartProduct)
-
-  // if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
-  //   quantityToUpdate = -cartQuantity;
-  // }
-
-  // const cartProduct = await createOrUpdateCartProduct(
-  //   cart.id,
-  //   orderItemId,
-  //   quantityToUpdate
-  // );
-
-  // res.json(cartProduct);
 
   if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
     const newProductQuantity = productQuantity + cartQuantity;
@@ -82,13 +67,11 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
     );
 
     if (itemDeleted) {
-      res.json({
-        message: "Item successfully deleted.",
-      });
+      //successful - No content
+      res.sendStatus(204);
     } else {
-      res.json({
-        message: "No item to delete.",
-      });
+      //Not Found
+      res.sendStatus(404);
     }
   } else {
     const cartProduct = await createOrUpdateCartProduct(
