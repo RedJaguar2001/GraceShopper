@@ -10,13 +10,9 @@ const {
   getActiveCartByUserId,
   getInactiveCartByUserId,
   isCartEmpty,
-
-  
-} = require('../db/orders');
-const {verifyToken} = require('./utils')
-const {getUserInfo, createDetails } = require('../db/users')
-
-
+  getUserInfo,
+  createDetails
+} = require('../db');
 
 ordersRouter.use((req, res, next) => {
   console.log("A request is being made to /orders");
@@ -94,8 +90,8 @@ ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
       error: "Cannot checkout empty cart"
     })
   }
-  
-  await updateCart(activeCart.id, {checked_out:true}) 
+
+  await updateCart(activeCart.id, {checked_out:true})
 
   const {firstname, lastname, fulladdress, billingaddress, phonenumber} = req.body;
 
@@ -103,10 +99,11 @@ ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
 
   await createDetails(usersinfo);
 
-  res.sendStatus(200) 
+  res.sendStatus(200)
   }catch(error){
   next(error)
  }
-  
+})
+
 module.exports = ordersRouter;
 
