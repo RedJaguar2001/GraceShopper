@@ -8,3 +8,4 @@ export { default as HomepageLayout } from "./Home";
 export { default as Nav } from "./Nav";
 export { default as Login } from "./login";
 export { default as OrderHistory } from "./orderHistory";
+export { default as FormForCheckout } from "./form";
