@@ -9,24 +9,30 @@ const ProductCard = ({ product }) => {
   return (
     <Card raised link key={id}>
       <Card.Content onClick={() => history.push(`/products/${id}`)}>
-      <Image src={!image ? "https://i.ytimg.com/vi/RLhmG-LIwnE/maxresdefault.jpg" : image.img_src} wrapped/>
-      <Card.Content>
-        <Card.Header>{title}</Card.Header>
-        <Card.Meta>Quantity: {inventory}</Card.Meta>
-        <Card.Description>{description.length > 50 ? `${description.substring(0, 50)}...` : description}</Card.Description>
-      </Card.Content>
+        <Image
+          src={
+            !image
+              ? "https://i.ytimg.com/vi/RLhmG-LIwnE/maxresdefault.jpg"
+              : image.img_src
+          }
+          wrapped
+        />
+        <Card.Content>
+          <Card.Header>{title}</Card.Header>
+          <Card.Meta>Quantity: {inventory}</Card.Meta>
+          <Card.Description>
+            {description.length > 50
+              ? `${description.substring(0, 50)}...`
+              : description}
+          </Card.Description>
+        </Card.Content>
       </Card.Content>
       <Card.Content extra>
         <Label>
           <Icon name="dollar" />
           {price}
         </Label>
-        <Button
-        content='Add to Cart'
-        floated='right'
-        compact
-        size='small'
-        />
+        <Button content="Add to Cart" floated="right" compact size="small" />
       </Card.Content>
     </Card>
   );

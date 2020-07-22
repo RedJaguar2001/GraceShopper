@@ -9,7 +9,6 @@ const Login = (props) => {
 
   const handleChange = (e, { name, value }) => {
     setState({ ...state, [name]: value });
-    console.log(state);
   };
 
   async function handleRegister(event) {
@@ -17,7 +16,6 @@ const Login = (props) => {
 
     axios.post("api/users/register", state).then((res) => {
       const userData = res.data;
-      console.log("register data: ", userData);
       localStorage.setItem("token", userData.token);
       setState({})
       return setUser(userData.user);
@@ -29,7 +27,6 @@ const Login = (props) => {
 
     axios.post("api/users/login", state).then((res) => {
       const userData = res.data;
-      console.log("login data: ", userData);
       localStorage.setItem("token", userData.token);
       setState({});
       setUser(userData.user);
@@ -38,7 +35,6 @@ const Login = (props) => {
 
   async function handleLogout(event) {
     event.preventDefault();
-    console.log(event.target.value);
     localStorage.removeItem('token');
     setUser({});
   }
@@ -90,6 +86,7 @@ const Login = (props) => {
                 placeholder="Password"
                 name="password"
                 // value={state.password}
+                onChange={handleChange}
                 required
               />
               <Form.Button content="Submit" />

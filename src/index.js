@@ -45,7 +45,6 @@ const App = () => {
     }
   }, []);
 
-  console.log("in app user: ", user);
   return (
     <Router>
       <Nav user={user} setUser={setUser} />

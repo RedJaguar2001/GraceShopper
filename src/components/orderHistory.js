@@ -32,41 +32,45 @@ const OrderHistory = ({ user, setUser }) => {
 
       axios.get("api/orders/history", bearer).then((res) => {
         const orders = res.data;
-        console.log("User's orders: ", orders);
         return setOrders(orders);
       });
     }
   }, []);
 
   return (
-    <Container key='container'>
-      <Card key='card' fluid>
-        <Card.Header key='cardHeader' textAlign="center">Order History</Card.Header>
-        <Card.Content key='cardContent'>
-          <Accordion key='accordion' fluid styled>
+    <Container key="container">
+      <Card key="card" fluid>
+        <Card.Header key="cardHeader" textAlign="center">
+          Order History
+        </Card.Header>
+        <Card.Content key="cardContent">
+          <Accordion key="accordion" fluid styled>
             {orders.map((order, i) => {
               let totalPrice = 0;
               return (
                 <>
                   <Accordion.Title
-                  key={'accordionTitle'+i}
+                    key={"accordionTitle" + i}
                     active={state.activeIndex === i}
                     index={i}
                     onClick={handleClick}
                   >
-                    <Icon key={'icon'+i} name="dropdown" />
+                    <Icon key={"icon" + i} name="dropdown" />
                     Order ID: {order.id}
                   </Accordion.Title>
-                  <Accordion.Content key={'accordionContent'+i} active={state.activeIndex === i}>
-                    <Table striped key={'Table'+i}>
-                      <Table.Body key={'tableBody'+i}>
+                  <Accordion.Content
+                    key={"accordionContent" + i}
+                    active={state.activeIndex === i}
+                  >
+                    <Table striped key={"Table" + i}>
+                      <Table.Body key={"tableBody" + i}>
                         {order.products.map(
                           ({ price, productId, quantity, title }, j) => {
                             totalPrice += parseFloat(price) * quantity;
                             return (
-                              <Table.Row key={'products'+j}>
+                              <Table.Row key={"products" + j}>
                                 <Table.Cell
-                                  style={{ color: 'blue', cursor: 'pointer'  }}
+                                  style={{ color: "blue", cursor: "pointer" }}
                                   onClick={() =>
                                     history.push(`/products/${productId}`)
                                   }
@@ -83,10 +87,15 @@ const OrderHistory = ({ user, setUser }) => {
                             );
                           }
                         )}
-                        <Table.Row key={'totalPriceRow'+i}>
-                          <Table.Cell key={'totalPrice'+i}>Total Price:</Table.Cell>
-                          <Table.Cell key={'placeholder'+i} textAlign="center"></Table.Cell>
-                          <Table.Cell key={'total'+i} textAlign="right">
+                        <Table.Row key={"totalPriceRow" + i}>
+                          <Table.Cell key={"totalPrice" + i}>
+                            Total Price:
+                          </Table.Cell>
+                          <Table.Cell
+                            key={"placeholder" + i}
+                            textAlign="center"
+                          ></Table.Cell>
+                          <Table.Cell key={"total" + i} textAlign="right">
                             ${(+totalPrice).toFixed(2)}
                           </Table.Cell>
                         </Table.Row>
