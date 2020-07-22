@@ -48,24 +48,6 @@ async function getProductById(productId) {
     }
   }
 
-//connect product to product_category, and then product_category to category by the appropriate keys, then just select the product.id where category.name is correct
-async function getProductsByCategory(categoryName) {
-  try {
-    const { rows: productIds } = await client.query(`
-      SELECT products.id FROM products
-      JOIN product_categories ON products.id=product_categories.product_Id
-      JOIN categories ON categories.id=product_categories.category_Id
-      WHERE categories.name=$1;
-    `, [categoryName]);
-
-    return await Promise.all(productIds.map(
-      product => getProductById(product.id)
-    ));
-  } catch (error) {
-    throw(error);
-  }
-}
-
 async function createProduct({ title, description, price, inventory }) {
   try {
     const {
@@ -185,7 +167,6 @@ module.exports = {
     createProduct,
     updateProduct,
     getProductById,
-    getProductsByCategory,
     deleteProduct,
     getProductQuantity
 }
