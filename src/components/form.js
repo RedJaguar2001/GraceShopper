@@ -5,7 +5,8 @@ import { Button, Form , Header, Container} from 'semantic-ui-react'
 
 
 const FormForCheckout = () => {
-  const initialFormData = Object.freeze({
+
+  const initialFormData =({
     firstname: "",
     lastname: "",
     billingadddress: "",
@@ -13,10 +14,11 @@ const FormForCheckout = () => {
     phonenumber: "",
   });
 
-  const [formData, updateFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(initialFormData);
+  const [successForm, setSuccess] = useState(false)
 
   const handleChange = (e) => {
-    updateFormData({
+    setFormData({
       ...formData,
 
 
@@ -24,36 +26,82 @@ const FormForCheckout = () => {
     });
   };
 
+  const clearState = () => {
+    setState({ ...initialFormData });
+  };
+
     const handleSubmit = (e) => {
       e.preventDefault()
+      setSuccess(!successForm);
       console.log(formData);
         axios.post("api/orders/checkout", formData, {
           headers: {"Authorization": `Bearer ${localStorage.getItem("token")}`},
         }).then(()=>{
-          alert("Your Order has Been Sent")
+      
         }).catch((error)=>{
           alert(error.message);
         })
       };
 
-  return (
- <Header as='h1' textAlign='center'>
-    You are in checkout, we just need your info
- 
-<Form >
-  <Form.Group unstackable widths={2}>
-    < Form.Input label = "First Name" name="firstname"  onChange={handleChange} />
-      <Form.Input label= "Last Name" name='lastname' onChange={handleChange}/>
-    </Form.Group>
-    <Form.Group widths={2}>
-      <Form.Input label = "Full Address" name="fulladdress" onChange={handleChange}/>
-      <Form.Input  label = "Billing Address" name='billingadddress' onChange={handleChange} />
-      <Form.Input  label = "Phone Number" name='phonenumber' onChange={handleChange} />
-    </Form.Group>
-    <Button onClick={handleSubmit}>Submit</Button>
-  </Form>
-  </Header>
-)
-  }
+      return (
 
+        
+          <>
+      
+            <div>
+              {successForm ? (
+                <>
+                     <Header as='h1' textAlign='center'>
+                     Your Details are Compelete and Your Order will be Shipped Soon
+       
+     
+    <Form  >
+      <Form.Group unstackable widths={2}>
+        < Form.Input label = "First Name" name="firstname"  onChange={handleChange} />
+          <Form.Input label= "Last Name" name='lastname' onChange={handleChange}/>
+        </Form.Group>
+        <Form.Group widths={2}>
+          <Form.Input label = "Full Address" name="fulladdress" onChange={handleChange}/>
+          <Form.Input  label = "Billing Address" name='billingadddress' onChange={handleChange} />
+          <Form.Input  label = "Phone Number" name='phonenumber' onChange={handleChange} />
+        </Form.Group>
+      
+      </Form>
+      </Header>
+
+                </>
+              ) : (  
+              
+              <Header as='h1' textAlign='center'>
+         You are in checkout, we just need your info
+              
+              <Form >
+              <Form.Group unstackable widths={2}>
+              < Form.Input label = "First Name" name="firstname"  onChange={handleChange} />
+                <Form.Input label= "Last Name" name='lastname' onChange={handleChange}/>
+              </Form.Group>
+              <Form.Group widths={2}>
+                <Form.Input label = "Full Address" name="fulladdress" onChange={handleChange}/>
+                <Form.Input  label = "Billing Address" name='billingadddress' onChange={handleChange} />
+                <Form.Input  label = "Phone Number" name='phonenumber' onChange={handleChange} />
+              </Form.Group>
+              <Button onClick={handleSubmit}>
+        Toggle condition</Button>
+          
+              </Form>
+              </Header>
+                
+              )}
+            </div>
+           
+          </>
+        );
+      };
+  
+      
+
+
+     
+     
+       
   export default FormForCheckout;
