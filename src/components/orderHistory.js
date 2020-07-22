@@ -38,8 +38,6 @@ const OrderHistory = ({ user, setUser }) => {
     }
   }, []);
 
-  //   For each past order, I want to see the items ordered (how many and at what price) and the total cart price.
-  //Table?
   return (
     <Container key='container'>
       <Card key='card' fluid>
@@ -68,7 +66,7 @@ const OrderHistory = ({ user, setUser }) => {
                             return (
                               <Table.Row key={'products'+j}>
                                 <Table.Cell
-                                  style={{ color: 'blue',  }}
+                                  style={{ color: 'blue', cursor: 'pointer'  }}
                                   onClick={() =>
                                     history.push(`/products/${productId}`)
                                   }

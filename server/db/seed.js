@@ -39,7 +39,6 @@ async function dropTables() {
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS user_details;
       DROP TABLE IF EXISTS users;
-      
     `);
 
     console.log("Done dropping tables...");
