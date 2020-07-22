@@ -89,6 +89,8 @@ async function createTables() {
         );
     `);
 
+    // move first_name and last_name to the users table?
+    // or rename user_details to payment_details?
     await client.query(`
       CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
@@ -116,6 +118,7 @@ async function createTables() {
         );
     `);
 
+    // good numeric constraints
     await client.query(`
       CREATE TABLE reviews (
         id SERIAL PRIMARY KEY,

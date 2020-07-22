@@ -32,6 +32,8 @@ const App = () => {
   }, []);
 
 
+  // remove JWT
+
   // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNTk1MTM1MTI3fQ.CGw5QGBSS3DDEevQmAKTHpJkxN9totDE2A52Z_nIxaM
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -39,7 +41,7 @@ const App = () => {
       const bearer = {
         headers: { Authorization: `Bearer ${token}` },
       };
-  
+
       axios.post("api/users/login/token", {}, bearer).then((res) => {
         const userData = res.data;
         // console.log('user data: ', userData);
@@ -51,7 +53,7 @@ const App = () => {
   console.log("in app user: ", user);
   return (
     <Router>
-        <Nav 
+        <Nav
         user={user}
         setUser={setUser} />
 

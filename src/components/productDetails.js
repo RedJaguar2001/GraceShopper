@@ -15,6 +15,7 @@ import {
 const productDetails = () => {
   const { productId } = useParams();
   console.log("product ID: ", productId);
+  // Initialize the state as an object
   const [product, setProduct] = useState([]);
 
   useEffect(() => {

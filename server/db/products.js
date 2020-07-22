@@ -11,6 +11,8 @@ async function getAllProducts() {
 
 async function getProductById(productId) {
   try {
+    // do join for product images in the first query
+    // reduce the # of queries to the db
     const {
       rows: [product],
     } = await client.query(
@@ -188,4 +190,4 @@ module.exports = {
     getProductsByCategory,
     deleteProduct,
     getProductQuantity
-}
+};

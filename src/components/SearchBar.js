@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
-import { Button, Form, Input, Segment, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Input, Segment, Dropdown } from 'semantic-ui-react';
+
+// linting: eslint and prettier will fix this; add project config files
 
 const SearchBar = (props) => {
 console.log("in search", props.search , props.setSearch);
@@ -10,14 +12,15 @@ const [categories, setCategories] = useState([]);
 
 
   const handleSelect = (event)=>{
-    console.log(event)
+    console.log(event);
     setCategories(event);
-  }
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
   }
 
+  // TODO: this is dev data; delete before shipping to prod
   const categoryOptions = [
     { key: 'Aged', value:'Aged', text: 'Aged' },
     { key: 'Fresh', value:'Fresh', text: 'Fresh' },
@@ -25,9 +28,10 @@ const [categories, setCategories] = useState([]);
     { key: 'Soft', value:'Soft', text: 'Soft'},
     { key: 'Smoky', value:'Smoky', text: 'Smoky'},
     { key: 'Stinky', value:'Stinky', text: 'Stinky'},
-  ]
+  ];
 
   useEffect(()=> {
+    // fix this url
     Axios.get("/api/products/:category").then((res) => {
       const categoryList =res.data.data;
       console.log('category List: ', categoryList);
@@ -49,7 +53,7 @@ const [categories, setCategories] = useState([]);
     selection
     options={categoryOptions}
     />
-    )
+    );
 
 
   return (
@@ -79,7 +83,7 @@ const [categories, setCategories] = useState([]);
 
     </div>
   );
-}
+};
 
 
 export default SearchBar;
