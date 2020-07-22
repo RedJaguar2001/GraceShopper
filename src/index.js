@@ -39,7 +39,7 @@ const App = () => {
       const bearer = {
         headers: { Authorization: `Bearer ${token}` },
       };
-  
+
       axios.post("api/users/login/token", {}, bearer).then((res) => {
         const userData = res.data;
         // console.log('user data: ', userData);
@@ -51,7 +51,7 @@ const App = () => {
   console.log("in app user: ", user);
   return (
     <Router>
-        <Nav 
+        <Nav
         user={user}
         setUser={setUser} />
 
