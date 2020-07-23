@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-
 import axios from "axios";
-import { Button, Form, Header, Container } from "semantic-ui-react";
+import { Button, Form, Header } from "semantic-ui-react";
 
 const FormForCheckout = () => {
   const initialFormData = {
@@ -21,10 +20,6 @@ const FormForCheckout = () => {
 
       [e.target.name]: e.target.value.trim(),
     });
-  };
-
-  const clearState = () => {
-    setState({ ...initialFormData });
   };
 
   const handleSubmit = (e) => {
@@ -47,38 +42,8 @@ const FormForCheckout = () => {
         {successForm ? (
           <>
             <Header as="h1" textAlign="center">
-              Your Details are Complete and Your Order will be Shipped Soon
-              <Form>
-                <Form.Group unstackable widths={2}>
-                  <Form.Input
-                    label="First Name"
-                    name="firstName"
-                    onChange={handleChange}
-                  />
-                  <Form.Input
-                    label="Last Name"
-                    name="lastName"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <Form.Group widths={2}>
-                  <Form.Input
-                    label="Full Address"
-                    name="fullAddress"
-                    onChange={handleChange}
-                  />
-                  <Form.Input
-                    label="Billing Address"
-                    name="billingAddress"
-                    onChange={handleChange}
-                  />
-                  <Form.Input
-                    label="Phone Number"
-                    name="phoneNumber"
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-              </Form>
+              Your Details are Complete and Your Order will be Shipped Soon!
+              Thank You.
             </Header>
           </>
         ) : (
@@ -114,7 +79,7 @@ const FormForCheckout = () => {
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button onClick={handleSubmit}>Toggle condition</Button>
+              <Button onClick={handleSubmit}>Submit Your Order</Button>
             </Form>
           </Header>
         )}
