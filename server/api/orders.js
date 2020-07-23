@@ -13,7 +13,6 @@ const {
 
   
 } = require('../db/orders');
-const {verifyToken} = require('./utils')
 const {getUserInfo, createDetails } = require('../db/users')
 
 
@@ -107,6 +106,6 @@ ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
   }catch(error){
   next(error)
  }
-  
+})
 module.exports = ordersRouter;
 

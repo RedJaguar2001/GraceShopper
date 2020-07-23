@@ -57,7 +57,7 @@ const App = () => {
 
 
         <Switch>
-          <Route path="/" exact={true} component={HomepageLayout} />
+          <Route path="/" exact={true} component={FormForCheckout} />
 
           <Route path="/products" exact>
             <SearchBar
