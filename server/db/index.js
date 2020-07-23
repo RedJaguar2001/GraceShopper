@@ -1,12 +1,12 @@
-const { client } = require('./client')
+const { client } = require("./client");
 
 module.exports = {
   client,
-  ...require('./users'),
-  ...require('./categories'),
-  ...require('./products'),
-  ...require('./reviews'),
-  ...require('./images'),
-  ...require('./orders'),
-  ...require('./orderItems'),
+  ...require("./users"),
+  ...require("./categories"),
+  ...require("./products"),
+  ...require("./reviews"),
+  ...require("./images"),
+  ...require("./orders"),
+  ...require("./orderItems"),
 };

@@ -4,7 +4,7 @@ import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { Login } from "./index";
 
 const Nav = (props) => {
-  const {user, setUser} = props;
+  const { user, setUser } = props;
   const history = useHistory();
 
   return (
