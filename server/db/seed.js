@@ -41,7 +41,6 @@ async function dropTables() {
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS user_details;
       DROP TABLE IF EXISTS users;
-      
     `);
 
     console.log("Done dropping tables...");
@@ -56,11 +55,11 @@ async function createTables() {
     console.log("Starting to build tables...");
 
     await client.query(`
-          CREATE TABLE images (
-            id SERIAL PRIMARY KEY,
-            title varchar(255) UNIQUE NOT NULL,
-            img_src varchar(255) NOT NULL
-          );
+      CREATE TABLE images (
+        id SERIAL PRIMARY KEY,
+        title varchar(255) UNIQUE NOT NULL,
+        img_src varchar(255) NOT NULL
+      );
     `);
 
     await client.query(`
@@ -95,9 +94,10 @@ async function createTables() {
       CREATE TABLE user_details (
         id SERIAL PRIMARY KEY,
         users_id integer REFERENCES users(id),
+        first_name varchar(255) NOT NULL,
+        last_name varchar(255) NOT NULL,
         full_address varchar(255) NOT NULL,
         billing_address varchar(255) NOT NULL,
-        full_name varchar(255) NOT NULL,
         phone_number NUMERIC NOT NULL
         );
     `);
@@ -175,21 +175,22 @@ async function createInitialImages() {
     });
 
     await createImage({
-      title: 'Bleu Cheese',
-      img_src: 'https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574'
+      title: "Bleu Cheese",
+      img_src:
+        "https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574",
     });
 
     await createImage({
-      title: 'PepperJack Cheese',
-      img_src: 'https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg'
+      title: "PepperJack Cheese",
+      img_src:
+        "https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg",
     });
 
     await createImage({
-      title: 'American Cheese',
-      img_src: 'https://cdn.schwans.com/media/images/products/62172-1-1540.jpg'
+      title: "American Cheese",
+      img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg",
     });
-
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     throw error;
   }
@@ -229,7 +230,6 @@ async function createInitialUsers() {
 
 async function createInitialProduct() {
   try {
-    // console.log('Starting to create initial product...');
     await createProduct({
       title: "American Cheese",
       description:
@@ -248,7 +248,6 @@ async function createInitialProduct() {
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
       inventory: "25",
-
     });
     await createProduct({
       title: "Pepperjack Cheese",
@@ -274,21 +273,22 @@ async function createInitialProduct() {
       price: "0.25",
       inventory: "2000",
     });
-
-    // console.log('Done creating initial product');
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function createProductCategory(productId, category_id){
+async function createProductCategory(productId, category_id) {
   try {
-    await client.query(`
+    await client.query(
+      `
     INSERT INTO product_categories("productId", category_id)
     VALUES ($1, $2)
     ON CONFLICT ("productId", category_id) DO NOTHING;
-    `, [productId, category_id]);
+    `,
+      [productId, category_id]
+    );
   } catch (error) {
     throw error;
   }
@@ -317,8 +317,8 @@ async function createUserDetails() {
     await createDetails({
       fullAddress: "715 Ridge San Luis Obispo, CA 93405",
       billingAddress: "715 Ridge San Luis Obispo, CA 93405",
-      cCard: "1234567890123456",
-      fullName: "Patrick-V Herrera",
+      firstname: "Patrick-Vincent",
+      lastname: "Herrera",
       phoneNumber: "8057103189",
     });
   } catch (error) {

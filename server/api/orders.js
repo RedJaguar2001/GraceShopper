@@ -1,105 +1,114 @@
-const express = require('express')
-const ordersRouter = express.Router()
-const { 
+const express = require("express");
+const ordersRouter = express.Router();
+const { verifyToken } = require("./utils");
+const {
   createCart,
   getAllCarts,
   deleteCart,
   updateCart,
   getCartById,
   getActiveCartByUserId,
+  getOrderHistoryByUserId,
   isCartEmpty,
-  activeCartProducts,
-  
-} = require('../db/orders');
-// const {verifyToken} = require('./utils')
+  getUserInfo,
+  createDetails
+} = require('../db');
 
-ordersRouter.use((req, res, next) =>{
-  console.log('A request is being made to /orders');
+ordersRouter.use((req, res, next) => {
+  console.log("A request is being made to /orders");
   next();
 });
 
-// ordersRouter.get('/', async (req, res, next)=> {
-//   const orders = await getAllCarts();
-//   res.send({ orders });
-// });
+ordersRouter.get("/", async (req, res, next) => {
+  const orders = await getAllCarts();
+  res.send({ orders });
+});
 
-// ordersRouter.patch('/:ordersId', async (req, res, next) => {
-//   const { orderId } = req.params;
-//   const {productId , price, quantity } = req.body
-//   const updateFields = {};
+ordersRouter.get("/history", verifyToken, async (req, res, next) => {
+  const { id } = req.id;
+  const orders = await getOrderHistoryByUserId(id);
+  // console.log('Your orders: ', orders);
+  if (orders !== null) {
+    res.json(orders);
+  } else {
+    res.json([]);
+  }
+});
 
-//   if (productId){
-//     updateFields.productId = productId;
-//   }
+ordersRouter.patch("/:ordersId", async (req, res, next) => {
+  const { orderId } = req.params;
+  const { productId, price, quantity } = req.body;
+  const updateFields = {};
 
-//   if (price){
-//     updateFields.price = price;
-//   }
+  if (productId) {
+    updateFields.productId = productId;
+  }
 
-//   if (quantity){
-//     updateFields.quantity = quantity;
-//   }
+  if (price) {
+    updateFields.price = price;
+  }
 
-//   try {
-//     const cart = await getOrderById(orderId);
+  if (quantity) {
+    updateFields.quantity = quantity;
+  }
 
-//     if(cart) {
-//       const updatedOrder = await updateOrder(orderId, updateFields);
-//       res.send({order: updatedOrder});
-//     } else {
-//       next({
-//         name: 'UpdateOrderError',
-//         desription: 'Error updating Order',
-//       })
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw error;
-//   }
-// });
+  try {
+    const cart = await getOrderById(orderId);
 
-// ordersRouter.delete('/:id'), async (req, res, next) => {
-//   const { id } = req.params;
-//   try{
-//     const deletedOrder = await deletedOrder(id);
-//     res.send({
-//       message: `deleting order ${deletedOrder ? 'succesful' : 'failed'}`,
-//       status: deletedOrder
-//     })
-//   } catch (error) {
-//     next(error)
-//   }
-// }
-
-// ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
-//  try{
-//   const activeCart = await getActiveCartByUserId(req.id);
+    if (cart) {
+      const updatedOrder = await updateOrder(orderId, updateFields);
+      res.send({ order: updatedOrder });
+    } else {
+      next({
+        name: "UpdateOrderError",
+        description: "Error updating Order",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+});
 
 
-//   if(await isCartEmpty(activeCart.id)){
-//     return res.status(400).json({
-//       error: "Cannot checkout empty cart"
-//     })
-//   }
-  
-//   await updateCart(activeCart.id, {checked_out:true}) 
+ordersRouter.delete("/:id"),
+  async (req, res, next) => {
+    const { id } = req.params;
+    try {
+      const deletedOrder = await deletedOrder(id);
+      res.send({
+        message: `deleting order ${deletedOrder ? "succesful" : "failed"}`,
+        status: deletedOrder,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
+ try{
+  const activeCart = await getActiveCartByUserId(req.id.id);
 
 
-//  res.sendStatus(200) 
-//  }catch(error){
+  if(await isCartEmpty(activeCart.id)){
+    return res.status(400).json({
+      error: "Cannot checkout empty cart"
+    })
+  }
 
-//   next(error)
-//  }
+  await updateCart(activeCart.id, {checked_out:true})
 
-// ordersRouter.get('/cart', verifyToken, async(req, res, next) => {
-//   try {
-//     const cartRows = await activeCartProducts(req.id.id);
+  const {firstname, lastname, fulladdress, billingaddress, phonenumber} = req.body;
 
-//     res.send(cartRows);
+  const usersinfo = { firstname, lastname, fulladdress, billingaddress, phonenumber};
 
-//   } catch(error) {
-//     next(error);
-//   }
-// })
+  await createDetails(usersinfo);
+
+  res.sendStatus(200)
+  }catch(error){
+  next(error)
+ }
+})
 
 module.exports = ordersRouter;
+

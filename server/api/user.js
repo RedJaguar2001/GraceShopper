@@ -1,9 +1,6 @@
 const express = require('express');
 const userRouter = express();
-const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db/users');
-
-
-
+const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db');
 
 userRouter.post("/register", async (req, res, next) => {
   const values = {
@@ -166,12 +163,13 @@ userRouter.post('/details', async (req, res) =>{
   const values = {
   fullAddress: req.body.fullAddress,
   billingAddress: req.body.billingAddress,
-  fullName: req.body.fullName,
+  firstname: req.boduy.firstname,
+  lastname: req.body.lastname,
   phoneNumber: req.body.phoneNumber,
   
   };
 
-console.log(typeof values.phoneNumber)
+
 
   try {
     // make sure we have valid data from the client

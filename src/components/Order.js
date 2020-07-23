@@ -21,7 +21,7 @@ const Order = ({ order }) => {
             <Item.Image as='a' src='https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555359686/shape/mentalfloss/cheesefinal.jpg?itok=rL-I9_bI' />
 
             <Item.Content>
-              <Item.Header style={{cursor: 'pointer'}}><Icon name='dollar'/>7.99</Item.Header>
+              <Item.Header><Icon name='dollar'/>7.99</Item.Header>
               <Button size='small' floated='right' color='red'>X</Button>
               <Item.Meta>
                 <span className='productName'>Swiss Cheese</span>
