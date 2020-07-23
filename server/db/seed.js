@@ -39,7 +39,6 @@ async function dropTables() {
       DROP TABLE IF EXISTS products;
       DROP TABLE IF EXISTS user_details;
       DROP TABLE IF EXISTS users;
-
     `);
 
     console.log("Done dropping tables...");
@@ -54,11 +53,11 @@ async function createTables() {
     console.log("Starting to build tables...");
 
     await client.query(`
-          CREATE TABLE images (
-            id SERIAL PRIMARY KEY,
-            title varchar(255) UNIQUE NOT NULL,
-            img_src varchar(255) NOT NULL
-          );
+      CREATE TABLE images (
+        id SERIAL PRIMARY KEY,
+        title varchar(255) UNIQUE NOT NULL,
+        img_src varchar(255) NOT NULL
+      );
     `);
 
     await client.query(`
@@ -174,21 +173,22 @@ async function createInitialImages() {
     });
 
     await createImage({
-      title: 'Bleu Cheese',
-      img_src: 'https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574'
+      title: "Bleu Cheese",
+      img_src:
+        "https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574",
     });
 
     await createImage({
-      title: 'PepperJack Cheese',
-      img_src: 'https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg'
+      title: "PepperJack Cheese",
+      img_src:
+        "https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg",
     });
 
     await createImage({
-      title: 'American Cheese',
-      img_src: 'https://cdn.schwans.com/media/images/products/62172-1-1540.jpg'
+      title: "American Cheese",
+      img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg",
     });
-
-  } catch(error) {
+  } catch (error) {
     console.error(error);
     throw error;
   }
@@ -228,7 +228,6 @@ async function createInitialUsers() {
 
 async function createInitialProduct() {
   try {
-    // console.log('Starting to create initial product...');
     await createProduct({
       title: "Test Cheese",
       description: "Don't get testy with me!",
@@ -241,43 +240,36 @@ async function createInitialProduct() {
         "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
       price: "17.76",
       inventory: "50",
-      category: "Fresh",
     });
     await createProduct({
       title: "String Cheese",
       description: "Stringy",
       price: ".99",
       inventory: "50",
-      category: "Fresh",
     });
     await createProduct({
       title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
       inventory: "25",
-      category: "Soft",
-
     });
     await createProduct({
       title: "Pepperjack Cheese",
       description: "Monterey Jack with a little kick",
       price: "4.99",
       inventory: "10",
-      category: "Fresh"
     });
     await createProduct({
       title: "Swiss Cheese",
       description: "holy",
       price: "2.00",
       inventory: "12",
-      category: "Aged"
     });
     await createProduct({
       title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
       inventory: "13",
-      category: "Stinky"
     });
     await createProduct({
       title: "Delete-able Cheese",
@@ -285,21 +277,22 @@ async function createInitialProduct() {
       price: "0.25",
       inventory: "2000",
     });
-
-    // console.log('Done creating initial product');
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-async function createProductCategory(productId, category_id){
+async function createProductCategory(productId, category_id) {
   try {
-    await client.query(`
+    await client.query(
+      `
     INSERT INTO product_categories("productId", category_id)
     VALUES ($1, $2)
     ON CONFLICT ("productId", category_id) DO NOTHING;
-    `, [productId, category_id]);
+    `,
+      [productId, category_id]
+    );
   } catch (error) {
     throw error;
   }

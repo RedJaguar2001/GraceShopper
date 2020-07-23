@@ -8,12 +8,14 @@ const {
   updateCart,
   getCartById,
   getActiveCartByUserId,
-  getInactiveCartByUserId,
+  getOrderHistoryByUserId,
   isCartEmpty,
+
 
   
 } = require('../db/orders');
 const {getUserInfo, createDetails } = require('../db/users')
+
 
 
 
@@ -28,9 +30,14 @@ ordersRouter.get("/", async (req, res, next) => {
 });
 
 ordersRouter.get("/history", verifyToken, async (req, res, next) => {
-  const { userId } = req.id.id;
-  const orders = await getInactiveCartByUserId(userId);
-  res.send({ orders });
+  const { id } = req.id;
+  const orders = await getOrderHistoryByUserId(id);
+  // console.log('Your orders: ', orders);
+  if (orders !== null) {
+    res.json(orders);
+  } else {
+    res.json([]);
+  }
 });
 
 ordersRouter.patch("/:ordersId", async (req, res, next) => {
@@ -68,14 +75,13 @@ ordersRouter.patch("/:ordersId", async (req, res, next) => {
   }
 });
 
-
 ordersRouter.delete("/:id"),
   async (req, res, next) => {
     const { id } = req.params;
     try {
       const deletedOrder = await deletedOrder(id);
       res.send({
-        message: `deleting order ${deletedOrder ? "succesful" : "failed"}`,
+        message: `deleting order ${deletedOrder ? "successful" : "failed"}`,
         status: deletedOrder,
       });
     } catch (error) {
@@ -83,29 +89,41 @@ ordersRouter.delete("/:id"),
     }
   };
 
-ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
- try{
-  const activeCart = await getActiveCartByUserId(req.id.id);
+ordersRouter.post("/checkout", verifyToken, async (req, res, next) => {
+  try {
+    const activeCart = await getActiveCartByUserId(req.id.id);
+
+    if (await isCartEmpty(activeCart.id)) {
+      return res.status(400).json({
+        error: "Cannot checkout empty cart",
+      });
+    }
+
+    await updateCart(activeCart.id, { checked_out: true });
+
+    const {
+      firstName,
+      lastName,
+      fullAddress,
+      billingAddress,
+      phoneNumber,
+    } = req.body;
+
+    const usersInfo = {
+      firstName,
+      lastName,
+      fullAddress,
+      billingAddress,
+      phoneNumber,
+    };
+
+    await createDetails(usersInfo);
 
 
-  if(await isCartEmpty(activeCart.id)){
-    return res.status(400).json({
-      error: "Cannot checkout empty cart"
-    })
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
   }
-  
-  await updateCart(activeCart.id, {checked_out:true}) 
+});
 
-  const {firstname, lastname, fulladdress, billingaddress, phonenumber} = req.body;
-
-  const usersinfo = { firstname, lastname, fulladdress, billingaddress, phonenumber};
-
-  await createDetails(usersinfo);
-
-  res.sendStatus(200) 
-  }catch(error){
-  next(error)
- }
-})
 module.exports = ordersRouter;
-

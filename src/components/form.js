@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import axios from "axios";
+
 import { Button, Form, Header } from "semantic-ui-react";
 
 const FormForCheckout = () => {
@@ -10,6 +11,7 @@ const FormForCheckout = () => {
     billingadddress: "",
     fulladdress: "",
     phonenumber: "",
+
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -37,13 +39,16 @@ const FormForCheckout = () => {
       });
   };
 
+
   return (
     <>
       <div>
         {successForm ? (
           <>
             <Header as="h1" textAlign="center">
+
               Your Details are Compelete and Your Order will be Shipped Soon
+
             </Header>
           </>
         ) : (
@@ -53,33 +58,43 @@ const FormForCheckout = () => {
               <Form.Group unstackable widths={2}>
                 <Form.Input
                   label="First Name"
+
                   name="firstname"
+
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Last Name"
+
                   name="lastname"
+
                   onChange={handleChange}
                 />
               </Form.Group>
               <Form.Group widths={2}>
                 <Form.Input
                   label="Full Address"
+
                   name="fulladdress"
+
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Billing Address"
+
                   name="billingadddress"
+
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Phone Number"
+
                   name="phonenumber"
                   onChange={handleChange}
                 />
               </Form.Group>
               <Button onClick={handleSubmit}>Sumbit Your Order Now</Button>
+
             </Form>
           </Header>
         )}
