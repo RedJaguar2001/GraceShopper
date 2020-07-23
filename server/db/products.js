@@ -3,11 +3,17 @@ const { client } = require("./client");
 async function getAllProducts() {
   const { rows } = await client.query(`
           SELECT *
-          FROM products;
+          FROM products p
+          LEFT JOIN product_categories pc ON pc.product_id=p.id
+          LEFT JOIN categories c ON pc.category_id=c.id;
           `);
 
   return rows;
 }
+//Associate a product with at least one category
+//After that, map the rows returned from getAllProducts into something more useful (look at the data structure)
+// {...productcolumns, categories (an array of strings where each string is a cteogry that the prodoct belongs to)}
+//on the front end, use category state and .categories to filter the products before filtering by search state
 
 async function getProductById(productId) {
   try {

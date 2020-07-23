@@ -9,8 +9,14 @@ import { Products, SearchBar, Order, ProductDetails, HomepageLayout, Nav } from 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('');
 
   let filteredProducts = products;
+  // if(category.length){
+  //   filteredProducts = filteredProducts.filter((category)=>{
+
+  //   })
+  // }
   if(search.length) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.title.toLowerCase().startsWith(search.toLowerCase());
@@ -25,6 +31,8 @@ const App = () => {
     });
   }, []);
 
+  console.log('CATEGORY', category);
+
   return (
     <Router>
         <Nav />
@@ -36,6 +44,8 @@ const App = () => {
             <SearchBar
               search={search}
               setSearch={setSearch}
+              category={category}
+              setCategory={setCategory}
             />
 
             <Products

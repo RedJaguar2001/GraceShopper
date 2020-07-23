@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
+import axios from 'axios';
 
 import { Button, Form, Input, Segment, Dropdown } from 'semantic-ui-react'
 
 const SearchBar = (props) => {
 console.log("in search", props.search , props.setSearch);
-const [categories, setCategories] = useState([]);
+const [categories, setCategories] = useState([{key: 'all', text: 'all', value: ''}]);
 
 
 
@@ -18,39 +18,21 @@ const [categories, setCategories] = useState([]);
     event.preventDefault();
   }
 
-  const categoryOptions = [
-    { key: 'Aged', value:'Aged', text: 'Aged' },
-    { key: 'Fresh', value:'Fresh', text: 'Fresh' },
-    { key: 'Hard', value:'Hard', text: 'Hard' },
-    { key: 'Soft', value:'Soft', text: 'Soft'},
-    { key: 'Smoky', value:'Smoky', text: 'Smoky'},
-    { key: 'Stinky', value:'Stinky', text: 'Stinky'},
-  ]
-
   useEffect(()=> {
-    Axios.get("/api/products/:category").then((res) => {
-      const categoryList =res.data.data;
-      console.log('category List: ', categoryList);
-
-      return setCategories(categoryList);
+    axios.get("/api/categories").then((res) => {
+      console.log('category List: ', res.data);
+      setCategories([
+        ...categories,
+        ...res.data.data.map(category=>{
+          return {
+            key: category.id,
+            text: category.name,
+            value: category.name
+          };
+        })
+      ])
     });
   }, []);
-
-
-
-  const  DropDownSelection = ()=>  (
-    <Dropdown
-    placeholder='Search By Category'
-    closeOnChange
-    floating
-    fluid
-    multiple
-    search
-    selection
-    options={categoryOptions}
-    />
-    )
-
 
   return (
     <div id="search">
@@ -68,11 +50,19 @@ const [categories, setCategories] = useState([]);
             }}
             />
             <label>Search By Category</label>
-              <DropDownSelection
-              onSelect={handleSelect}>
-              categories={categories}
-              setCategories={setCategories}
-              </DropDownSelection>
+            <Dropdown
+              onChange={(event, data)=>{
+                  console.log('DATA', data.value);
+                  props.setCategory(data.value);
+              }}
+              placeholder='Search By Category'
+              closeOnChange
+              floating
+              fluid
+              search
+              selection
+              options={categories}
+             />
           </Form.Field>
           </Form.Group>
       </Form>
