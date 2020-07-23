@@ -10,7 +10,7 @@ const Nav = (props) => {
   return (
     <Menu
       style={{
-        backgroundColor: "yellow",
+        backgroundColor: "gold",
       }}
     >
       <Menu.Item

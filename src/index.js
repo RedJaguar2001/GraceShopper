@@ -10,6 +10,7 @@ import {
   HomepageLayout,
   Nav,
   FormForCheckout,
+  Footer,
 } from "./components";
 
 const App = () => {
@@ -62,6 +63,7 @@ const App = () => {
 
         <Route path="/orderhistory" exact component={OrderHistory} />
       </Switch>
+      <Footer />
     </Router>
   );
 };
