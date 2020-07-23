@@ -4,7 +4,7 @@ import { Container, Dropdown, Image, Menu } from "semantic-ui-react";
 import { Login } from "./index";
 
 const Nav = (props) => {
-  const {user, setUser} = props;
+  const { user, setUser } = props;
   const history = useHistory();
 
   return (
@@ -42,8 +42,8 @@ const Nav = (props) => {
         <Dropdown.Menu>
           {[
             { text: "Products", route: "/products" },
-            { text: "User Profile", route: "/profile" },
             { text: "Cart", route: "/cart" },
+            { text: "Order History", route: "/orderhistory" },
           ].map(({ text, route }) => (
             <Dropdown.Item key={text} onClick={() => history.push(`${route}`)}>
               {text}

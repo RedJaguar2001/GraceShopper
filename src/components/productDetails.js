@@ -14,19 +14,16 @@ import {
 
 const productDetails = () => {
   const { productId } = useParams();
-  console.log("product ID: ", productId);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
 
   useEffect(() => {
     axios.get(`/api/products/${productId}`).then((res) => {
       const prod = res.data.product;
-      console.log("product: ", prod);
       return setProduct(prod);
     });
   }, []);
 
   const { title, description, price, inventory, image } = product;
-  console.log(product);
 
   return (
     <Container fluid>
@@ -45,15 +42,11 @@ const productDetails = () => {
                 <Card.Description>{description}</Card.Description>
               </Card.Content>
               <Card.Content>
-                <Label size='large'>
+                <Label size="large">
                   <Icon name="dollar" />
                   {price}
                 </Label>
-                <Button
-                  content="Add to Cart"
-                  floated="right"
-                  compact
-                />
+                <Button content="Add to Cart" floated="right" compact />
               </Card.Content>
             </Card>
           </Grid.Column>

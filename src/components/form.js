@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-
 import axios from "axios";
 import { Button, Form, Header } from "semantic-ui-react";
 
 const FormForCheckout = () => {
   const initialFormData = {
-    firstname: "",
-    lastname: "",
-    billingadddress: "",
-    fulladdress: "",
-    phonenumber: "",
+    firstName: "",
+    lastName: "",
+    billingAddress: "",
+    fullAddress: "",
+    phoneNumber: "",
   };
 
   const [formData, setFormData] = useState(initialFormData);
@@ -43,7 +42,8 @@ const FormForCheckout = () => {
         {successForm ? (
           <>
             <Header as="h1" textAlign="center">
-              Your Details are Compelete and Your Order will be Shipped Soon
+              Your Details are Complete and Your Order will be Shipped Soon!
+              Thank You.
             </Header>
           </>
         ) : (
@@ -53,33 +53,33 @@ const FormForCheckout = () => {
               <Form.Group unstackable widths={2}>
                 <Form.Input
                   label="First Name"
-                  name="firstname"
+                  name="firstName"
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Last Name"
-                  name="lastname"
+                  name="lastName"
                   onChange={handleChange}
                 />
               </Form.Group>
               <Form.Group widths={2}>
                 <Form.Input
                   label="Full Address"
-                  name="fulladdress"
+                  name="fullAddress"
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Billing Address"
-                  name="billingadddress"
+                  name="billingAddress"
                   onChange={handleChange}
                 />
                 <Form.Input
                   label="Phone Number"
-                  name="phonenumber"
+                  name="phoneNumber"
                   onChange={handleChange}
                 />
               </Form.Group>
-              <Button onClick={handleSubmit}>Sumbit Your Order Now</Button>
+              <Button onClick={handleSubmit}>Submit Your Order</Button>
             </Form>
           </Header>
         )}
