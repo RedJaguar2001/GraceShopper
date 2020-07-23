@@ -1,13 +1,20 @@
-const express = require('express');
+const express = require("express");
 const userRouter = express();
-const { createUser, getAllUsers, getUserInfo, doesUserExist, login, loginWithToken, } = require('../db');
+const {
+  createUser,
+  getAllUsers,
+  getUserInfo,
+  doesUserExist,
+  login,
+  loginWithToken,
+} = require("../db");
 
 userRouter.post("/register", async (req, res, next) => {
   const values = {
     name: req.body.name,
     username: req.body.username,
     password: req.body.password,
-    email: req.body.email
+    email: req.body.email,
   };
 
   try {
@@ -17,58 +24,56 @@ userRouter.post("/register", async (req, res, next) => {
       if (values.hasOwnProperty(key)) {
         const value = values[key];
 
-        if (
-          !value || (typeof value !== "string") || !value.trim().length
-        ) {
+        if (!value || typeof value !== "string" || !value.trim().length) {
           return res.status(400).json({
-            error: `${key} is required, must be a string, and cannot be empty.`
+            error: `${key} is required, must be a string, and cannot be empty.`,
           });
         }
-        else
-          // trim all strings before insertion into db
-          values[key] = value.trim();
+        // trim all strings before insertion into db
+        else values[key] = value.trim();
       }
     }
 
-      // check to see if a user with this username / email exists
-      const [exists, column] = await doesUserExist(values.username, values.email);
+    // check to see if a user with this username / email exists
+    const [exists, column] = await doesUserExist(values.username, values.email);
 
-      if (exists) {
-        // status 409 means conflict with server state
-        return res.status(409).json({
-          error: `A user with this ${column} already exists.`
-        });
-      }
-
-      const [user, token] = await createUser(values);
-
-      // don't send the user's password to the front end
-      delete user.password;
-
-      console.log(user, token);
-
-      // status 201 means resource created
-      res.status(201).json({
-        user,
-        token
+    if (exists) {
+      // status 409 means conflict with server state
+      return res.status(409).json({
+        error: `A user with this ${column} already exists.`,
       });
+    }
+
+    const [user, token] = await createUser(values);
+
+    // don't send the user's password to the front end
+    delete user.password;
+
+    console.log(user, token);
+
+    // status 201 means resource created
+    res.status(201).json({
+      user,
+      token,
+    });
   } catch (error) {
     console.error("register error", error);
-      next(error);
+    next(error);
   }
 });
 
 // eslint-disable-next-line complexity
 userRouter.post("/login/token", async (req, res, next) => {
-  let token = '';
+  let token = "";
 
   const bearerHeader = req.headers.authorization;
 
   if (typeof bearerHeader !== "undefined") {
-    token = bearerHeader.split(' ')[1];
+    token = bearerHeader.split(" ")[1];
   } else {
     res.status(403).json({
-      error: "Token is required, and must be sent in an authorization bearer header."
+      error:
+        "Token is required, and must be sent in an authorization bearer header.",
     });
   }
 
@@ -77,7 +82,7 @@ userRouter.post("/login/token", async (req, res, next) => {
 
     if (!user) {
       return res.status(403).json({
-        error: "Invalid token."
+        error: "Invalid token.",
       });
     }
 
@@ -93,7 +98,7 @@ userRouter.post("/login/token", async (req, res, next) => {
 userRouter.post("/login", async (req, res, next) => {
   const values = {
     password: req.body.password,
-    email: req.body.email
+    email: req.body.email,
   };
 
   // make sure we have valid data from the client
@@ -102,16 +107,13 @@ userRouter.post("/login", async (req, res, next) => {
     if (values.hasOwnProperty(key)) {
       const value = values[key];
 
-      if (
-        !value || (typeof value !== "string") || !value.trim().length
-      ) {
+      if (!value || typeof value !== "string" || !value.trim().length) {
         return res.status(400).json({
-          error: `${key} is required, must be a string, and cannot be empty.`
+          error: `${key} is required, must be a string, and cannot be empty.`,
         });
       }
-      else
-        // trim all strings before insertion into db
-        values[key] = value.trim();
+      // trim all strings before insertion into db
+      else values[key] = value.trim();
     }
   }
 
@@ -120,16 +122,15 @@ userRouter.post("/login", async (req, res, next) => {
 
     if (!exists) {
       return res.status(404).json({
-        error: "No user with that email exists."
+        error: "No user with that email exists.",
       });
     }
-
 
     const [user, token] = await login(values.email, values.password);
 
     if (!user) {
       return res.status(401).json({
-        error: "Invalid password."
+        error: "Invalid password.",
       });
     }
 
@@ -137,39 +138,35 @@ userRouter.post("/login", async (req, res, next) => {
 
     res.json({
       user,
-      token
+      token,
     });
   } catch (error) {
     next(error);
   }
 });
 
-userRouter.get('/allusers', async(req, res, next)=>{
-  const { allusers } = req.params;
+userRouter.get("/allusers", async (req, res, next) => {
+  const { allUsers } = req.params;
   try {
-  const users =  await getAllUsers(allusers);
+    const users = await getAllUsers(allUsers);
     res.send({
       users,
-      message: 'successfully retrieved users'
+      message: "successfully retrieved users",
     });
-  } catch ({ error}) {
-    next({ error});
+  } catch ({ error }) {
+    next({ error });
   }
 });
 
-
 //Phone number must be passed in as a string, FYI
-userRouter.post('/details', async (req, res) =>{
+userRouter.post("/details", async (req, res) => {
   const values = {
-  fullAddress: req.body.fullAddress,
-  billingAddress: req.body.billingAddress,
-  firstname: req.boduy.firstname,
-  lastname: req.body.lastname,
-  phoneNumber: req.body.phoneNumber,
-  
+    fullAddress: req.body.fullAddress,
+    billingAddress: req.body.billingAddress,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    phoneNumber: req.body.phoneNumber,
   };
-
-
 
   try {
     // make sure we have valid data from the client
@@ -178,50 +175,39 @@ userRouter.post('/details', async (req, res) =>{
       if (values.hasOwnProperty(key)) {
         const value = values[key];
 
-
-        if (
-          !value || (typeof value !== "string") || !value.trim().length
-        ) {
+        if (!value || typeof value !== "string" || !value.trim().length) {
           return res.status(400).json({
-            error:`${key} is required, must be a string, and cannot be empty.` 
-            
+            error: `${key} is required, must be a string, and cannot be empty.`,
           });
         }
-        else
-          // trim all strings before insertion into db
-          values[key] = value.trim();
+        // trim all strings before insertion into db
+        else values[key] = value.trim();
       }
     }
-      const [user_details] = await getUserInfo(values);
+    const [user_details] = await getUserInfo(values);
 
-      console.log(user_details);
-      
-     
+    console.log(user_details);
 
-      // status 201 means resource created
-      res.status(201).json({
-       user_details
-
-
-      });
-
-    } catch ({ error}) {
-      next({ error});
-    }
+    // status 201 means resource created
+    res.status(201).json({
+      user_details,
+    });
+  } catch ({ error }) {
+    next({ error });
+  }
 });
 
-  userRouter.get('/details', async(req, res, next)=>{
-    const { userDetails } = req.params;
-    try {
+userRouter.get("/details", async (req, res, next) => {
+  const { userDetails } = req.params;
+  try {
     const userInfo = await getUserInfo(userDetails);
-      res.send({
-        userInfo,
-        message: 'successfully retrieved users info'
-        
-      });
-    } catch ({ error}) {
-      next({ error});
-    }
-  });
+    res.send({
+      userInfo,
+      message: "successfully retrieved users info",
+    });
+  } catch ({ error }) {
+    next({ error });
+  }
+});
 
-module.exports= userRouter;
+module.exports = userRouter;

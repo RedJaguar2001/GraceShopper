@@ -1,8 +1,3 @@
-/*
--Orders must belong to a user OR guest session (authenticated vs unauthenticated)
--Orders must contain line items that capture the price, current product ID and quantity
--If a user completes an order, that order should keep the price of the item at the time when they checked out even if the price of the product later changes*/
-
 const { client } = require("./client");
 
 async function createCart(userId) {
@@ -140,25 +135,27 @@ async function getOrderHistoryByUserId(userId) {
     );
 
     if (carts.length) {
-      return Object.values(carts.reduce((acc, {id, product_id, quantity, price, title}) => {
-        const cartProduct = {
-          productId: product_id,
-          quantity,
-          price,
-          title
-        }
+      return Object.values(
+        carts.reduce((acc, { id, product_id, quantity, price, title }) => {
+          const cartProduct = {
+            productId: product_id,
+            quantity,
+            price,
+            title,
+          };
 
-        if (id in acc) {
-          acc[id].products.push(cartProduct)
-        } else {
-          acc[id] = {
-            id,
-            products: [cartProduct]
+          if (id in acc) {
+            acc[id].products.push(cartProduct);
+          } else {
+            acc[id] = {
+              id,
+              products: [cartProduct],
+            };
           }
-        }
 
-        return acc;
-      }, {}));
+          return acc;
+        }, {})
+      );
     } else {
       return null;
     }
@@ -167,8 +164,6 @@ async function getOrderHistoryByUserId(userId) {
     throw error;
   }
 }
-
-
 
 async function doesCartExist(userId) {
   if (!userId) {

@@ -37,9 +37,6 @@ const promisifiedVerify = (token) => new Promise(
 );
 
 async function createUser({ name, username, password, email }) {
-  // always hash passwords before storing them in DBs
-  // storing plain text passwords is VERY BAD PRACTICE
-  // you might get fired for it
   const hashedPassword = await promisifiedHash(password);
 
   const {
@@ -74,8 +71,8 @@ async function getAllUsers() {
 }
 
 async function createDetails({
-  firstname,
-  lastname,
+  firstName,
+  lastName,
   fullAddress,
   billingAddress,
   phoneNumber
@@ -89,7 +86,7 @@ async function createDetails({
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
             `,
-      [firstname, lastname, fullAddress, billingAddress, phoneNumber]
+      [firstName, lastName, fullAddress, billingAddress, phoneNumber]
     );
 
     return userDetails;
