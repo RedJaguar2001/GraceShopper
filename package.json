@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/RedJaguar2001/GraceShopper#readme",
   "devDependencies": {
-    "@babel/core": "^7.10.4",
+    "@babel/core": "^7.10.5",
     "@babel/preset-react": "^7.10.4",
     "@craco/craco": "^5.6.4",
     "@semantic-ui-react/craco-less": "^1.2.1",
@@ -41,15 +41,15 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "node-dev": "^4.0.0",
+    "node-dev": "^4.3.0",
     "nodemon": "^2.0.4",
-    "pg": "^8.2.1",
+    "pg": "^8.3.0",
     "react": "^16.13.1",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.0.8",
     "react-router-dom": "^5.2.0",
-    "react-share": "^4.2.0",
+    "react-share": "^4.2.1",
     "semantic-ui-react": "^0.88.2"
   }
 }
