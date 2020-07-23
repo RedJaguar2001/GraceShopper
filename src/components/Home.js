@@ -1,14 +1,56 @@
-import React from 'react';
+import PropTypes from 'prop-types'
+import React, { Component } from 'react';
 import {
+  Button,
   Container,
   Divider,
+  Grid,
   Header,
+  Icon,
   Image,
   List,
+  Menu,
+  Responsive,
   Segment,
+  Sidebar,
+  Visibility,
 } from 'semantic-ui-react';
 
+const getWidth = () => {
+  const isSSR = typeof window === 'undefined'
 
+  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
+}
+
+const HomepageHeading = ({ mobile }) => (
+  <Container fluid>
+    <Header
+      as='h1'
+      content='Welcome to Cheese Wizards'
+      inverted
+      style={{
+        fontSize: mobile ? '2em' : '4em',
+        fontWeight: 'normal',
+        marginBottom: 0,
+        marginTop: mobile ? '1.5em' : '3em',
+      }}
+    />
+    <Header
+      as='h2'
+      content='We cut the cheese.'
+      inverted
+      style={{
+        fontSize: mobile ? '1.5em' : '1.7em',
+        fontWeight: 'normal',
+        marginTop: mobile ? '0.5em' : '1.5em',
+      }}
+    />
+    <Button primary size='huge'>
+      See What We Offer
+      <Icon name='right arrow' />
+    </Button>
+  </Container>
+)
 
 const HomepageLayout = () => (
   <div>

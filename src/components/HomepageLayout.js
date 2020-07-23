@@ -1,338 +1,335 @@
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import {
-  Button,
-  Container,
-  Divider,
-  Grid,
-  Header,
-  Icon,
-  Image,
-  List,
-  Menu,
-  Responsive,
-  Segment,
-  Sidebar,
-  Visibility,
-  Embed,
-} from 'semantic-ui-react'
+// import PropTypes from 'prop-types'
+// import React, { Component } from 'react'
+// import {
+//   Button,
+//   Container,
+//   Divider,
+//   Grid,
+//   Header,
+//   Icon,
+//   Image,
+//   List,
+//   Menu,
+//   Responsive,
+//   Segment,
+//   Sidebar,
+//   Visibility,
+// } from 'semantic-ui-react'
 
-const getWidth = () => {
-  const isSSR = typeof window === 'undefined'
+// const getWidth = () => {
+//   const isSSR = typeof window === 'undefined'
 
-  return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
-}
-
-
-const HomepageHeading = ({ mobile }) => (
-  <Container>
-
-    <Header
-      as='h1'
-      content='Welcome to Cheese Wizards'
-      inverted
-      style={{
-        fontSize: mobile ? '2em' : '4em',
-        fontWeight: 'normal',
-        marginBottom: 0,
-        marginTop: mobile ? '1.5em' : '3em',
-      }}
-    />
-    <Header
-      as='h2'
-      content='We cut the cheese.'
-      inverted
-      style={{
-        fontSize: mobile ? '1.5em' : '1.7em',
-        fontWeight: 'normal',
-        marginTop: mobile ? '0.5em' : '1.5em',
-      }}
-    />
-    <Button primary size='huge'>
-      See What We Offer
-      <Icon name='right arrow' />
-    </Button>
-  </Container>
-)
-
-HomepageHeading.propTypes = {
-  mobile: PropTypes.bool,
-}
+//   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
+// }
 
 
-class DesktopContainer extends Component {
-  state = {}
+// const HomepageHeading = ({ mobile }) => (
+//   <Container fluid>
 
-  hideFixedMenu = () => this.setState({ fixed: false })
-  showFixedMenu = () => this.setState({ fixed: true })
+//     <Header
+//       as='h1'
+//       content='Welcome to Cheese Wizards'
+//       inverted
+//       style={{
+//         fontSize: mobile ? '2em' : '4em',
+//         fontWeight: 'normal',
+//         marginBottom: 0,
+//         marginTop: mobile ? '1.5em' : '3em',
+//       }}
+//     />
+//     <Header
+//       as='h2'
+//       content='We cut the cheese.'
+//       inverted
+//       style={{
+//         fontSize: mobile ? '1.5em' : '1.7em',
+//         fontWeight: 'normal',
+//         marginTop: mobile ? '0.5em' : '1.5em',
+//       }}
+//     />
+//     <Button primary size='huge'>
+//       See What We Offer
+//       <Icon name='right arrow' />
+//     </Button>
+//   </Container>
+// )
 
-  render() {
-    const { children } = this.props
-    const { fixed } = this.state
+// HomepageHeading.propTypes = {
+//   mobile: PropTypes.bool,
+// }
 
-    return (
-      <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
-        <Visibility
-          once={false}
-          onBottomPassed={this.showFixedMenu}
-          onBottomPassedReverse={this.hideFixedMenu}
-        >
-          <Segment
-            inverted
-            textAlign='center'
-            style={{ minHeight: 700, padding: '1em 0em' }}
-            vertical
-          >
-            <Menu
-              fixed={fixed ? 'top' : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size='large'
-            >
-              <Container>
-                <Menu.Item as='a' active>
-                  Home
-                </Menu.Item>
-                <Menu.Item as='a'>Work</Menu.Item>
-                <Menu.Item as='a'>Company</Menu.Item>
-                <Menu.Item as='a'>Careers</Menu.Item>
-                <Menu.Item position='right'>
-                  <Button as='a' inverted={!fixed}>
-                    Log in
-                  </Button>
-                  <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Container>
-            </Menu>
-            <HomepageHeading />
-          </Segment>
-        </Visibility>
 
-        {children}
-      </Responsive>
-    )
-  }
-}
+// class DesktopContainer extends Component {
+//   state = {}
 
-DesktopContainer.propTypes = {
-  children: PropTypes.node,
-}
+//   hideFixedMenu = () => this.setState({ fixed: false })
+//   showFixedMenu = () => this.setState({ fixed: true })
 
-class MobileContainer extends Component {
-  state = {}
+//   render() {
+//     const { children } = this.props
+//     const { fixed } = this.state
 
-  handleSidebarHide = () => this.setState({ sidebarOpened: false })
+//     return (
+//       <Responsive getWidth={getWidth} minWidth={Responsive.onlyTablet.minWidth}>
+//         <Visibility
+//           once={false}
+//           onBottomPassed={this.showFixedMenu}
+//           onBottomPassedReverse={this.hideFixedMenu}
+//         >
+//           <Segment
+//             inverted
+//             textAlign='center'
+//             style={{ minHeight: 700, padding: '1em 0em' }}
+//             vertical
+//           >
+//             <Menu
+//               fixed={fixed ? 'top' : null}
+//               inverted={!fixed}
+//               pointing={!fixed}
+//               secondary={!fixed}
+//               size='large'
+//             >
+//               <Container>
+//                 <Menu.Item as='a' active>
+//                   Home
+//                 </Menu.Item>
+//                 <Menu.Item as='a'>Products</Menu.Item>
+//                 <Menu.Item as='a'>User Profile</Menu.Item>
+//                 <Menu.Item as='a'>Cart</Menu.Item>
+//                 <Menu.Item position='right'>
+//                   <Button as='a' inverted={!fixed}
+//                   >
+//                     Log in
+//                   </Button>
+//                   <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
+//                     Sign Up
+//                   </Button>
+//                 </Menu.Item>
+//               </Container>
+//             </Menu>
+//             <HomepageHeading />
+//           </Segment>
+//         </Visibility>
 
-  handleToggle = () => this.setState({ sidebarOpened: true })
+//         {children}
+//       </Responsive>
+//     )
+//   }
+// }
 
-  render() {
-    const { children } = this.props
-    const { sidebarOpened } = this.state
+// DesktopContainer.propTypes = {
+//   children: PropTypes.node,
+// }
 
-    return (
-      <Responsive
-        as={Sidebar.Pushable}
-        getWidth={getWidth}
-        maxWidth={Responsive.onlyMobile.maxWidth}
-      >
-        <Sidebar
-          as={Menu}
-          animation='push'
-          inverted
-          onHide={this.handleSidebarHide}
-          vertical
-          visible={sidebarOpened}
-        >
-          <Menu.Item as='a' active>
-            Home
-          </Menu.Item>
-          <Menu.Item as='a'>Work</Menu.Item>
-          <Menu.Item as='a'>Company</Menu.Item>
-          <Menu.Item as='a'>Careers</Menu.Item>
-          <Menu.Item as='a'>Log in</Menu.Item>
-          <Menu.Item as='a'>Sign Up</Menu.Item>
-        </Sidebar>
+// class MobileContainer extends Component {
+//   state = {}
 
-        <Sidebar.Pusher dimmed={sidebarOpened}>
-          <Segment
-            inverted
-            textAlign='center'
-            style={{
-                background: "https://images.pexels.com/photos/302457/pexels-photo-302457.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-                minHeight: 350,
-                padding: '1em 0em' }}
-            vertical
-          >
-            <Container>
-              <Menu inverted pointing secondary size='large'>
-                <Menu.Item onClick={this.handleToggle}>
-                  <Icon name='sidebar' />
-                </Menu.Item>
-                <Menu.Item position='right'>
-                  <Button as='a' inverted>
-                    Log in
-                  </Button>
-                  <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            </Container>
-            <HomepageHeading mobile />
-          </Segment>
+//   handleSidebarHide = () => this.setState({ sidebarOpened: false })
 
-          {children}
-        </Sidebar.Pusher>
-      </Responsive>
-    )
-  }
-}
+//   handleToggle = () => this.setState({ sidebarOpened: true })
 
-MobileContainer.propTypes = {
-  children: PropTypes.node,
-}
+//   render() {
+//     const { children } = this.props
+//     const { sidebarOpened } = this.state
 
-const ResponsiveContainer = ({ children }) => (
-  <div>
-    <DesktopContainer>{children}</DesktopContainer>
-    <MobileContainer>{children}</MobileContainer>
-  </div>
-)
+//     return (
+//       <Responsive
+//         as={Sidebar.Pushable}
+//         getWidth={getWidth}
+//         maxWidth={Responsive.onlyMobile.maxWidth}
+//       >
+//         <Sidebar
+//           as={Menu}
+//           animation='push'
+//           inverted
+//           onHide={this.handleSidebarHide}
+//           vertical
+//           visible={sidebarOpened}
+//         >
+//           <Menu.Item as='a' active>
+//             Home
+//           </Menu.Item>
+//           <Menu.Item as='a'>Work</Menu.Item>
+//           <Menu.Item as='a'>Company</Menu.Item>
+//           <Menu.Item as='a'>Careers</Menu.Item>
+//           <Menu.Item as='a'>Log in</Menu.Item>
+//           <Menu.Item as='a'>Sign Up</Menu.Item>
+//         </Sidebar>
 
-ResponsiveContainer.propTypes = {
-  children: PropTypes.node,
-}
+//         <Sidebar.Pusher dimmed={sidebarOpened}>
+//           <Segment
+//             inverted
+//             textAlign='center'
+//             style={{ minHeight: 350, padding: '1em 0em' }}
+//             vertical
+//           >
+//             <Container>
+//               <Menu inverted pointing secondary size='large'>
+//                 <Menu.Item onClick={this.handleToggle}>
+//                   <Icon name='sidebar' />
+//                 </Menu.Item>
+//                 <Menu.Item position='right'>
+//                   <Button as='a' inverted>
+//                     Log in
+//                   </Button>
+//                   <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
+//                     Sign Up
+//                   </Button>
+//                 </Menu.Item>
+//               </Menu>
+//             </Container>
+//             <HomepageHeading mobile />
+//           </Segment>
 
-const HomepageLayout = () => (
-  <ResponsiveContainer>
-    <Segment style={{ padding: '8em 0em' }} vertical>
-      <Grid container stackable verticalAlign='middle'>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              We Help Companies and Companions
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              We can give your company superpowers to do things that they never thought possible.
-              Let us delight your customers and empower your needs... through pure data analytics.
-            </p>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              We Make Cheese That Can Dance
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              Yes that's right, you thought it was the stuff of dreams, but even cheese can be
-              bioengineered.
-            </p>
-          </Grid.Column>
-          <Grid.Column floated='right' width={6}>
-            <Image bordered rounded size='large' src='https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column textAlign='center'>
-            <Button size='huge'>Check Them Out</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+//           {children}
+//         </Sidebar.Pusher>
+//       </Responsive>
+//     )
+//   }
+// }
 
-    <Segment style={{ padding: '0em' }} vertical>
-      <Grid celled='internally' columns='equal' stackable>
-        <Grid.Row textAlign='center'>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              "What a Company"
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
-          </Grid.Column>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              "I shouldn't have gone with their competitor."
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              <Image avatar src='https://images.pexels.com/photos/2494654/pexels-photo-2494654.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260' size='mini'/>
-              <b>Jeff DuFromage</b> Chief Fun Officer Cheese Factory
-            </p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
+// MobileContainer.propTypes = {
+//   children: PropTypes.node,
+// }
 
-    <Segment style={{ padding: '8em 0em' }} vertical>
-      <Container text>
-        <Header as='h3' style={{ fontSize: '2em' }}>
-          Cutting the Cheese, Grabs Your Attention
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Instead of focusing on content creation and hard work, we have learned how to master the
-          art of doing nothing by providing massive amounts of whitespace and generic content that
-          can seem massive, monolithic and worth your attention.
-        </p>
-        <Button as='a' size='large'>
-          Read More
-        </Button>
+// const ResponsiveContainer = ({ children }) => (
+//   <div>
+//     <DesktopContainer>{children}</DesktopContainer>
+//     <MobileContainer>{children}</MobileContainer>
+//   </div>
+// )
 
-        <Divider
-          as='h4'
-          className='header'
-          horizontal
-          style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-        >
-          <a href='#'>Artisan Cheese</a>
-        </Divider>
+// ResponsiveContainer.propTypes = {
+//   children: PropTypes.node,
+// }
 
-        <Header as='h3' style={{ fontSize: '2em' }}>
-          Did We Tell You About Our Cheese?
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
-          it's really true. It took years of gene splicing and combinatory DNA research, but our
-          bananas can really dance.
-        </p>
-        <Button as='a' size='large'>
-          I'm Still Quite Interested
-        </Button>
-      </Container>
-    </Segment>
+// const HomepageLayout = () => (
+//   <ResponsiveContainer>
+//     <Segment style={{ padding: '8em 0em' }} vertical>
+//       <Grid container stackable verticalAlign='middle'>
+//         <Grid.Row>
+//           <Grid.Column width={8}>
+//             <Header as='h3' style={{ fontSize: '2em' }}>
+//               We Help Companies and Companions
+//             </Header>
+//             <p style={{ fontSize: '1.33em' }}>
+//               We can give your company superpowers to do things that they never thought possible.
+//               Let us delight your customers and empower your needs... through pure data analytics.
+//             </p>
+//             <Header as='h3' style={{ fontSize: '2em' }}>
+//               We Make Cheese That Can Dance
+//             </Header>
+//             <p style={{ fontSize: '1.33em' }}>
+//               Yes that's right, you thought it was the stuff of dreams, but even cheese can be
+//               bioengineered.
+//             </p>
+//           </Grid.Column>
+//           <Grid.Column floated='right' width={6}>
+//             <Image bordered rounded size='large' src='https://images.pexels.com/photos/821365/pexels-photo-821365.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' />
+//           </Grid.Column>
+//         </Grid.Row>
+//         <Grid.Row>
+//           <Grid.Column textAlign='center'>
+//             <Button size='huge'>Check Them Out</Button>
+//           </Grid.Column>
+//         </Grid.Row>
+//       </Grid>
+//     </Segment>
 
-    <Segment inverted vertical style={{ padding: '5em 0em' }}>
-      <Container>
-        <Grid divided inverted stackable>
-          <Grid.Row>
-            <Grid.Column width={3}>
-              <Header inverted as='h4' content='About' />
-              <List link inverted>
-                <List.Item as='a'>Sitemap</List.Item>
-                <List.Item as='a'>Contact Us</List.Item>
-                <List.Item as='a'>Terms & Conditions</List.Item>
-                <List.Item as='a'>Privacy Policy</List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Header inverted as='h4' content='Services' />
-              <List link inverted>
-                <List.Item as='a'>Artisan Cheese</List.Item>
-                <List.Item as='a'>Imported Meats</List.Item>
-                <List.Item as='a'>Charcuterie Boards</List.Item>
-                <List.Item as='a'>Cheese Consultation</List.Item>
-              </List>
-            </Grid.Column>
-            <Grid.Column width={7}>
-              <Header as='h4' inverted>
-                Footer Header
-              </Header>
-              <p>
-                Extra space for a call to action inside the footer that could help re-engage users.
-              </p>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
-    </Segment>
-  </ResponsiveContainer>
-)
+//     <Segment style={{ padding: '0em' }} vertical>
+//       <Grid celled='internally' columns='equal' stackable>
+//         <Grid.Row textAlign='center'>
+//           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+//             <Header as='h3' style={{ fontSize: '2em' }}>
+//               "What a Company"
+//             </Header>
+//             <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+//           </Grid.Column>
+//           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+//             <Header as='h3' style={{ fontSize: '2em' }}>
+//               "I shouldn't have gone with their competitor."
+//             </Header>
+//             <p style={{ fontSize: '1.33em' }}>
+//               <Image avatar src='https://images.pexels.com/photos/2494654/pexels-photo-2494654.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260' size='mini'/>
+//               <b>Jeff DuFromage</b> Chief Fun Officer Cheese Factory
+//             </p>
+//           </Grid.Column>
+//         </Grid.Row>
+//       </Grid>
+//     </Segment>
 
-export default HomepageLayout
+//     <Segment style={{ padding: '8em 0em' }} vertical>
+//       <Container text>
+//         <Header as='h3' style={{ fontSize: '2em' }}>
+//           Cutting the Cheese, Grabs Your Attention
+//         </Header>
+//         <p style={{ fontSize: '1.33em' }}>
+//           Instead of focusing on content creation and hard work, we have learned how to master the
+//           art of doing nothing by providing massive amounts of whitespace and generic content that
+//           can seem massive, monolithic and worth your attention.
+//         </p>
+//         <Button as='a' size='large'>
+//           Read More
+//         </Button>
+
+//         <Divider
+//           as='h4'
+//           className='header'
+//           horizontal
+//           style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+//         >
+//           <a href='#'>Artisan Cheese</a>
+//         </Divider>
+
+//         <Header as='h3' style={{ fontSize: '2em' }}>
+//           Did We Tell You About Our Cheese?
+//         </Header>
+//         <p style={{ fontSize: '1.33em' }}>
+//           Yes I know you probably disregarded the earlier boasts as non-sequitur filler content, but
+//           it's really true. It took years of gene splicing and combinatory DNA research, but our
+//           bananas can really dance.
+//         </p>
+//         <Button as='a' size='large'>
+//           I'm Still Quite Interested
+//         </Button>
+//       </Container>
+//     </Segment>
+
+//     <Segment inverted vertical style={{ padding: '5em 0em' }}>
+//       <Container>
+//         <Grid divided inverted stackable>
+//           <Grid.Row>
+//             <Grid.Column width={3}>
+//               <Header inverted as='h4' content='About' />
+//               <List link inverted>
+//                 <List.Item as='a'>Sitemap</List.Item>
+//                 <List.Item as='a'>Contact Us</List.Item>
+//                 <List.Item as='a'>Terms & Conditions</List.Item>
+//                 <List.Item as='a'>Privacy Policy</List.Item>
+//               </List>
+//             </Grid.Column>
+//             <Grid.Column width={3}>
+//               <Header inverted as='h4' content='Services' />
+//               <List link inverted>
+//                 <List.Item as='a'>Artisan Cheese</List.Item>
+//                 <List.Item as='a'>Imported Meats</List.Item>
+//                 <List.Item as='a'>Charcuterie Boards</List.Item>
+//                 <List.Item as='a'>Cheese Consultation</List.Item>
+//               </List>
+//             </Grid.Column>
+//             <Grid.Column width={7}>
+//               <Header as='h4' inverted>
+//                 Footer Header
+//               </Header>
+//               <p>
+//                 Extra space for a call to action inside the footer that could help re-engage users.
+//               </p>
+//             </Grid.Column>
+//           </Grid.Row>
+//         </Grid>
+//       </Container>
+//     </Segment>
+//   </ResponsiveContainer>
+// )
+
+// export default HomepageLayout

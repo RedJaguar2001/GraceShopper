@@ -33,7 +33,7 @@ async function getImageById(imageId) {
             FROM images
             WHERE id=$1;
             `, [imageId]);
-        
+
             if(!image) {
                 throw {
                     name: 'ImageNotFoundError',
