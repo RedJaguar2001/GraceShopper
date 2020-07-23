@@ -26,6 +26,7 @@ const getWidth = () => {
 
 const HomepageHeading = ({ mobile }) => (
   <Container fluid>
+
     <Header
       as='h1'
       content='Welcome to Cheese Wizards'
@@ -34,9 +35,13 @@ const HomepageHeading = ({ mobile }) => (
         fontSize: mobile ? '2em' : '4em',
         fontWeight: 'normal',
         marginBottom: 0,
-        marginTop: mobile ? '1.5em' : '3em',
+        marginTop: mobile ? '1.5em' : '1em',
       }}
     />
+    <Image
+        src="https://www.foodiesfeed.com/wp-content/uploads/2019/02/cheese-with-honey-salty-biscuits-and-grapes.jpg"
+        fluid
+      />
     <Header
       as='h2'
       content='We cut the cheese.'
@@ -205,30 +210,56 @@ ResponsiveContainer.propTypes = {
 const HomepageLayout = () => (
 <ResponsiveContainer>
   <div>
-    <Container text style={{ marginTop: "7em" }}>
+    {/* <Container text style={{ marginTop: "7em" }}>
       <Header as="h1">WELCOME TO CHEESE WIZARDS</Header>
-      <Image
-        size="large"
-        src="https://images.unsplash.com/photo-1572986011661-b5664f6da450?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-      />
       <p>At Cheese-Wizards, we are all about the cheese</p>
       <p>
         Founded in 2015 in California, we offer the best of the best...cheese
       </p>
-    </Container>
+    </Container> */}
 
     <Segment
       vertical
       style={{
         backgroundColor: "gold",
-        margin: "4em 0em 0em",
-        padding: "4em 0em",
+        margin: "2em 0em 0em",
+        padding: "3em 0em",
       }}
     >
-
     </Segment>
 
-  </div>
+
+
+  <Segment style={{ padding: '8em 0em' }} vertical>
+      <Grid container stackable verticalAlign='middle'>
+        <Grid.Row>
+          <Grid.Column width={8}>
+            <Header as='h3' style={{ fontSize: '2em' }}>
+              We Help Companies and Companions
+            </Header>
+            <p style={{ fontSize: '1.33em' }}>
+              We can give your company superpowers to do things that they never thought possible.
+              Let us delight your customers and empower your needs... through pure data analytics.
+            </p>
+            <Header as='h3' style={{ fontSize: '2em' }}>
+              We Make Cheese That Can Dance
+            </Header>
+            <p style={{ fontSize: '1.33em' }}>
+              Yes that's right, you thought it was the stuff of dreams, but even cheese can be
+              bioengineered.
+            </p>
+          </Grid.Column>
+          <Grid.Column floated='right' width={6}>
+            <Image bordered rounded size='large' src='https://images.unsplash.com/photo-1452195100486-9cc805987862?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto' />
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column textAlign='center'>
+            <Button size='huge'>Check Them Out</Button>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Segment>
 
   <Segment style={{ padding: '0em' }} vertical>
       <Grid celled='internally' columns='equal' stackable>
@@ -284,6 +315,7 @@ const HomepageLayout = () => (
         </Button>
       </Container>
      </Segment>
+     </div>
 </ResponsiveContainer>
 );
 
