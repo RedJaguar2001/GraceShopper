@@ -11,6 +11,29 @@ const Order = ({ order }) => {
       <Grid columns={2} divided>
         <Grid.Column>
           <Item.Header style={{marginLeft: '1em'}}>MY CART</Item.Header>
+          <Item.Group divided style={{
+          margin: '.5em',
+          padding: '.5em',
+          backgroundColor: 'yellow',
+          borderTop: '1px solid grey'
+          }}>
+          <Item>
+            <Item.Image as='a' src='https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555359686/shape/mentalfloss/cheesefinal.jpg?itok=rL-I9_bI' />
+
+            <Item.Content>
+              <Item.Header style={{cursor: 'pointer'}}><Icon name='dollar'/>7.99</Item.Header>
+              <Button size='small' floated='right' color='red'>X</Button>
+              <Item.Meta>
+                <span className='productName'>Swiss Cheese</span>
+              </Item.Meta>
+              <Item.Description style={{margin: '.5em'}}>It ain't easy bein cheesy</Item.Description>
+              <Input type='number' placeholder='Qty' min='0'/>
+              <Item.Extra>
+                <Button><Icon name='heart'/>Save for later</Button>
+              </Item.Extra>
+            </Item.Content>
+          </Item>
+        </Item.Group>
           {/* {order.map((products) => {
             return <CartProduct key={order.id} products={products} />;
           })} */}

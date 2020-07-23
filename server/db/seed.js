@@ -21,6 +21,8 @@ const {
   createReview,
   updateReview,
   createProductImage,
+  getActiveCartByUserId,
+  createOrUpdateCartProduct,
 } = require("./index");
 
 async function dropTables() {
@@ -291,6 +293,24 @@ async function createProductCategory(productId, category_id){
     throw error;
   }
 }
+//get user 
+//get/create active cart
+//create cart products for active cart
+
+async function createKevinCart() {
+  const users = await getAllUsers();
+  const kevin = users.find(
+    (user) => user.name === "Kevin H"
+  )
+
+  const activeCart = await getActiveCartByUserId(kevin.id);
+
+  const products = await getAllProducts();
+  
+  await Promise.all(products.map(
+    (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
+  ))
+};
 
 async function createUserDetails() {
   try {
@@ -395,6 +415,7 @@ async function rebuildDB(force = true) {
     await createInitialImages();
     await createInitialReviews();
     await createInitialImage();
+    await createKevinCart();
   } catch (error) {
     console.error(error);
     throw error;
