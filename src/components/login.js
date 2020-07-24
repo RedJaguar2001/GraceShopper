@@ -2,20 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import {   Button,
-  Container,
-  Divider,
   Form,
-  Grid,
   Header,
-  Icon,
-  Image,
-  List,
   Menu,
   Modal,
-  Responsive,
-  Segment,
-  Sidebar,
-  Visibility,} from "semantic-ui-react";
+  } from "semantic-ui-react";
 
 const Login = (props) => {
   const { user, setUser } = props;

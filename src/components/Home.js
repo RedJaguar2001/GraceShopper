@@ -11,7 +11,6 @@ import {
   Header,
   Icon,
   Image,
-  List,
   Menu,
   Responsive,
   Segment,

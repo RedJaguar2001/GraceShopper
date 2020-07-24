@@ -4,17 +4,10 @@ import React, { Component } from 'react';
 
 import {
   Container,
-  Divider,
   Grid,
   Header,
-  Icon,
-  Image,
   List,
-  Menu,
-  Responsive,
   Segment,
-  Sidebar,
-  Visibility,
 } from 'semantic-ui-react';
 
 const Footer = (props) => {

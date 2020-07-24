@@ -9,8 +9,6 @@ import {
   ProductDetails,
   HomepageLayout,
   Nav,
-  FormForCheckout,
-  Footer
 } from "./components";
 
 const App = () => {
