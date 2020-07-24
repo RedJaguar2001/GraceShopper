@@ -1,14 +1,9 @@
-/*
--Orders must belong to a user OR guest session (authenticated vs unauthenticated)
--Orders must contain line items that capture the price, current product ID and quantity
--If a user completes an order, that order should keep the price of the item at the time when they checked out even if the price of the product later changes*/
-
 const { client } = require("./client");
 
 async function createCart(userId) {
   try {
     const {
-      rows: [cart], //no cart? also table should be carts I believe
+      rows: [cart],
     } = await client.query(
       `
       INSERT INTO carts (users_id)
@@ -27,7 +22,7 @@ async function createCart(userId) {
 
 async function getAllCarts() {
   const { rows } = await client.query(`
-  SELECT id, productId, price, quantity
+  SELECT *
   FROM carts;
   `);
   return rows;
@@ -121,23 +116,49 @@ async function getActiveCartByUserId(userId) {
   }
 }
 
-async function getInactiveCartByUserId(userId) {
+// id: 2
+// price: "1"
+// product_id: 2
+// quantity: 5
+// title: "American Cheese"
+async function getOrderHistoryByUserId(userId) {
   try {
-    const {
-      rows: [cart],
-    } = await client.query(
+    const { rows: carts } = await client.query(
       `
-    SELECT * FROM carts
+    SELECT c.id, cp.price, cp.quantity, cp.product_id, p.title FROM carts c
+    INNER JOIN carts_products cp ON c.id=cp.carts_id
+    INNER JOIN products p ON p.id=cp.product_id
     WHERE users_id=$1
     AND checked_out=true;
     `,
       [userId]
     );
 
-    if (cart) {
-      return cart;
+    if (carts.length) {
+      return Object.values(
+        carts.reduce((acc, { id, product_id, quantity, price, title }) => {
+          const cartProduct = {
+            productId: product_id,
+            quantity,
+            price,
+            title,
+          };
+
+          if (id in acc) {
+            acc[id].products.push(cartProduct);
+          } else {
+            acc[id] = {
+              id,
+              products: [cartProduct],
+            };
+          }
+
+          return acc;
+        }, {})
+      );
+    } else {
+      return null;
     }
-    return createCart(userId);
   } catch (error) {
     console.error(error);
     throw error;
@@ -169,6 +190,6 @@ module.exports = {
   updateCart,
   getCartById,
   getActiveCartByUserId,
-  getInactiveCartByUserId,
+  getOrderHistoryByUserId,
   doesCartExist,
 };

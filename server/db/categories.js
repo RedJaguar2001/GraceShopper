@@ -37,7 +37,7 @@ async function getCategoryById(categoryId) {
   }
 }
 
-async function createCategory({categoryName}) {
+async function createCategory({ categoryName }) {
   if (!categoryName) {
     return null;
   }
@@ -158,13 +158,12 @@ async function deleteProductCategory(productId, categoryId) {
 
 async function addCategoriesToProduct(productId, categoryList) {
   try {
-    const createProductCategoryPromises = categoryList.map(
-      category => createProductCategory(productId, category.id)
+    const createProductCategoryPromises = categoryList.map((category) =>
+      createProductCategory(productId, category.id)
     );
 
     await Promise.all(createProductCategoryPromises);
     return await getProductById(productId);
-
   } catch (error) {
     throw error;
   }

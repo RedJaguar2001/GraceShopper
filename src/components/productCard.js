@@ -1,27 +1,41 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { Card, Icon, Image } from "semantic-ui-react";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { Card, Icon, Image, Label, Button } from "semantic-ui-react";
 
-const productCard = ({ product }) => {
-  const { id, title, description, price, inventory } = product;
-  //   console.log("product: ", product);
+const ProductCard = ({ product }) => {
+  const { id, title, description, price, inventory, image } = product;
+  const history = useHistory();
+
   return (
-    <Card key={id}>
-      <Image src="https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg" wrapped ui={false} />
-      <Card.Content>
-        <Card.Header>{title}</Card.Header>
-        <Card.Meta>Quantity: {inventory}</Card.Meta>
-        <Card.Description>{description.length > 50 ? `${description.substring(0, 50)}...` : description}</Card.Description>
+    <Card raised link key={id}>
+      <Card.Content onClick={() => history.push(`/products/${id}`)}>
+        <Image
+          src={
+            !image
+              ? "https://i.ytimg.com/vi/RLhmG-LIwnE/maxresdefault.jpg"
+              : image.img_src
+          }
+          wrapped
+        />
+        <Card.Content>
+          <Card.Header>{title}</Card.Header>
+          <Card.Meta>Quantity: {inventory}</Card.Meta>
+          <Card.Description>
+            {description.length > 50
+              ? `${description.substring(0, 50)}...`
+              : description}
+          </Card.Description>
+        </Card.Content>
       </Card.Content>
       <Card.Content extra>
-        <a>
+        <Label>
           <Icon name="dollar" />
           {price}
-        </a>
+        </Label>
+        <Button content="Add to Cart" floated="right" compact size="small" />
       </Card.Content>
     </Card>
   );
 };
 
-// description.length() > 50 ? `${description.substring(0, 50)}... ` : description
-export default productCard;
+export default ProductCard;

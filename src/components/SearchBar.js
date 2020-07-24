@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { Button, Form, Input, Segment, Dropdown } from 'semantic-ui-react'
+import { Button, Form, Input, Segment, Dropdown } from "semantic-ui-react";
 
 const SearchBar = (props) => {
-console.log("in search", props.search , props.setSearch);
-const [categories, setCategories] = useState([{key: 'all', text: 'all', value: ''}]);
+  console.log("in search", props.search, props.setSearch);
+  const [categories, setCategories] = useState([]);
 
-
-
-  const handleSelect = (event)=>{
-    console.log(event)
+  const handleSelect = (event) => {
+    console.log(event);
     setCategories(event);
-  }
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -36,8 +34,7 @@ const [categories, setCategories] = useState([{key: 'all', text: 'all', value: '
 
   return (
     <div id="search">
-
-      <Form onSubmit={ handleSubmit }>
+      <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Field>
             <Form.Input
@@ -45,9 +42,9 @@ const [categories, setCategories] = useState([{key: 'all', text: 'all', value: '
               type="text"
               placeholder="Search By Name"
               value={props.search}
-              onChange={ (ev) => {
+              onChange={(ev) => {
                 props.setSearch(ev.target.value);
-            }}
+              }}
             />
             <label>Search By Category</label>
             <Dropdown
@@ -63,13 +60,15 @@ const [categories, setCategories] = useState([{key: 'all', text: 'all', value: '
               selection
               options={categories}
              />
+            <DropDownSelection onSelect={handleSelect}>
+              categories={categories}
+              setCategories={setCategories}
+            </DropDownSelection>
           </Form.Field>
-          </Form.Group>
+        </Form.Group>
       </Form>
-
     </div>
   );
-}
-
+};
 
 export default SearchBar;

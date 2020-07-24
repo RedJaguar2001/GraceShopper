@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
+import { Container, Grid, Icon, Divider, Button } from "semantic-ui-react";
+import { CartProduct } from "./index";
 
-const Order = (props) => {
+const Order = ({ products, setProducts }) => {
   return (
-    <div id="order">
-      <h3>Order</h3>
-    </div>
+    <Container>
+      <Grid columns="equal"/>
+    </Container>
   );
-}
+};
 
 export default Order;
