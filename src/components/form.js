@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Button, Form, Header } from "semantic-ui-react";
 
-const FormForCheckout = () => {
+const FormForCheckout = ({ activeCart, setActiveCart }) => {
   const initialFormData = {
     firstName: "",
     lastName: "",
@@ -30,7 +30,9 @@ const FormForCheckout = () => {
       .post("api/orders/checkout", formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
-      .then(() => {})
+      .then(() => {
+        setActiveCart([]);
+      })
       .catch((error) => {
         alert(error.message);
       });

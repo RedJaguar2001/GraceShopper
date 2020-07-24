@@ -21,6 +21,8 @@ const {
   createReview,
   updateReview,
   createProductImage,
+  getActiveCartByUserId,
+  createOrUpdateCartProduct,
 } = require("./index");
 
 async function dropTables() {
@@ -188,6 +190,11 @@ async function createInitialImages() {
       title: "American Cheese",
       img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg",
     });
+
+    await createImage({
+      title: "Cheddar Cheese",
+      img_src: "https://www.hickoryfarms.com/dw/image/v2/AAOA_PRD/on/demandware.static/-/Sites-Web-Master-Catalog/default/dw3013ac58/images/products/smoked-cheddar-blend-3037-1.jpg?sw=815&sh=815&sm=fit"
+    })
   } catch (error) {
     console.error(error);
     throw error;
@@ -229,12 +236,6 @@ async function createInitialUsers() {
 async function createInitialProduct() {
   try {
     await createProduct({
-      title: "Test Cheese",
-      description: "Don't get testy with me!",
-      price: "12.80",
-      inventory: "50",
-    });
-    await createProduct({
       title: "American Cheese",
       description:
         "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
@@ -251,31 +252,67 @@ async function createInitialProduct() {
       title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
-      inventory: "25",
+      inventory: "50",
     });
     await createProduct({
       title: "Pepperjack Cheese",
       description: "Monterey Jack with a little kick",
       price: "4.99",
-      inventory: "10",
+      inventory: "50",
     });
     await createProduct({
       title: "Swiss Cheese",
       description: "holy",
       price: "2.00",
-      inventory: "12",
+      inventory: "50",
     });
     await createProduct({
       title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
-      inventory: "13",
+      inventory: "50",
     });
     await createProduct({
-      title: "Delete-able Cheese",
-      description: "Delete me.",
-      price: "0.25",
-      inventory: "2000",
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
     });
   } catch (error) {
     console.error(error);
@@ -297,14 +334,32 @@ async function createProductCategory(productId, category_id) {
     throw error;
   }
 }
+//get user 
+//get/create active cart
+//create cart products for active cart
+
+async function createKevinCart() {
+  const users = await getAllUsers();
+  const kevin = users.find(
+    (user) => user.name === "Kevin H"
+  )
+
+  const activeCart = await getActiveCartByUserId(kevin.id);
+
+  const products = await getAllProducts();
+  
+  await Promise.all(products.map(
+    (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
+  ))
+};
 
 async function createUserDetails() {
   try {
     await createDetails({
       fullAddress: "715 Ridge San Luis Obispo, CA 93405",
       billingAddress: "715 Ridge San Luis Obispo, CA 93405",
-      firstname: "Patrick-Vincent",
-      lastname: "Herrera",
+      firstName: "Patrick-Vincent",
+      lastName: "Herrera",
       phoneNumber: "8057103189",
     });
   } catch (error) {
@@ -356,13 +411,13 @@ async function createInitialReviews() {
       userId: 2,
       productId: 2,
     });
-    await createReview({
-      title: "Test Delete Review",
-      body: "If this is still in the DB, you done messed up.",
-      rating: 1,
-      userId: 3,
-      productId: 8,
-    });
+    // await createReview({
+    //   title: "Test Delete Review",
+    //   body: "If this is still in the DB, you done messed up.",
+    //   rating: 1,
+    //   userId: 3,
+    //   productId: 8,
+    // });
   } catch (error) {
     throw error;
   }
@@ -377,6 +432,7 @@ async function createInitialImage() {
     await createProductImage(3, 3);
     await createProductImage(6, 4);
     await createProductImage(5, 1);
+    await createProductImage(4, 7)
 
     console.log("Finished creating image");
   } catch (error) {
@@ -401,6 +457,7 @@ async function rebuildDB(force = true) {
     await createInitialImages();
     await createInitialReviews();
     await createInitialImage();
+    await createKevinCart();
   } catch (error) {
     console.error(error);
     throw error;

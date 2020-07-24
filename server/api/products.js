@@ -17,8 +17,6 @@ productsRouter.use((req, res, next) => {
 productsRouter.get("/", async (req, res) => {
   const products = await getAllProducts();
 
-  console.log("got products: ", products);
-
   res.send({
     message: "Successfully retrieved products",
     products,
@@ -32,8 +30,6 @@ productsRouter.get("/:productId", async (req, res, next) => {
 
   try {
     const product = await getProductById(productId);
-
-    console.log("got product: ", product);
 
     if (!product) {
       return res.status(404).json({

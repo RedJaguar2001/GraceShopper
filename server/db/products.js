@@ -1,12 +1,21 @@
 const { client } = require("./client");
 
 async function getAllProducts() {
-  const { rows } = await client.query(`
-          SELECT *
-          FROM products;
-          `);
+  // const { rows } = await client.query(`
+  //         SELECT *
+  //         FROM products;
+  //         `);
 
-  return rows;
+  const { rows: productsIds } = await client.query(`
+    SELECT id
+    FROM products;
+    `);
+
+  const products = await Promise.all(productsIds.map(
+    product => getProductById( product.id )
+  ))
+
+  return products;
 }
 
 async function getProductById(productId) {

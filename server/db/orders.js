@@ -183,6 +183,26 @@ async function doesCartExist(userId) {
   return !!cart;
 }
 
+async function activeCartProducts(userId) {
+  const {
+    rows,
+  } = await client.query(
+    `
+  SELECT * FROM carts c
+  LEFT JOIN carts_products cp ON c.id = cp.carts_id
+  LEFT JOIN products p ON cp.product_id = p.id
+  WHERE users_id=$1
+  AND checked_out=false;
+  `,
+    [userId]
+  );
+
+  return rows;
+}
+
+
+
+
 module.exports = {
   createCart,
   getAllCarts,
@@ -192,4 +212,5 @@ module.exports = {
   getActiveCartByUserId,
   getOrderHistoryByUserId,
   doesCartExist,
+  activeCartProducts,
 };

@@ -7,6 +7,7 @@ const {
   getCartProductsQuantity,
   createOrUpdateCartProduct,
   deleteOrderItem,
+  getProductIdForOrderItem
 } = require("../db");
 
 orderItemsRouter.use((req, res, next) => {
@@ -44,24 +45,22 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   const { quantity } = req.body;
   const { id } = req.id;
 
-  const productQuantity = await getProductQuantity(orderItemId);
-  if (productQuantity === null) {
+  const productId = await getProductIdForOrderItem(orderItemId);
+  console.log(productId);
+
+  const productInventory = await getProductQuantity(productId);
+  if (productInventory === null) {
     throw new Error("Product not found.");
   }
 
-  const cart = await getActiveCartByUserId(id);
-  const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
-
   let quantityToUpdate = quantity;
+  const cart = await getActiveCartByUserId(id);
+  const cartQuantity = await getCartProductsQuantity(productId, cart.id);
 
-  if (productQuantity - quantityToUpdate <= 0 && quantityToUpdate > 0) {
-    quantityToUpdate = productQuantity;
-  }
-
-  if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
-    const newProductQuantity = productQuantity + cartQuantity;
+  if (quantityToUpdate <= 0) {
+    const newProductQuantity = productInventory + cartQuantity;
     const itemDeleted = await deleteOrderItem(
-      orderItemId,
+      productId,
       cart.id,
       newProductQuantity
     );
@@ -73,15 +72,23 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
       //Not Found
       res.sendStatus(404);
     }
-  } else {
-    const cartProduct = await createOrUpdateCartProduct(
-      cart.id,
-      orderItemId,
-      quantityToUpdate
-    );
-
-    res.json(cartProduct);
+    return;
   }
+
+  if (
+    quantityToUpdate > cartQuantity &&
+    productInventory - (quantityToUpdate - cartQuantity) < 0
+  ) {
+    quantityToUpdate = productInventory;
+  }
+
+  const cartProduct = await createOrUpdateCartProduct(
+    cart.id,
+    productId,
+    quantityToUpdate
+  );
+
+  res.json(cartProduct);
 });
 
 orderItemsRouter.delete(
