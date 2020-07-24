@@ -20,11 +20,7 @@ import {
 
 const Footer = (props) => {
   return(
-  <Segment
-  inverted
-  vertical
-  // attached="bottom"
-  style={{ padding: '5em 0em'}}>
+  <Segment inverted vertical style={{ padding: '5em 0em', margin: '3em 0em 0em 0em', position: 'fixed'}}>
     <Container>
       <Grid divided inverted stackable>
         <Grid.Row>

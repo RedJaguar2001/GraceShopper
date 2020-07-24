@@ -34,7 +34,7 @@ const HomepageHeading = ({ mobile }) => {
         }}>
         <Image
             src="https://www.foodiesfeed.com/wp-content/uploads/2019/02/cheese-with-honey-salty-biscuits-and-grapes.jpg"
-            fluid
+
             centered
             />
 
@@ -63,7 +63,7 @@ const HomepageHeading = ({ mobile }) => {
         />
         <Button
           primary
-          color='grey'
+          color
           size='huge'
           onClick={() => history.push("/products")}>
           See What We Offer
@@ -155,21 +155,7 @@ class MobileContainer extends Component {
             style={{ minHeight: 350, padding: '1em 0em' }}
             vertical
           >
-            <Container>
-              <Menu inverted pointing secondary size='large'>
-                <Menu.Item onClick={this.handleToggle}>
-                  <Icon name='sidebar' />
-                </Menu.Item>
-                <Menu.Item position='right'>
-                  <Button as='a' inverted>
-                    Log in
-                  </Button>
-                  <Button as='a' inverted>
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            </Container>
+
             <HomepageHeading mobile />
           </Segment>
 
@@ -198,103 +184,91 @@ ResponsiveContainer.propTypes = {
 const HomepageLayout = () => (
 <ResponsiveContainer>
   <div>
-    <Segment
-      vertical
-      style={{
-        backgroundColor: "gold",
-        margin: "2em 0em 0em",
-        padding: "3em 0em",
-      }}
-    >
-    </Segment>
-
-
-
-  <Segment style={{ padding: '8em 0em' }} vertical>
-      <Grid container stackable verticalAlign='middle'>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              We Help Companies and Companions
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              We can give your company superpowers to do things that they never thought possible.
-              Let us delight your customers and empower your needs... through pure data analytics.
-            </p>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              We Make Cheese That Can Dance
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              Yes that's right, you thought it was the stuff of dreams, but even cheese can be
-              bioengineered.
-            </p>
-          </Grid.Column>
-          <Grid.Column floated='right' width={6}>
-            <Image bordered rounded size='large' src='https://images.unsplash.com/photo-1452195100486-9cc805987862?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto' />
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column textAlign='center'>
-            <Button size='huge'>Check Them Out</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
-
-  <Segment style={{ padding: '0em' }} vertical>
-      <Grid celled='internally' columns='equal' stackable>
-        <Grid.Row textAlign='center'>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              "What a Company"
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
-          </Grid.Column>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as='h3' style={{ fontSize: '2em' }}>
-              "If you're looking for the highest quality cheese, look no further."
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              <Image avatar src='https://images.pexels.com/photos/2494654/pexels-photo-2494654.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260' size='tiny'/>
-              <b>Jeff DuFromage</b> Chief Fun Officer Cheese Factory
-            </p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Segment>
-
     <Segment style={{ padding: '8em 0em' }} vertical>
-      <Container text>
-        <Header as='h3' style={{ fontSize: '2em' }}>
-          Cutting the Cheese, Grabs Your Attention
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          We love cheese, especially cottage cheese brie. Goat cheese on toast when the cheese comes out everybody's happy croque monsieur caerphilly swiss cheese slices cheese strings. Parmesan queso cheese strings blue cheese goat stilton swiss cut the cheese. Blue cheese say cheese chalk and cheese the big cheese cheesy feet fondue.
-        </p>
-        <Button as='a' size='large'>
-          Read More
-        </Button>
+        <Grid container stackable verticalAlign='middle'>
+          <Grid.Row>
+            <Grid.Column width={8}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                We Help Companies and Companions
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                We can give your company superpowers to do things that they never thought possible.
+                Let us delight your customers and empower your needs... through pure data analytics.
+              </p>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                We Make Cheese That Can Dance
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                Yes that's right, you thought it was the stuff of dreams, but even cheese can be
+                bioengineered.
+              </p>
+            </Grid.Column>
+            <Grid.Column floated='right' width={6}>
+              <Image bordered rounded size='large' src='https://images.unsplash.com/photo-1452195100486-9cc805987862?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto' />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column textAlign='center'>
+              <Button size='huge'>Check Them Out</Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
 
-        <Divider
-          as='h4'
-          className='header'
-          horizontal
-          style={{ margin: '3em 0em', textTransform: 'uppercase' }}
-        >
-          <a href='#'>Artisan Cheese</a>
-        </Divider>
+    <Segment style={{ padding: '0em' }} vertical>
+        <Grid celled='internally' columns='equal' stackable>
+          <Grid.Row textAlign='center'>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                "What a Company"
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>That is what they all say about us</p>
+            </Grid.Column>
+            <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+              <Header as='h3' style={{ fontSize: '2em' }}>
+                "If you're looking for the highest quality cheese, look no further."
+              </Header>
+              <p style={{ fontSize: '1.33em' }}>
+                <Image avatar src='https://images.pexels.com/photos/2494654/pexels-photo-2494654.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260' size='tiny'/>
+                <b>Jeff DuFromage</b> Chief Fun Officer Cheese Factory
+              </p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
 
-        <Header as='h3' style={{ fontSize: '2em' }}>
-          Did We Tell You About Our Cheese?
-        </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Yes when the cheese comes out everybody's happy cottage cheese. Macaroni cheese bocconcini danish fontina bocconcini pecorino ricotta pepper jack cheesy grin fromage brie cheesy grin halloumi fromage frais he cheese bocconcini cheese and biscuits.
-        </p>
-        <Button as='a' size='large' >
-          I'm Still Quite Interested
-        </Button>
-      </Container>
-     </Segment>
+      <Segment style={{ padding: '8em 0em' }} vertical>
+        <Container text>
+          <Header as='h3' style={{ fontSize: '2em' }}>
+            Cutting the Cheese, Grabs Your Attention
+          </Header>
+          <p style={{ fontSize: '1.33em' }}>
+            We love cheese, especially cottage cheese brie. Goat cheese on toast when the cheese comes out everybody's happy croque monsieur caerphilly swiss cheese slices cheese strings. Parmesan queso cheese strings blue cheese goat stilton swiss cut the cheese. Blue cheese say cheese chalk and cheese the big cheese cheesy feet fondue.
+          </p>
+          <Button as='a' size='large'>
+            Read More
+          </Button>
+
+          <Divider
+            as='h4'
+            className='header'
+            horizontal
+            style={{ margin: '3em 0em', textTransform: 'uppercase' }}
+          >
+            <a href='#'>Artisan Cheese</a>
+          </Divider>
+
+          <Header as='h3' style={{ fontSize: '2em' }}>
+            Did We Tell You About Our Cheese?
+          </Header>
+          <p style={{ fontSize: '1.33em' }}>
+            Yes when the cheese comes out everybody's happy cottage cheese. Macaroni cheese bocconcini danish fontina bocconcini pecorino ricotta pepper jack cheesy grin fromage brie cheesy grin halloumi fromage frais he cheese bocconcini cheese and biscuits.
+          </p>
+          <Button as='a' size='large' >
+            I'm Still Quite Interested
+          </Button>
+        </Container>
+      </Segment>
      </div>
 </ResponsiveContainer>
 );
