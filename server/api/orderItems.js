@@ -75,8 +75,6 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
     return;
   }
 
-  console.log("cartqty", cartQuantity);
-
   if (
     quantityToUpdate > cartQuantity &&
     productInventory - (quantityToUpdate - cartQuantity) < 0

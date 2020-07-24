@@ -272,6 +272,48 @@ async function createInitialProduct() {
       price: "7.25",
       inventory: "50",
     });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
+    await createProduct({
+      title: "Bleu Cheese",
+      description: "smells like old socks, tastes also like old socks",
+      price: "7.25",
+      inventory: "50",
+    });
   } catch (error) {
     console.error(error);
     throw error;
@@ -316,8 +358,8 @@ async function createUserDetails() {
     await createDetails({
       fullAddress: "715 Ridge San Luis Obispo, CA 93405",
       billingAddress: "715 Ridge San Luis Obispo, CA 93405",
-      firstname: "Patrick-Vincent",
-      lastname: "Herrera",
+      firstName: "Patrick-Vincent",
+      lastName: "Herrera",
       phoneNumber: "8057103189",
     });
   } catch (error) {

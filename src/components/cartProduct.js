@@ -27,7 +27,7 @@ const CartProduct = ({ cartItem, removeItemFromCart, updateItemQuantity }) => {
                 updateItemQuantity(id, product_id, quantity, data.value * 1);
               }}/>
               <Item.Extra>
-                <Button><Icon name='heart'/>Save for later</Button>
+                {/* <Button><Icon name='heart'/>Save for later</Button> */}
               </Item.Extra>
             </Item.Content>
           </Item>

@@ -87,7 +87,7 @@ async function isCartEmpty(cartId) {
   const { rows } = await client.query(
     `SELECT id
      FROM carts_products
-     WHERE product_id = $1;`,
+     WHERE carts_id = $1;`,
 
     [cartId]
   );

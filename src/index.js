@@ -75,16 +75,20 @@ const App = () => {
         <Route path="/products" exact>
           <SearchBar search={search} setSearch={setSearch} />
 
-          <Products products={filteredProducts} setProducts={setProducts} />
+          <Products products={filteredProducts} setProducts={setProducts} activeCart={activeCart} setActiveCart={setActiveCart}/>
         </Route>
 
         <Route path="/products/:productId" exact component={ProductDetails} />
 
         <Route path='/cart' exact>
-          <Order activeCart={activeCart} setActiveCart={setActiveCart} products={products} setProducts={setProducts}/>
+          <Order activeCart={activeCart} setActiveCart={setActiveCart} products={products} setProducts={setProducts} />
         </Route>
 
         <Route path="/orderhistory" exact component={OrderHistory} />
+
+        <Route path="/checkout" exact>
+          <FormForCheckout activeCart={activeCart} setActiveCart={setActiveCart}/>
+        </Route>
       </Switch>
     </Router>
   );

@@ -25,10 +25,7 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     };
 
-    console.log('currentqty', currentQty);
-    console.log('newqty', newQty);
     axios.put(`/api/orderItems/${id}`, {quantity: newQty}, bearer).then((response) => {
-      // console.log('response', response)
       if(response.status === 204) {
         setActiveCart(
           activeCart.filter((cartItem) => {
@@ -81,10 +78,9 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
             <Card.Content>
               <Card.Header style={{
                 marginBottom: '1em'
-                }}>Sub-total:<Icon floated='right' name='dollar' />{activeCart.reduce((acc, element) => {
-                  console.log(activeCart);
-                  return acc + (element.quantity * element.price);
-                }, 0)}</Card.Header>
+                }}>Sub-total:<Icon floated='right' name='dollar' />{(activeCart.reduce((acc, element) => {
+                  return (acc + (element.quantity * element.price));
+                }, 0)).toFixed(2)}</Card.Header>
               <Card.Header>FREE Delivery!</Card.Header>
             </Card.Content>
             <Divider horizontal>Say Cheese!</Divider>

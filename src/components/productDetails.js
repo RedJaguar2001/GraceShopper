@@ -23,6 +23,10 @@ const productDetails = () => {
     });
   }, []);
 
+  const addToCart = () => {
+    updateItemQuantity(id, product_id, quantity, data.value * 1);
+  }
+
   const { title, description, price, inventory, image } = product;
 
   return (
@@ -46,7 +50,7 @@ const productDetails = () => {
                   <Icon name="dollar" />
                   {price}
                 </Label>
-                <Button content="Add to Cart" floated="right" compact />
+                <Button content="Add to Cart" floated="right" compact onClick={addToCart}/>
               </Card.Content>
             </Card>
           </Grid.Column>
