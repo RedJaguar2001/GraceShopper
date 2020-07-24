@@ -5,7 +5,7 @@ import { Button, Form, Input, Segment, Dropdown } from "semantic-ui-react";
 
 const SearchBar = (props) => {
   console.log("in search", props.search, props.setSearch);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([{key: 'all', text: 'all', value: 'all'}]);
 
   const handleSelect = (event) => {
     console.log(event);
@@ -59,11 +59,8 @@ const SearchBar = (props) => {
               search
               selection
               options={categories}
+              value={props.category}
              />
-            <DropDownSelection onSelect={handleSelect}>
-              categories={categories}
-              setCategories={setCategories}
-            </DropDownSelection>
           </Form.Field>
         </Form.Group>
       </Form>

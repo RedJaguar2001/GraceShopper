@@ -7,7 +7,6 @@ const {
   updateProduct,
   deleteProduct,
   getProductById,
-  getProductsByCategory,
   getAllUsers,
   createDetails,
   createUser,
@@ -111,7 +110,8 @@ async function createTables() {
       CREATE TABLE product_categories (
         id SERIAL PRIMARY KEY,
         product_id INTEGER REFERENCES products(id),
-        category_id INTEGER REFERENCES categories(id)
+        category_id INTEGER REFERENCES categories(id),
+        UNIQUE(product_id, category_id)
         );
     `);
 
@@ -283,29 +283,38 @@ async function createInitialProduct() {
   }
 }
 
-async function createProductCategory(productId, category_id) {
+async function createProductCategory(product_id, category_id) {
   try {
     await client.query(
       `
-    INSERT INTO product_categories("productId", category_id)
+    INSERT INTO product_categories(product_id, category_id)
     VALUES ($1, $2)
-    ON CONFLICT ("productId", category_id) DO NOTHING;
+    ON CONFLICT (product_id, category_id) DO NOTHING;
     `,
-      [productId, category_id]
+      [product_id, category_id]
     );
   } catch (error) {
+    console.log('error in createProductCategory');
     throw error;
   }
 }
 
+// id SERIAL PRIMARY KEY,
+//         users_id integer REFERENCES users(id),
+//         first_name varchar(255) NOT NULL,
+//         last_name varchar(255) NOT NULL,
+//         full_address varchar(255) NOT NULL,
+//         billing_address varchar(255) NOT NULL,
+//         phone_number NUMERIC NOT NULL
+
 async function createUserDetails() {
   try {
     await createDetails({
-      fullAddress: "715 Ridge San Luis Obispo, CA 93405",
-      billingAddress: "715 Ridge San Luis Obispo, CA 93405",
-      firstname: "Patrick-Vincent",
-      lastname: "Herrera",
-      phoneNumber: "8057103189",
+      full_address: "715 Ridge San Luis Obispo, CA 93405",
+      billing_address: "715 Ridge San Luis Obispo, CA 93405",
+      first_name: "Patrick-Vincent",
+      last_name: "Herrera",
+      phone_number: "8057103189",
     });
   } catch (error) {
     console.error(error);
@@ -385,6 +394,26 @@ async function createInitialImage() {
   }
 }
 
+
+async function createInitialProductCategories() {
+  try {
+    const products = await client.query(`SELECT * FROM products;`);
+    const categories = await client.query(`SELECT * FROM categories;`);
+      console.log('productrows', products.rows)
+      console.log('categoryrows', categories.rows)
+    const productCategoryPromises = [];
+
+    products.rows.forEach((product, i)=>{
+      productCategoryPromises.push(createProductCategory(product.id, categories.rows[i % categories.rows.length].id));
+      productCategoryPromises.push(createProductCategory(product.id, categories.rows[(i + 1) % categories.rows.length].id));
+    });
+
+    await Promise.all(productCategoryPromises);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 async function rebuildDB(force = true) {
   try {
     client.connect();
@@ -427,9 +456,6 @@ async function testDB() {
     const getProduct = await getProductById(2);
     console.log("gotten product:", getProduct);
 
-    const ProductsByCategory = await getProductsByCategory();
-    console.log("productsByCategory:", ProductsByCategory);
-
     const users = await getAllUsers();
     console.log("getAllUsers result:", users);
 
@@ -451,6 +477,8 @@ async function testDB() {
     } else {
       console.log("Deletion unsuccessful :(");
     }
+
+    await createInitialProductCategories();
 
     console.log("Done testing database...");
   } catch (error) {

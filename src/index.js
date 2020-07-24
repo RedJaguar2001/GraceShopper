@@ -16,8 +16,16 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
+  const [category, setCategory] = useState('all');
 
   let filteredProducts = products;
+
+  if(category.length && category !== 'all') {
+    filteredProducts = filteredProducts.filter((product)=>{
+      return product.categories.includes(category);
+    })
+  }
+
   if (search.length) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.title.toLowerCase().startsWith(search.toLowerCase());
@@ -53,7 +61,11 @@ const App = () => {
         <Route path="/" exact={true} component={HomepageLayout} />
 
         <Route path="/products" exact>
-          <SearchBar search={search} setSearch={setSearch} />
+          <SearchBar
+          search={search}
+          setSearch={setSearch}
+          category={category}
+          setCategory={setCategory} />
 
           <Products products={filteredProducts} setProducts={setProducts} />
         </Route>

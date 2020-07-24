@@ -2,13 +2,22 @@ const { client } = require("./client");
 
 async function getAllProducts() {
   const { rows } = await client.query(`
-          SELECT *
+          SELECT p.*, c.name
           FROM products p
           LEFT JOIN product_categories pc ON pc.product_id=p.id
           LEFT JOIN categories c ON pc.category_id=c.id;
           `);
 
-  return rows;
+  const productObjects = rows.reduce((acc, {id, title, description, price, inventory, name})=> {
+    if(!acc[id]){
+      acc[id] = {id, title, description, price, inventory, categories: [name]}
+    } else {
+      acc[id].categories.push(name);
+    }
+    return acc;
+  }, {});
+  
+  return Object.values(productObjects);
 }
 //Associate a product with at least one category
 //After that, map the rows returned from getAllProducts into something more useful (look at the data structure)
@@ -174,7 +183,6 @@ module.exports = {
   createProduct,
   updateProduct,
   getProductById,
-  getProductsByCategory,
   deleteProduct,
   getProductQuantity,
 };
