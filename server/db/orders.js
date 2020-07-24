@@ -3,7 +3,7 @@ const { client } = require("./client");
 async function createCart(userId) {
   try {
     const {
-      rows: [cart],
+      rows: [cart]
     } = await client.query(
       `
       INSERT INTO carts (users_id)
@@ -52,7 +52,7 @@ async function updateCart(id, fields = {}) {
 
   try {
     const {
-      rows: [cart],
+      rows: [cart]
     } = await client.query(
       `Update carts
     SET ${setString}
@@ -71,7 +71,7 @@ async function updateCart(id, fields = {}) {
 async function getCartById(cartId) {
   try {
     const {
-      rows: [cart],
+      rows: [cart]
     } = await client.query(
       `
     SELECT * FROM carts
@@ -83,7 +83,7 @@ async function getCartById(cartId) {
     if (!cart) {
       throw {
         name: "CartNotFoundError",
-        description: "Could not find cart with that cartId",
+        description: "Could not find cart with that cartId"
       };
     }
     return cart;
@@ -96,7 +96,7 @@ async function getCartById(cartId) {
 async function getActiveCartByUserId(userId) {
   try {
     const {
-      rows: [cart],
+      rows: [cart]
     } = await client.query(
       `
     SELECT * FROM carts
@@ -116,11 +116,6 @@ async function getActiveCartByUserId(userId) {
   }
 }
 
-// id: 2
-// price: "1"
-// product_id: 2
-// quantity: 5
-// title: "American Cheese"
 async function getOrderHistoryByUserId(userId) {
   try {
     const { rows: carts } = await client.query(
@@ -141,7 +136,7 @@ async function getOrderHistoryByUserId(userId) {
             productId: product_id,
             quantity,
             price,
-            title,
+            title
           };
 
           if (id in acc) {
@@ -149,7 +144,7 @@ async function getOrderHistoryByUserId(userId) {
           } else {
             acc[id] = {
               id,
-              products: [cartProduct],
+              products: [cartProduct]
             };
           }
 
@@ -171,7 +166,7 @@ async function doesCartExist(userId) {
   }
 
   const {
-    rows: [cart],
+    rows: [cart]
   } = await client.query(
     `
     SELECT id FROM carts
@@ -183,6 +178,21 @@ async function doesCartExist(userId) {
   return !!cart;
 }
 
+async function activeCartProducts(userId) {
+  const { rows } = await client.query(
+    `
+  SELECT * FROM carts c
+  LEFT JOIN carts_products cp ON c.id = cp.carts_id
+  LEFT JOIN products p ON cp.product_id = p.id
+  WHERE users_id=$1
+  AND checked_out=false;
+  `,
+    [userId]
+  );
+
+  return rows;
+}
+
 module.exports = {
   createCart,
   getAllCarts,
@@ -192,4 +202,5 @@ module.exports = {
   getActiveCartByUserId,
   getOrderHistoryByUserId,
   doesCartExist,
+  activeCartProducts
 };

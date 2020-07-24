@@ -9,6 +9,8 @@ import {
   ProductDetails,
   HomepageLayout,
   Nav,
+  FormForCheckout,
+  Order,
 } from "./components";
 
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
   const [category, setCategory] = useState('all');
+  const [activeCart, setActiveCart] = useState([]);
 
   let filteredProducts = products;
 
@@ -32,8 +35,25 @@ const App = () => {
   }
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const bearer = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      console.log("about to request cart");
+      axios.get("/api/orders/cart", bearer).then((res) => {
+        const activeCartsList = res.data;
+        console.log("kevins cart", activeCartsList);
+        setActiveCart(activeCartsList);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     axios.get("/api/products").then((res) => {
       const prodList = res.data.products;
+      console.log("product list", prodList);
+
       return setProducts(prodList);
     });
   }, []);
@@ -65,13 +85,47 @@ const App = () => {
             category={category}
             setCategory={setCategory} />
 
-            <Products products={filteredProducts} setProducts={setProducts} />
+            <Products
+              products={filteredProducts}
+              setProducts={setProducts}
+              activeCart={activeCart}
+              setActiveCart={setActiveCart}
+            />
           </Route>
 
-          <Route path="/products/:productId" exact component={ProductDetails} />
+          <Route
+            path="/products/:productId"
+            exact
+            render={(props) => {
+              return (
+                <ProductDetails
+                  {...props}
+                  products={products}
+                  setProducts={setProducts}
+                  activeCart={activeCart}
+                  setActiveCart={setActiveCart}
+                />
+              );
+            }}
+          />
+        <Route path="/cart" exact>
+          <Order
+            activeCart={activeCart}
+            setActiveCart={setActiveCart}
+            products={products}
+            setProducts={setProducts}
+          />
+        </Route>
 
-          <Route path="/orderhistory" exact component={OrderHistory} />
-        </Switch>
+        <Route path="/orderhistory" exact component={OrderHistory} />
+
+        <Route path="/checkout" exact>
+          <FormForCheckout
+            activeCart={activeCart}
+            setActiveCart={setActiveCart}
+          />
+        </Route>
+      </Switch>
     </Router>
   );
 };
