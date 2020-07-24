@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react';
 import { useHistory } from "react-router-dom";
+import { Footer } from './index'
 
 import {
   Button,
@@ -63,7 +64,7 @@ const HomepageHeading = ({ mobile }) => {
         />
         <Button
           primary
-          color
+          color='grey'
           size='huge'
           onClick={() => history.push("/products")}>
           See What We Offer
@@ -269,6 +270,7 @@ const HomepageLayout = () => (
           </Button>
         </Container>
       </Segment>
+      <Footer/>
      </div>
 </ResponsiveContainer>
 );

@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 
 
 import {
-  Button,
   Container,
   Divider,
   Grid,
@@ -20,7 +19,7 @@ import {
 
 const Footer = (props) => {
   return(
-  <Segment inverted vertical style={{ padding: '5em 0em', margin: '3em 0em 0em 0em', position: 'fixed'}}>
+  <Segment inverted vertical style={{ padding: '5em 0em', margin: '3em 0em 0em 0em'}}>
     <Container>
       <Grid divided inverted stackable>
         <Grid.Row>

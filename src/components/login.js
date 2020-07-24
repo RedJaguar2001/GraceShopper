@@ -64,7 +64,7 @@ const Login = (props) => {
       <Menu.Item position="right">
         <Modal
           dimmer="blurring"
-          trigger={<Button marginLeft="0.5em">Register</Button>}
+          trigger={<Button marginleft="0.5em">Register</Button>}
           basic
           size="small"
         >

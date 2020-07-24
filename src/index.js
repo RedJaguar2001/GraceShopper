@@ -10,15 +10,23 @@ import {
   HomepageLayout,
   Nav,
   FormForCheckout,
-  Footer,
+  Footer
 } from "./components";
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
+  const [category, setCategory] = useState('all');
 
   let filteredProducts = products;
+
+  if(category.length && category !== 'all') {
+    filteredProducts = filteredProducts.filter((product)=>{
+      return product.categories.includes(category);
+    })
+  }
+
   if (search.length) {
     filteredProducts = filteredProducts.filter((product) => {
       return product.title.toLowerCase().startsWith(search.toLowerCase());
@@ -49,21 +57,23 @@ const App = () => {
   return (
     <Router>
       <Nav user={user} setUser={setUser} />
+        <Switch>
+          <Route path="/" exact={true} component={HomepageLayout} />
 
-      <Switch>
-        <Route path="/" exact={true} component={HomepageLayout} />
+          <Route path="/products" exact>
+            <SearchBar
+            search={search}
+            setSearch={setSearch}
+            category={category}
+            setCategory={setCategory} />
 
-        <Route path="/products" exact>
-          <SearchBar search={search} setSearch={setSearch} />
+            <Products products={filteredProducts} setProducts={setProducts} />
+          </Route>
 
-          <Products products={filteredProducts} setProducts={setProducts} />
-        </Route>
+          <Route path="/products/:productId" exact component={ProductDetails} />
 
-        <Route path="/products/:productId" exact component={ProductDetails} />
-
-        <Route path="/orderhistory" exact component={OrderHistory} />
-      </Switch>
-      <Footer />
+          <Route path="/orderhistory" exact component={OrderHistory} />
+        </Switch>
     </Router>
   );
 };
