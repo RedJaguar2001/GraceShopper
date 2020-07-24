@@ -20,6 +20,8 @@ const {
   createReview,
   updateReview,
   createProductImage,
+  getActiveCartByUserId,
+  createOrUpdateCartProduct
 } = require("./index");
 
 async function dropTables() {
@@ -157,36 +159,101 @@ async function createInitialImages() {
     await createImage({
       title: "Swiss cheese",
       img_src:
-        "https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg",
+        "https://www.ecosystemmarketplace.com/wp-content/uploads/2019/11/Swiss-Cheese.jpg"
     });
 
     await createImage({
       title: "String Cheese",
       img_src:
-        "https://vaya.in/recipes/wp-content/uploads/2018/06/String-Cheese.jpg",
+        "https://vaya.in/recipes/wp-content/uploads/2018/06/String-Cheese.jpg"
     });
 
     await createImage({
       title: "Nacho Cheese",
       img_src:
-        "https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG",
+        "https://3.bp.blogspot.com/-WYAtV46vDRg/UiFQQvekJkI/AAAAAAAAhaw/HvG8J7ay6ik/s1600/IMG_4515.JPG"
     });
 
     await createImage({
       title: "Bleu Cheese",
       img_src:
-        "https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574",
+        "https://images.immediate.co.uk/production/volatile/sites/4/2019/10/GettyImages-596053834-c-9c9505d.jpg?quality=90&resize=768,574"
     });
 
     await createImage({
       title: "PepperJack Cheese",
       img_src:
-        "https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg",
+        "https://www.culturesforhealth.com/learn/wp-content/uploads/2016/04/Pepper-Jack-Cheese-Recipe_header.jpg"
     });
 
     await createImage({
       title: "American Cheese",
-      img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg",
+      img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg"
+    });
+
+    await createImage({
+      title: "Cheddar Cheese",
+      img_src:
+        "https://www.hickoryfarms.com/dw/image/v2/AAOA_PRD/on/demandware.static/-/Sites-Web-Master-Catalog/default/dw3013ac58/images/products/smoked-cheddar-blend-3037-1.jpg?sw=815&sh=815&sm=fit"
+    });
+
+    await createImage({
+      title: "Cheese Board",
+      img_src:
+        "https://assets.pbimgs.com/pbimgs/ab/images/dp/wcm/202015/0006/chateau-acacia-wood-cheese-boards-c.jpg"
+    });
+
+    await createImage({
+      title: "Cheese Knives",
+      img_src:
+        "https://images-na.ssl-images-amazon.com/images/I/61zeuZNMWzL._AC_SL1500_.jpg"
+    });
+
+    await createImage({
+      title: "Cheese Markers",
+      img_src:
+        "https://cdn.shopify.com/s/files/1/0095/2912/products/DSC_5434_1024x1024.jpg?v=1543344176"
+    });
+
+    await createImage({
+      title: "Parmesan Cheese",
+      img_src:
+        "https://www.thespruceeats.com/thmb/nfMcJB5tlMZTWOVXP4b4FqqbQ6M=/1414x1414/smart/filters:no_upscale()/Parmesan-cheese-GettyImages-117078872-5873ca725f9b584db3463216.jpg"
+    });
+
+    await createImage({
+      title: "Mozzarella Cheese",
+      img_src:
+        "https://www.gourmetfoodstore.com/images/product/large/6421_1_.jpg"
+    });
+
+    await createImage({
+      title: "Ricotta Cheese",
+      img_src:
+        "https://www.culinaryhill.com/wp-content/uploads/2019/02/How-to-Make-Ricotta-Cheese-Culinary-Hill-Square-HR-07-e1579202065634.jpg"
+    });
+
+    await createImage({
+      title: "Brie Cheese",
+      img_src:
+        "https://cdn.shopify.com/s/files/1/2836/2982/products/brie-recipe_grande.jpg?v=1533088694"
+    });
+
+    await createImage({
+      title: "Tete de Moine Cheese",
+      img_src: "https://www.igourmet.com/images/productsLG/tetedemoine.jpg"
+    });
+
+    await createImage({
+      title: "Muenster Cheese",
+      img_src:
+        "https://cdn.shopify.com/s/files/1/0150/0232/products/Pearl_Valley_Meunster_Slices_grande.jpg?v=1534870969"
+    });
+
+    await createImage({
+      title: "Cream Cheese",
+      img_src:
+        "https://www.willcookforsmiles.com/wp-content/uploads/2019/11/Cream-Cheese-Frosting-4-1-of-1.jpg"
     });
   } catch (error) {
     console.error(error);
@@ -200,25 +267,25 @@ async function createInitialUsers() {
       name: "Kevin H",
       username: "khassenkamp",
       password: "kevin123",
-      email: "kevinH@redjags.com",
+      email: "kevinH@redjags.com"
     });
     await createUser({
       name: "Brian B",
       username: "brian",
       password: "password",
-      email: "brian",
+      email: "brian"
     });
     await createUser({
       name: "Jasmine H",
       username: "jasmineh",
       password: "jasmine123",
-      email: "jasmine@redjags.com",
+      email: "jasmine@redjags.com"
     });
     await createUser({
       name: "Patrick H",
       username: "patrick",
       password: "patrick",
-      email: "patrick",
+      email: "patrick"
     });
   } catch (error) {
     console.error(error);
@@ -229,53 +296,95 @@ async function createInitialUsers() {
 async function createInitialProduct() {
   try {
     await createProduct({
-      title: "Test Cheese",
-      description: "Don't get testy with me!",
-      price: "12.80",
-      inventory: "50",
-    });
-    await createProduct({
       title: "American Cheese",
       description:
         "Daft Deli Reflux American Cheese Slices are Great on burgers and that's probably it. Enjoy some sliced American cheese with a new improved non-grainy texture and not much flavor that goes great on burgers like we said, just burgers. Comes Pre-sliced because you're too lazy to take two seconds to cut, that's why it's called American Cheese! Draft Deli Reflux cheese is made with ingredients. Our slices contain content. For optimum flavor, don't eat. Our sliced reflux American cheese elevates any burger for 4th of July or Labor Day BBQs. Note: do not attempt to eat without burger patty.",
       price: "17.76",
-      inventory: "50",
+      inventory: "50"
     });
     await createProduct({
       title: "String Cheese",
       description: "Stringy",
       price: ".99",
-      inventory: "50",
+      inventory: "50"
     });
     await createProduct({
       title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
-      inventory: "25",
+      inventory: "50"
     });
     await createProduct({
       title: "Pepperjack Cheese",
       description: "Monterey Jack with a little kick",
       price: "4.99",
-      inventory: "10",
+      inventory: "50"
     });
     await createProduct({
       title: "Swiss Cheese",
       description: "holy",
       price: "2.00",
-      inventory: "12",
+      inventory: "50"
     });
     await createProduct({
-      title: "Bleu Cheese",
-      description: "smells like old socks, tastes also like old socks",
-      price: "7.25",
-      inventory: "13",
+      title: "Parmesan Cheese",
+      description: "Everybody's favorite topper",
+      price: "3.99",
+      inventory: "50"
     });
     await createProduct({
-      title: "Delete-able Cheese",
-      description: "Delete me.",
-      price: "0.25",
-      inventory: "2000",
+      title: "Mozzarella Cheese",
+      description: "What else are you gonna make pizza with?",
+      price: "3.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Ricotta Cheese",
+      description: "Creamy and delicious!",
+      price: "2.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Brie Cheese",
+      description: "Tastes better than it looks",
+      price: "6.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Tete de Moine Cheese",
+      description: "Faancy!",
+      price: "49.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "MuensterCheese",
+      description: "Perfect for all your grilled cheese needs!",
+      price: "3.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Cream Cheese",
+      description: "The perfect pair to every bagel",
+      price: "2.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Cheese Board",
+      description: "Handcrafted wooden board to display cheese",
+      price: "25.00",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Cheese Knives",
+      description: "Knives perfect for cutting the cheese",
+      price: "9.99",
+      inventory: "50"
+    });
+    await createProduct({
+      title: "Cheese Markers",
+      description: "Describes your cheese in case you forgot",
+      price: "4.99",
+      inventory: "50"
     });
   } catch (error) {
     console.error(error);
@@ -299,13 +408,20 @@ async function createProductCategory(product_id, category_id) {
   }
 }
 
-// id SERIAL PRIMARY KEY,
-//         users_id integer REFERENCES users(id),
-//         first_name varchar(255) NOT NULL,
-//         last_name varchar(255) NOT NULL,
-//         full_address varchar(255) NOT NULL,
-//         billing_address varchar(255) NOT NULL,
-//         phone_number NUMERIC NOT NULL
+async function createKevinCart() {
+  const users = await getAllUsers();
+  const kevin = users.find(
+    (user) => user.name === "Kevin H"
+  )
+
+  const activeCart = await getActiveCartByUserId(kevin.id);
+
+  const products = await getAllProducts();
+
+  await Promise.all(products.map(
+    (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
+  ))
+};
 
 async function createUserDetails() {
   try {
@@ -325,22 +441,22 @@ async function createUserDetails() {
 async function createInitialCategories() {
   try {
     await createCategory({
-      categoryName: "Stinky",
+      categoryName: "Stinky"
     });
     await createCategory({
-      categoryName: "Aged",
+      categoryName: "Aged"
     });
     await createCategory({
-      categoryName: "Hard",
+      categoryName: "Hard"
     });
     await createCategory({
-      categoryName: "Soft",
+      categoryName: "Soft"
     });
     await createCategory({
-      categoryName: "Smokey",
+      categoryName: "Smokey"
     });
     await createCategory({
-      categoryName: "Fresh",
+      categoryName: "Fresh"
     });
 
     console.log("done creating initial categories");
@@ -356,21 +472,14 @@ async function createInitialReviews() {
       body: "I think this cheese has gone bad, delicious though.",
       rating: 4,
       userId: 1,
-      productId: 6,
+      productId: 6
     });
     await createReview({
       title: "low quality",
       body: "rips to shreds when I pull on it",
       rating: 2,
       userId: 2,
-      productId: 2,
-    });
-    await createReview({
-      title: "Test Delete Review",
-      body: "If this is still in the DB, you done messed up.",
-      rating: 1,
-      userId: 3,
-      productId: 8,
+      productId: 2
     });
   } catch (error) {
     throw error;
@@ -384,8 +493,18 @@ async function createInitialImage() {
     await createProductImage(1, 6);
     await createProductImage(2, 2);
     await createProductImage(3, 3);
-    await createProductImage(6, 4);
+    await createProductImage(6, 11);
     await createProductImage(5, 1);
+    await createProductImage(4, 5);
+    await createProductImage(7, 12);
+    await createProductImage(8, 13);
+    await createProductImage(9, 14);
+    await createProductImage(10, 15);
+    await createProductImage(11, 16);
+    await createProductImage(12, 17);
+    await createProductImage(13, 8);
+    await createProductImage(14, 9);
+    await createProductImage(15, 10);
 
     console.log("Finished creating image");
   } catch (error) {
@@ -430,6 +549,7 @@ async function rebuildDB(force = true) {
     await createInitialImages();
     await createInitialReviews();
     await createInitialImage();
+    await createKevinCart();
   } catch (error) {
     console.error(error);
     throw error;
@@ -445,13 +565,13 @@ async function testDB() {
     console.log("getAllProducts result:", products);
 
     console.log("Calling updateProducts...");
-    const updatedProduct = await updateProduct(products[3].id, {
-      title: "Cheddar Cheese",
-      description: "Yummy in my tummy",
-      price: "4.99",
-      inventory: "5",
-    });
-    console.log("updateProduct result:", updatedProduct);
+    // const updatedProduct = await updateProduct(products[3].id, {
+    //   title: "Cheddar Cheese",
+    //   description: "Yummy in my tummy",
+    //   price: "4.99",
+    //   inventory: "50",
+    // });
+    // console.log("updateProduct result:", updatedProduct);
 
     const getProduct = await getProductById(2);
     console.log("gotten product:", getProduct);
@@ -471,12 +591,12 @@ async function testDB() {
     const reviews = await getAllReviews();
     console.log("getAllReviews results: ", reviews);
 
-    const deletedProduct = await deleteProduct(8);
-    if (deletedProduct) {
-      console.log("successfully deleted product with ID: ", 8);
-    } else {
-      console.log("Deletion unsuccessful :(");
-    }
+    // const deletedProduct = await deleteProduct(8);
+    // if (deletedProduct) {
+    //   console.log("successfully deleted product with ID: ", 8);
+    // } else {
+    //   console.log("Deletion unsuccessful :(");
+    // }
 
     await createInitialProductCategories();
 

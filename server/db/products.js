@@ -16,7 +16,7 @@ async function getAllProducts() {
     }
     return acc;
   }, {});
-  
+
   return Object.values(productObjects);
 }
 //Associate a product with at least one category
