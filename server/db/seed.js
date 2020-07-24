@@ -190,6 +190,11 @@ async function createInitialImages() {
       title: "American Cheese",
       img_src: "https://cdn.schwans.com/media/images/products/62172-1-1540.jpg",
     });
+
+    await createImage({
+      title: "Cheddar Cheese",
+      img_src: "https://www.hickoryfarms.com/dw/image/v2/AAOA_PRD/on/demandware.static/-/Sites-Web-Master-Catalog/default/dw3013ac58/images/products/smoked-cheddar-blend-3037-1.jpg?sw=815&sh=815&sm=fit"
+    })
   } catch (error) {
     console.error(error);
     throw error;
@@ -247,31 +252,25 @@ async function createInitialProduct() {
       title: "Nacho Cheese",
       description: "It's my cheese! Nacho cheese!",
       price: "3.49",
-      inventory: "25",
+      inventory: "50",
     });
     await createProduct({
       title: "Pepperjack Cheese",
       description: "Monterey Jack with a little kick",
       price: "4.99",
-      inventory: "10",
+      inventory: "50",
     });
     await createProduct({
       title: "Swiss Cheese",
       description: "holy",
       price: "2.00",
-      inventory: "12",
+      inventory: "50",
     });
     await createProduct({
       title: "Bleu Cheese",
       description: "smells like old socks, tastes also like old socks",
       price: "7.25",
-      inventory: "13",
-    });
-    await createProduct({
-      title: "Delete-able Cheese",
-      description: "Delete me.",
-      price: "0.25",
-      inventory: "2000",
+      inventory: "50",
     });
   } catch (error) {
     console.error(error);
@@ -391,6 +390,7 @@ async function createInitialImage() {
     await createProductImage(3, 3);
     await createProductImage(6, 4);
     await createProductImage(5, 1);
+    await createProductImage(4, 7)
 
     console.log("Finished creating image");
   } catch (error) {

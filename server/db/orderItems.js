@@ -20,13 +20,24 @@ async function createOrUpdateCartProduct(cartId, productId, quantity) {
         INSERT INTO carts_products (product_id, carts_id, quantity, price)
         VALUES($1, $2, $3, $4)
         ON CONFLICT (product_id, carts_id)
-        DO UPDATE SET quantity = EXCLUDED.quantity + carts_products.quantity
+        DO UPDATE SET quantity = $3
         RETURNING *;
     `,
     [productId, cartId, quantity, price]
   );
 
   return cartProduct;
+}
+
+async function getProductIdForOrderItem(id) {
+  const {rows} = await client.query(`
+    SELECT product_id
+    FROM carts_products
+    WHERE id=$1;
+    `, [id]);
+
+    console.log('in DB orderitems', rows)
+  return rows[0].product_id;
 }
 
 async function getCartProductsQuantity(productId, cartId) {
@@ -91,5 +102,6 @@ module.exports = {
   createOrUpdateCartProduct,
   getCartProductsQuantity,
   deleteOrderItem,
-  isCartEmpty
+  isCartEmpty,
+  getProductIdForOrderItem,
 }

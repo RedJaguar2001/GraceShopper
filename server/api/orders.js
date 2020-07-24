@@ -11,8 +11,20 @@ const {
   getOrderHistoryByUserId,
   isCartEmpty,
   getUserInfo,
-  createDetails
+  createDetails,
+  activeCartProducts
 } = require('../db');
+
+ordersRouter.get('/cart', verifyToken, async(req, res, next) => {
+  try {
+    const activeCart = await activeCartProducts(req.id.id);
+    console.log('kevins active cart', activeCart)
+    res.json(activeCart);
+
+  } catch(error) {
+    next(error)
+  }
+});
 
 ordersRouter.use((req, res, next) => {
   console.log("A request is being made to /orders");

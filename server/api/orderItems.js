@@ -7,6 +7,7 @@ const {
   getCartProductsQuantity,
   createOrUpdateCartProduct,
   deleteOrderItem,
+  getProductIdForOrderItem
 } = require("../db");
 
 orderItemsRouter.use((req, res, next) => {
@@ -17,7 +18,7 @@ orderItemsRouter.use((req, res, next) => {
 // This route creates an upsert vs insert. Meaning we could potentially update an existing cart_product or create a new one. Must be careful not to insert duplicate cart_product on the front end.
 orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
   const { productId, quantity } = req.body;
-  const {id} = req.id;
+  const { id } = req.id;
   const productQuantity = await getProductQuantity(productId);
   if (productQuantity === null) {
     throw new Error("Product not found.");
@@ -42,26 +43,24 @@ orderItemsRouter.post("/", verifyToken, async (req, res, next) => {
 orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   const { orderItemId } = req.params;
   const { quantity } = req.body;
-  const {id} = req.id;
+  const { id } = req.id;
 
-  const productQuantity = await getProductQuantity(orderItemId);
-  if (productQuantity === null) {
+  const productId = await getProductIdForOrderItem(orderItemId);
+  console.log(productId);
+
+  const productInventory = await getProductQuantity(productId);
+  if (productInventory === null) {
     throw new Error("Product not found.");
   }
 
-  const cart = await getActiveCartByUserId(id);
-  const cartQuantity = await getCartProductsQuantity(orderItemId, cart.id);
-
   let quantityToUpdate = quantity;
+  const cart = await getActiveCartByUserId(id);
+  const cartQuantity = await getCartProductsQuantity(productId, cart.id);
 
-  if (productQuantity - quantityToUpdate <= 0 && quantityToUpdate > 0) {
-    quantityToUpdate = productQuantity;
-  }
-
-  if (cartQuantity + quantityToUpdate <= 0 && quantityToUpdate < 0) {
-    const newProductQuantity = productQuantity + cartQuantity;
+  if (quantityToUpdate <= 0) {
+    const newProductQuantity = productInventory + cartQuantity;
     const itemDeleted = await deleteOrderItem(
-      orderItemId,
+      productId,
       cart.id,
       newProductQuantity
     );
@@ -73,16 +72,26 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
       //Not Found
       res.sendStatus(404);
     }
-  } else {
-    const cartProduct = await createOrUpdateCartProduct(
-      cart.id,
-      orderItemId,
-      quantityToUpdate
-    );
-  
-    res.json(cartProduct);
+    return;
   }
 
+  console.log("cartqty", cartQuantity);
+
+  if (
+    quantityToUpdate > cartQuantity &&
+    productInventory - (quantityToUpdate - cartQuantity) < 0
+  ) {
+    quantityToUpdate = productInventory;
+  }
+  console.log("qtyToUpdate", quantityToUpdate);
+
+  const cartProduct = await createOrUpdateCartProduct(
+    cart.id,
+    productId,
+    quantityToUpdate
+  );
+
+  res.json(cartProduct);
 });
 
 orderItemsRouter.delete(
@@ -90,7 +99,7 @@ orderItemsRouter.delete(
   verifyToken,
   async (req, res, next) => {
     const { orderItemId } = req.params;
-    const {id} = req.id;
+    const { id } = req.id;
 
     const productQuantity = await getProductQuantity(orderItemId);
     if (productQuantity === null) {
