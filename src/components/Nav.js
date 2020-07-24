@@ -9,8 +9,9 @@ const Nav = (props) => {
 
   return (
     <Menu
+      attached="top"
       style={{
-        backgroundColor: "yellow",
+        backgroundColor: "gold",
       }}
     >
       <Menu.Item

@@ -4,12 +4,12 @@
   "description": "Grace Shopper Project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 1 craco test",
     "start:client": "webpack --watch",
     "seed": "node ./server/db/seed.js",
     "server:dev": "node-dev --respawn ./server/",
-    "build": "webpack --mode=\"production\"",
-    "start": "node ./server/index.js"
+    "build": "webpack --mode=\"production\" craco build",
+    "start": "node ./server/index.js craco start"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,12 @@
   "devDependencies": {
     "@babel/core": "^7.10.5",
     "@babel/preset-react": "^7.10.4",
+    "@craco/craco": "^5.6.4",
+    "@semantic-ui-react/craco-less": "^1.2.1",
     "babel-loader": "^8.1.0",
     "faker": "^4.1.0",
+    "prettier": "2.0.5",
+    "semantic-ui-less": "^2.4.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12"
   },

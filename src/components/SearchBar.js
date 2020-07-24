@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { Button, Form, Input, Segment, Dropdown } from "semantic-ui-react";
+import {
+  Form,
+  Dropdown }
+  from "semantic-ui-react";
 
 const SearchBar = (props) => {
   console.log("in search", props.search, props.setSearch);

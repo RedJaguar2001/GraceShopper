@@ -75,41 +75,39 @@ const App = () => {
   return (
     <Router>
       <Nav user={user} setUser={setUser} />
+        <Switch>
+          <Route path="/" exact={true} component={HomepageLayout} />
 
-      <Switch>
-        <Route path="/" exact={true} component={HomepageLayout} />
+          <Route path="/products" exact>
+            <SearchBar
+            search={search}
+            setSearch={setSearch}
+            category={category}
+            setCategory={setCategory} />
 
-        <Route path="/products" exact>
-          <SearchBar
-          search={search}
-          setSearch={setSearch}
-          category={category}
-          setCategory={setCategory} />
+            <Products
+              products={filteredProducts}
+              setProducts={setProducts}
+              activeCart={activeCart}
+              setActiveCart={setActiveCart}
+            />
+          </Route>
 
-          <Products
-            products={filteredProducts}
-            setProducts={setProducts}
-            activeCart={activeCart}
-            setActiveCart={setActiveCart}
+          <Route
+            path="/products/:productId"
+            exact
+            render={(props) => {
+              return (
+                <ProductDetails
+                  {...props}
+                  products={products}
+                  setProducts={setProducts}
+                  activeCart={activeCart}
+                  setActiveCart={setActiveCart}
+                />
+              );
+            }}
           />
-        </Route>
-
-        <Route
-          path="/products/:productId"
-          exact
-          render={(props) => {
-            return (
-              <ProductDetails
-                {...props}
-                products={products}
-                setProducts={setProducts}
-                activeCart={activeCart}
-                setActiveCart={setActiveCart}
-              />
-            );
-          }}
-        />
-
         <Route path="/cart" exact>
           <Order
             activeCart={activeCart}
