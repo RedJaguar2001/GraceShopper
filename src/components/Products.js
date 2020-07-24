@@ -7,7 +7,7 @@ const Products = ({ products, setProducts, activeCart, setActiveCart }) => {
   return (
     <CardGroup itemsPerRow={5}>
       {products.map((product) => {
-        return <ProductCard key={product.id} product={product} activeCart={activeCart} setActiveCart={setActiveCart}/>;
+        return <ProductCard key={product.id} product={product} products={products} setProducts={setProducts} activeCart={activeCart} setActiveCart={setActiveCart}/>;
       })}
     </CardGroup>
   );

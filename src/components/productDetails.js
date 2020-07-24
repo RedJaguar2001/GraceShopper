@@ -12,7 +12,12 @@ import {
   Image,
 } from "semantic-ui-react";
 
-const productDetails = () => {
+const productDetails = ({
+  products,
+  setProducts,
+  activeCart,
+  setActiveCart,
+}) => {
   const { productId } = useParams();
   const [product, setProduct] = useState({});
 
@@ -24,8 +29,34 @@ const productDetails = () => {
   }, []);
 
   const addToCart = () => {
-    updateItemQuantity(id, product_id, quantity, data.value * 1);
-  }
+    const bearer = {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    };
+
+    axios
+      .post(`/api/orderItems/`, { productId: productId, quantity: 1 }, bearer)
+      .then((response) => {
+        console.log(response.data);
+        setActiveCart([
+          ...activeCart,
+          {
+            description: product.description,
+            title: product.title,
+            ...response.data,
+          },
+        ]);
+
+        setProducts(
+          products.map((product) => {
+            if (product.id === productId) {
+              return { ...product, quantity: product.quantity - 1 };
+            } else {
+              return product;
+            }
+          })
+        );
+      });
+  };
 
   const { title, description, price, inventory, image } = product;
 
@@ -50,7 +81,12 @@ const productDetails = () => {
                   <Icon name="dollar" />
                   {price}
                 </Label>
-                <Button content="Add to Cart" floated="right" compact onClick={addToCart}/>
+                <Button
+                  content="Add to Cart"
+                  floated="right"
+                  compact
+                  onClick={addToCart}
+                />
               </Card.Content>
             </Card>
           </Grid.Column>

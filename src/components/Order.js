@@ -21,6 +21,7 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
   }
 
   const updateItemQuantity = (id, productId, currentQty, newQty) => {
+    console.log(`${id}-${productId}-${currentQty}-${newQty}`);
     const bearer = {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
     };
@@ -55,7 +56,7 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
           }
         })
       )
-    })
+    }).catch(console.error)
   }
 
   return (
