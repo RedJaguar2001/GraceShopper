@@ -103,6 +103,6 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
       </Grid>
     </Container>
   );
-}
+};
 
 export default Order;

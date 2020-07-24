@@ -55,7 +55,6 @@ async function getCartProductsQuantity(productId, cartId) {
   return cartProduct ? cartProduct.quantity : 0;
 }
 
-
 async function deleteOrderItem(productId, cartId, quantity) {
   const {
     rows: [cartProduct],
@@ -85,18 +84,15 @@ async function deleteOrderItem(productId, cartId, quantity) {
 }
 
 async function isCartEmpty(cartId) {
-
-  const {rows} = await client.query(
-
+  const { rows } = await client.query(
     `SELECT id
      FROM carts_products
      WHERE product_id = $1;`,
 
-     [cartId]
+    [cartId]
   );
-  return rows.length===0
+  return rows.length === 0;
 }
-
 
 module.exports = {
   createOrUpdateCartProduct,

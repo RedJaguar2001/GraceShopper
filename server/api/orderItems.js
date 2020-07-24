@@ -83,7 +83,6 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   ) {
     quantityToUpdate = productInventory;
   }
-  console.log("qtyToUpdate", quantityToUpdate);
 
   const cartProduct = await createOrUpdateCartProduct(
     cart.id,

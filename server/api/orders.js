@@ -82,14 +82,13 @@ ordersRouter.patch("/:ordersId", async (req, res, next) => {
   }
 });
 
-
 ordersRouter.delete("/:id"),
   async (req, res, next) => {
     const { id } = req.params;
     try {
       const deletedOrder = await deletedOrder(id);
       res.send({
-        message: `deleting order ${deletedOrder ? "succesful" : "failed"}`,
+        message: `deleting order ${deletedOrder ? "successful" : "failed"}`,
         status: deletedOrder,
       });
     } catch (error) {
@@ -97,30 +96,40 @@ ordersRouter.delete("/:id"),
     }
   };
 
-ordersRouter.post("/checkout", verifyToken, async(req, res, next) => {
- try{
-  const activeCart = await getActiveCartByUserId(req.id.id);
+ordersRouter.post("/checkout", verifyToken, async (req, res, next) => {
+  try {
+    const activeCart = await getActiveCartByUserId(req.id.id);
 
+    if (await isCartEmpty(activeCart.id)) {
+      return res.status(400).json({
+        error: "Cannot checkout empty cart",
+      });
+    }
 
-  if(await isCartEmpty(activeCart.id)){
-    return res.status(400).json({
-      error: "Cannot checkout empty cart"
-    })
+    await updateCart(activeCart.id, { checked_out: true });
+
+    const {
+      firstName,
+      lastName,
+      fullAddress,
+      billingAddress,
+      phoneNumber,
+    } = req.body;
+
+    const usersInfo = {
+      firstName,
+      lastName,
+      fullAddress,
+      billingAddress,
+      phoneNumber,
+    };
+
+    await createDetails(usersInfo);
+
+    res.sendStatus(200);
+  } catch (error) {
+    next(error);
   }
-
-  await updateCart(activeCart.id, {checked_out:true})
-
-  const {firstname, lastname, fulladdress, billingaddress, phonenumber} = req.body;
-
-  const usersinfo = { firstname, lastname, fulladdress, billingaddress, phonenumber};
-
-  await createDetails(usersinfo);
-
-  res.sendStatus(200)
-  }catch(error){
-  next(error)
- }
-})
+});
 
 module.exports = ordersRouter;
-

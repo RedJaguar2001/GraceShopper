@@ -17,7 +17,7 @@ const Login = (props) => {
     axios.post("api/users/register", state).then((res) => {
       const userData = res.data;
       localStorage.setItem("token", userData.token);
-      setState({})
+      setState({});
       return setUser(userData.user);
     });
   }
@@ -35,7 +35,7 @@ const Login = (props) => {
 
   async function handleLogout(event) {
     event.preventDefault();
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser({});
   }
 
@@ -61,7 +61,6 @@ const Login = (props) => {
                 label="Full Name"
                 placeholder="Full Name"
                 name="name"
-                // value={state.name}
                 onChange={handleChange}
                 required
               />
@@ -69,7 +68,6 @@ const Login = (props) => {
                 label="Username"
                 placeholder="Username"
                 name="username"
-                // value={state.username}
                 onChange={handleChange}
                 required
               />
@@ -77,15 +75,14 @@ const Login = (props) => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                // value={state.email}
                 onChange={handleChange}
                 required
               />
               <Form.Input
+                type="password"
                 label="Password"
                 placeholder="Password"
                 name="password"
-                // value={state.password}
                 onChange={handleChange}
                 required
               />
@@ -106,15 +103,14 @@ const Login = (props) => {
                 label="Email"
                 placeholder="Email"
                 name="email"
-                // value={state.email}
                 onChange={handleChange}
                 required
               />
               <Form.Input
+                type="password"
                 label="Password"
                 placeholder="Password"
                 name="password"
-                // value={state.password}
                 onChange={handleChange}
                 required
               />
