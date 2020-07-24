@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react';
-
+import { useHistory } from "react-router-dom";
 
 import {
   Button,
@@ -24,40 +24,53 @@ const getWidth = () => {
   return isSSR ? Responsive.onlyTablet.minWidth : window.innerWidth
 }
 
-const HomepageHeading = ({ mobile }) => (
-  <Container fluid>
-
-    <Header
-      as='h1'
-      content='Welcome to Cheese Wizards'
-      inverted
-      style={{
-        fontSize: mobile ? '2em' : '4em',
-        fontWeight: 'normal',
-        marginBottom: 0,
-        marginTop: mobile ? '1.5em' : '1em',
-      }}
-    />
-    <Image
-        src="https://www.foodiesfeed.com/wp-content/uploads/2019/02/cheese-with-honey-salty-biscuits-and-grapes.jpg"
+const HomepageHeading = ({ mobile }) => {
+  const history = useHistory();
+    return (
+      <Container
         fluid
-      />
-    <Header
-      as='h2'
-      content='We cut the cheese.'
-      inverted
-      style={{
-        fontSize: mobile ? '1.5em' : '1.7em',
-        fontWeight: 'normal',
-        marginTop: mobile ? '0.5em' : '1.5em',
-      }}
-    />
-    <Button primary size='huge'>
-      See What We Offer
-      <Icon name='right arrow' />
-    </Button>
-  </Container>
-)
+        style={{
+          backgroundColor: "transparent"
+        }}>
+        <Image
+            src="https://www.foodiesfeed.com/wp-content/uploads/2019/02/cheese-with-honey-salty-biscuits-and-grapes.jpg"
+            fluid
+            centered
+            />
+
+        <Header
+          as='h1'
+          content='Welcome to Cheese Wizards'
+          inverted
+          style={{
+            fontSize: mobile ? '2em' : '4em',
+            fontWeight: 'normal',
+            marginBottom: 0,
+            marginTop: mobile ? '1.5em' : '1em',
+            backgroundColor: "transparent"
+          }}
+        />
+
+        <Header
+          as='h2'
+          content='We cut the cheese.'
+          inverted
+          style={{
+            fontSize: mobile ? '1.5em' : '1.7em',
+            fontWeight: 'normal',
+            marginTop: mobile ? '0.5em' : '1.5em',
+          }}
+        />
+        <Button
+          primary
+          color='grey'
+          size='huge'
+          onClick={() => history.push("/products")}>
+          See What We Offer
+          <Icon name='right arrow' />
+        </Button>
+      </Container>
+)}
 
 HomepageHeading.propTypes = {
   mobile: PropTypes.bool,
@@ -86,31 +99,6 @@ class DesktopContainer extends Component {
             style={{ minHeight: 700, padding: '1em 0em' }}
             vertical
           >
-            <Menu
-              fixed={fixed ? 'top' : null}
-              inverted={!fixed}
-              pointing={!fixed}
-              secondary={!fixed}
-              size='large'
-            >
-              <Container>
-                <Menu.Item as='a' active>
-                  Home
-                </Menu.Item>
-                <Menu.Item as='a'>Products</Menu.Item>
-                <Menu.Item as='a'>User Profile</Menu.Item>
-                <Menu.Item as='a'>Cart</Menu.Item>
-                <Menu.Item position='right'>
-                  <Button as='a' inverted={!fixed}
-                  >
-                    Log in
-                  </Button>
-                  <Button as='a' inverted={!fixed} primary={fixed} style={{ marginLeft: '0.5em' }}>
-                    Sign Up
-                  </Button>
-                </Menu.Item>
-              </Container>
-            </Menu>
             <HomepageHeading />
           </Segment>
         </Visibility>
@@ -176,7 +164,7 @@ class MobileContainer extends Component {
                   <Button as='a' inverted>
                     Log in
                   </Button>
-                  <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
+                  <Button as='a' inverted>
                     Sign Up
                   </Button>
                 </Menu.Item>
@@ -210,14 +198,6 @@ ResponsiveContainer.propTypes = {
 const HomepageLayout = () => (
 <ResponsiveContainer>
   <div>
-    {/* <Container text style={{ marginTop: "7em" }}>
-      <Header as="h1">WELCOME TO CHEESE WIZARDS</Header>
-      <p>At Cheese-Wizards, we are all about the cheese</p>
-      <p>
-        Founded in 2015 in California, we offer the best of the best...cheese
-      </p>
-    </Container> */}
-
     <Segment
       vertical
       style={{
@@ -272,7 +252,7 @@ const HomepageLayout = () => (
           </Grid.Column>
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
             <Header as='h3' style={{ fontSize: '2em' }}>
-              "I shouldn't have gone with their competitor."
+              "If you're looking for the highest quality cheese, look no further."
             </Header>
             <p style={{ fontSize: '1.33em' }}>
               <Image avatar src='https://images.pexels.com/photos/2494654/pexels-photo-2494654.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260' size='tiny'/>
@@ -310,7 +290,7 @@ const HomepageLayout = () => (
         <p style={{ fontSize: '1.33em' }}>
           Yes when the cheese comes out everybody's happy cottage cheese. Macaroni cheese bocconcini danish fontina bocconcini pecorino ricotta pepper jack cheesy grin fromage brie cheesy grin halloumi fromage frais he cheese bocconcini cheese and biscuits.
         </p>
-        <Button as='a' size='large'>
+        <Button as='a' size='large' >
           I'm Still Quite Interested
         </Button>
       </Container>

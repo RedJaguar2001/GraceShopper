@@ -23,8 +23,8 @@ const Footer = (props) => {
   <Segment
   inverted
   vertical
-  attached='bottom'
-  style={{ padding: '5em 0em' }}>
+  // attached="bottom"
+  style={{ padding: '5em 0em'}}>
     <Container>
       <Grid divided inverted stackable>
         <Grid.Row>

@@ -64,7 +64,7 @@ const Login = (props) => {
       <Menu.Item position="right">
         <Modal
           dimmer="blurring"
-          trigger={<Button style={{ marginLeft: '0.5em' }}>Register</Button>}
+          trigger={<Button marginLeft="0.5em">Register</Button>}
           basic
           size="small"
         >
@@ -106,7 +106,7 @@ const Login = (props) => {
         </Modal>
         <Modal
           dimmer="blurring"
-          trigger={<Button>Login</Button>}
+          trigger={<Button  as='a' primary style={{ marginLeft: '0.5em' }}>Login</Button>}
           basic
           size="small"
         >
