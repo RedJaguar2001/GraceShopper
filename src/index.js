@@ -85,11 +85,17 @@ const App = () => {
         <Route
           path="/products/:productId"
           exact
-          component={ProductDetails}
-          products={products}
-          setProducts={setProducts}
-          activeCart={activeCart}
-          setActiveCart={setActiveCart}
+          render={(props) => {
+            return (
+              <ProductDetails
+                {...props}
+                products={products}
+                setProducts={setProducts}
+                activeCart={activeCart}
+                setActiveCart={setActiveCart}
+              />
+            );
+          }}
         />
 
         <Route path="/cart" exact>
