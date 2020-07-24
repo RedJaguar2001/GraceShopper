@@ -407,20 +407,20 @@ async function createProductCategory(productId, category_id) {
   }
 }
 
-// async function createKevinCart() {
-//   const users = await getAllUsers();
-//   const kevin = users.find(
-//     (user) => user.name === "Kevin H"
-//   )
+async function createKevinCart() {
+  const users = await getAllUsers();
+  const kevin = users.find(
+    (user) => user.name === "Kevin H"
+  )
 
-//   const activeCart = await getActiveCartByUserId(kevin.id);
+  const activeCart = await getActiveCartByUserId(kevin.id);
 
-//   const products = await getAllProducts();
+  const products = await getAllProducts();
 
-//   await Promise.all(products.map(
-//     (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
-//   ))
-// };
+  await Promise.all(products.map(
+    (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
+  ))
+};
 
 async function createUserDetails() {
   try {
