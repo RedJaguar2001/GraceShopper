@@ -204,5 +204,3 @@ module.exports = {
   doesCartExist,
   activeCartProducts
 };
-
-// LEFT JOIN products_images pi ON pi.productId = p.id

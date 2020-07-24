@@ -27,14 +27,14 @@ const CartProduct = ({ cartItem, removeItemFromCart, updateItemQuantity }) => {
       }}
     >
       <Item>
-        <Item.Image
+        {/* <Item.Image
           as="a"
           src={
             !image
               ? "https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555359686/shape/mentalfloss/cheesefinal.jpg?itok=rL-I9_bI"
               : image.img_src
           }
-        />
+        /> */}
 
         <Item.Content>
           <Item.Header>
