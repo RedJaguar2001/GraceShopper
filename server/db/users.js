@@ -71,11 +71,11 @@ async function getAllUsers() {
 }
 
 async function createDetails({
-  firstName,
-  lastName,
-  fullAddress,
-  billingAddress,
-  phoneNumber
+  first_name,
+  last_name,
+  full_address,
+  billing_address,
+  phone_number
 }) {
   try {
     const {
@@ -86,7 +86,7 @@ async function createDetails({
             VALUES ($1, $2, $3, $4, $5)
             RETURNING *;
             `,
-      [firstName, lastName, fullAddress, billingAddress, phoneNumber]
+      [first_name, last_name, full_address, billing_address, phone_number]
     );
 
     return userDetails;

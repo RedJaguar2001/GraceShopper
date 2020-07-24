@@ -1,22 +1,28 @@
 const { client } = require("./client");
 
 async function getAllProducts() {
-  // const { rows } = await client.query(`
-  //         SELECT *
-  //         FROM products;
-  //         `);
+  const { rows } = await client.query(`
+          SELECT p.*, c.name
+          FROM products p
+          LEFT JOIN product_categories pc ON pc.product_id=p.id
+          LEFT JOIN categories c ON pc.category_id=c.id;
+          `);
 
-  const { rows: productsIds } = await client.query(`
-    SELECT id
-    FROM products;
-    `);
+  const productObjects = rows.reduce((acc, {id, title, description, price, inventory, name})=> {
+    if(!acc[id]){
+      acc[id] = {id, title, description, price, inventory, categories: [name]}
+    } else {
+      acc[id].categories.push(name);
+    }
+    return acc;
+  }, {});
 
-  const products = await Promise.all(productsIds.map(
-    product => getProductById( product.id )
-  ))
-
-  return products;
+  return Object.values(productObjects);
 }
+//Associate a product with at least one category
+//After that, map the rows returned from getAllProducts into something more useful (look at the data structure)
+// {...productcolumns, categories (an array of strings where each string is a cteogry //that the prodoct belongs to)}
+//on the front end, use category state and .categories to filter the products before filtering by search state
 
 async function getProductById(productId) {
   try {
@@ -55,27 +61,6 @@ async function getProductById(productId) {
     return product;
   } catch (error) {
     console.error(error);
-    throw error;
-  }
-}
-
-//connect product to product_category, and then product_category to category by the appropriate keys, then just select the product.id where category.name is correct
-async function getProductsByCategory(categoryName) {
-  try {
-    const { rows: productIds } = await client.query(
-      `
-      SELECT products.id FROM products
-      JOIN product_categories ON products.id=product_categories.product_Id
-      JOIN categories ON categories.id=product_categories.category_Id
-      WHERE categories.name=$1;
-    `,
-      [categoryName]
-    );
-
-    return await Promise.all(
-      productIds.map((product) => getProductById(product.id))
-    );
-  } catch (error) {
     throw error;
   }
 }
@@ -198,7 +183,6 @@ module.exports = {
   createProduct,
   updateProduct,
   getProductById,
-  getProductsByCategory,
   deleteProduct,
   getProductQuantity,
 };
