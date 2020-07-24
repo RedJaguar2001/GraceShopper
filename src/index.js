@@ -17,15 +17,15 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [user, setUser] = useState({});
-  const [category, setCategory] = useState('all');
+  const [category, setCategory] = useState("all");
   const [activeCart, setActiveCart] = useState([]);
 
   let filteredProducts = products;
 
-  if(category.length && category !== 'all') {
-    filteredProducts = filteredProducts.filter((product)=>{
+  if (category.length && category !== "all") {
+    filteredProducts = filteredProducts.filter((product) => {
       return product.categories.includes(category);
-    })
+    });
   }
 
   if (search.length) {
@@ -75,39 +75,40 @@ const App = () => {
   return (
     <Router>
       <Nav user={user} setUser={setUser} />
-        <Switch>
-          <Route path="/" exact={true} component={HomepageLayout} />
+      <Switch>
+        <Route path="/" exact={true} component={HomepageLayout} />
 
-          <Route path="/products" exact>
-            <SearchBar
+        <Route path="/products" exact>
+          <SearchBar
             search={search}
             setSearch={setSearch}
             category={category}
-            setCategory={setCategory} />
-
-            <Products
-              products={filteredProducts}
-              setProducts={setProducts}
-              activeCart={activeCart}
-              setActiveCart={setActiveCart}
-            />
-          </Route>
-
-          <Route
-            path="/products/:productId"
-            exact
-            render={(props) => {
-              return (
-                <ProductDetails
-                  {...props}
-                  products={products}
-                  setProducts={setProducts}
-                  activeCart={activeCart}
-                  setActiveCart={setActiveCart}
-                />
-              );
-            }}
+            setCategory={setCategory}
           />
+
+          <Products
+            products={filteredProducts}
+            setProducts={setProducts}
+            activeCart={activeCart}
+            setActiveCart={setActiveCart}
+          />
+        </Route>
+
+        <Route
+          path="/products/:productId"
+          exact
+          render={(props) => {
+            return (
+              <ProductDetails
+                {...props}
+                products={products}
+                setProducts={setProducts}
+                activeCart={activeCart}
+                setActiveCart={setActiveCart}
+              />
+            );
+          }}
+        />
         <Route path="/cart" exact>
           <Order
             activeCart={activeCart}

@@ -1,5 +1,4 @@
 const { client } = require("./client");
-const { getProductById } = require("./index");
 
 async function createImage({ title, img_src }) {
   try {
