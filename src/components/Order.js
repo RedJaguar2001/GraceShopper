@@ -8,7 +8,7 @@ import {
   Card,
   Item,
   Image,
-  Input
+  Input,
 } from "semantic-ui-react";
 import { CartProduct } from "./index";
 import axios from "axios";
@@ -17,13 +17,13 @@ import { useHistory } from "react-router-dom";
 const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
   const history = useHistory();
 
-  const removeItemFromCart = id => {
+  const removeItemFromCart = (id) => {
     const bearer = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
     axios.delete(`/api/orderItems/${id}`, bearer).then(() => {
       setActiveCart(
-        activeCart.filter(cartItem => {
+        activeCart.filter((cartItem) => {
           return cartItem.id !== id;
         })
       );
@@ -31,22 +31,23 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
   };
 
   const updateItemQuantity = (id, productId, currentQty, newQty) => {
+    console.log(`${id}-${productId}-${currentQty}-${newQty}`);
     const bearer = {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
 
     axios
       .put(`/api/orderItems/${id}`, { quantity: newQty }, bearer)
-      .then(response => {
+      .then((response) => {
         if (response.status === 204) {
           setActiveCart(
-            activeCart.filter(cartItem => {
+            activeCart.filter((cartItem) => {
               return cartItem.id !== id;
             })
           );
         } else {
           setActiveCart(
-            activeCart.map(cartItem => {
+            activeCart.map((cartItem) => {
               if (cartItem.id === id) {
                 return { ...cartItem, quantity: response.data.quantity };
               } else {
@@ -59,7 +60,7 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
         const quantityDiff = newQty - currentQty;
 
         setProducts(
-          products.map(product => {
+          products.map((product) => {
             if (product.id === productId) {
               return { ...product, quantity: product.quantity - quantityDiff };
             } else {
@@ -67,20 +68,21 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
             }
           })
         );
-      });
+      })
+      .catch(console.error);
   };
 
   return (
     <Container
       style={{
         marginTop: "5em",
-        backgroundColor: "black"
+        backgroundColor: "black",
       }}
     >
       <Grid columns={2} divided>
         <Grid.Column>
           <Item.Header style={{ marginLeft: "1em" }}>MY CART</Item.Header>
-          {activeCart.map(cartItem => {
+          {activeCart.map((cartItem) => {
             return (
               <CartProduct
                 key={cartItem.id}
@@ -99,7 +101,7 @@ const Order = ({ activeCart, setActiveCart, products, setProducts }) => {
             <Card.Content>
               <Card.Header
                 style={{
-                  marginBottom: "1em"
+                  marginBottom: "1em",
                 }}
               >
                 Sub-total:

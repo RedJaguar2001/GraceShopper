@@ -1,49 +1,47 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Card, Icon, Image, Label, Button } from "semantic-ui-react";
-import axios from 'axios';
+import axios from "axios";
 
-const ProductCard = ({ product, activeCart, setActiveCart }) => {
+const ProductCard = ({
+  product,
+  products,
+  setProducts,
+  activeCart,
+  setActiveCart,
+}) => {
   const { id, title, description, price, inventory, image } = product;
   const history = useHistory();
 
-  const updateItemQuantity = (id, productId, currentQty, newQty) => {
+  const addToCart = () => {
     const bearer = {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     };
 
-    axios.put(`/api/orderItems/${id}`, {quantity: newQty}, bearer).then((response) => {
-      if(response.status === 204) {
-        setActiveCart(
-          activeCart.filter((cartItem) => {
-            return cartItem.id !== id;
-          })
-        )
-      } else {
-        setActiveCart(
-          activeCart.map((cartItem) => {
-            if(cartItem.id === id) {
-              return {...cartItem, quantity: response.data.quantity};
+    axios
+      .post(`/api/orderItems/`, { productId: id, quantity: 1 }, bearer)
+      .then((response) => {
+        console.log(response.data);
+        setActiveCart([
+          ...activeCart,
+          {
+            description: product.description,
+            title: product.title,
+            ...response.data,
+          },
+        ]);
+
+        setProducts(
+          products.map((product) => {
+            if (product.id === id) {
+              return { ...product, quantity: product.quantity - 1 };
             } else {
-              return cartItem;
+              return product;
             }
           })
-        )
-      }
-
-      const quantityDiff = (newQty - currentQty)  
-
-      setProducts(
-        products.map((product) => {
-          if(product.id === productId) {
-            return {...product, quantity: product.quantity - quantityDiff}
-          } else {
-            return product;
-          }
-        })
-      )
-    })
-  }
+        );
+      });
+  };
 
   return (
     <Card raised link key={id}>
@@ -71,7 +69,13 @@ const ProductCard = ({ product, activeCart, setActiveCart }) => {
           <Icon name="dollar" />
           {price}
         </Label>
-        <Button content="Add to Cart" floated="right" compact size="small" onClick={updateItemQuantity}/>
+        <Button
+          content="Add to Cart"
+          floated="right"
+          compact
+          size="small"
+          onClick={addToCart}
+        />
       </Card.Content>
     </Card>
   );
