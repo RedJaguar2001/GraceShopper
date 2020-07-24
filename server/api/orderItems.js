@@ -7,7 +7,8 @@ const {
   getCartProductsQuantity,
   createOrUpdateCartProduct,
   deleteOrderItem,
-  getProductIdForOrderItem
+  getProductIdForOrderItem,
+  getProductById,
 } = require("../db");
 
 orderItemsRouter.use((req, res, next) => {
@@ -46,7 +47,12 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
   const { id } = req.id;
 
   const productId = await getProductIdForOrderItem(orderItemId);
-  console.log(productId);
+
+  const product = await getProductById(productId);
+  console.log('productId', productId);
+  console.log('api product', product)
+
+
 
   const productInventory = await getProductQuantity(productId);
   if (productInventory === null) {
@@ -87,6 +93,7 @@ orderItemsRouter.put("/:orderItemId", verifyToken, async (req, res, next) => {
     productId,
     quantityToUpdate
   );
+  cartProduct.image = product.image;
 
   res.json(cartProduct);
 });
