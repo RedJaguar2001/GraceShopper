@@ -261,37 +261,37 @@ async function createInitialImages() {
   }
 }
 
-async function createInitialUsers() {
-  try {
-    await createUser({
-      name: "Kevin H",
-      username: "khassenkamp",
-      password: "kevin123",
-      email: "kevinH@redjags.com"
-    });
-    await createUser({
-      name: "Brian B",
-      username: "brian",
-      password: "password",
-      email: "brian"
-    });
-    await createUser({
-      name: "Jasmine H",
-      username: "jasmineh",
-      password: "jasmine123",
-      email: "jasmine@redjags.com"
-    });
-    await createUser({
-      name: "Patrick H",
-      username: "patrick",
-      password: "patrick",
-      email: "patrick"
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
+// async function createInitialUsers() {
+//   try {
+//     await createUser({
+//       name: "Kevin H",
+//       username: "khassenkamp",
+//       password: "kevin123",
+//       email: "kevinH@redjags.com"
+//     });
+//     await createUser({
+//       name: "Brian B",
+//       username: "brian",
+//       password: "password",
+//       email: "brian"
+//     });
+//     await createUser({
+//       name: "Jasmine H",
+//       username: "jasmineh",
+//       password: "jasmine123",
+//       email: "jasmine@redjags.com"
+//     });
+//     await createUser({
+//       name: "Patrick H",
+//       username: "patrick",
+//       password: "patrick",
+//       email: "patrick"
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
 
 async function createInitialProduct() {
   try {
@@ -408,35 +408,35 @@ async function createProductCategory(product_id, category_id) {
   }
 }
 
-async function createKevinCart() {
-  const users = await getAllUsers();
-  const kevin = users.find(
-    (user) => user.name === "Kevin H"
-  )
+// async function createKevinCart() {
+//   const users = await getAllUsers();
+//   const kevin = users.find(
+//     (user) => user.name === "Kevin H"
+//   )
 
-  const activeCart = await getActiveCartByUserId(kevin.id);
+//   const activeCart = await getActiveCartByUserId(kevin.id);
 
-  const products = await getAllProducts();
+//   const products = await getAllProducts();
 
-  await Promise.all(products.map(
-    (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
-  ))
-};
+//   await Promise.all(products.map(
+//     (product) => createOrUpdateCartProduct(activeCart.id, product.id, 2)
+//   ))
+// };
 
-async function createUserDetails() {
-  try {
-    await createDetails({
-      full_address: "715 Ridge San Luis Obispo, CA 93405",
-      billing_address: "715 Ridge San Luis Obispo, CA 93405",
-      first_name: "Patrick-Vincent",
-      last_name: "Herrera",
-      phone_number: "8057103189",
-    });
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
+// async function createUserDetails() {
+//   try {
+//     await createDetails({
+//       full_address: "715 Ridge San Luis Obispo, CA 93405",
+//       billing_address: "715 Ridge San Luis Obispo, CA 93405",
+//       first_name: "Patrick-Vincent",
+//       last_name: "Herrera",
+//       phone_number: "8057103189",
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
 
 async function createInitialCategories() {
   try {
@@ -465,26 +465,26 @@ async function createInitialCategories() {
   }
 }
 
-async function createInitialReviews() {
-  try {
-    await createReview({
-      title: "This cheese stinks",
-      body: "I think this cheese has gone bad, delicious though.",
-      rating: 4,
-      userId: 1,
-      productId: 6
-    });
-    await createReview({
-      title: "low quality",
-      body: "rips to shreds when I pull on it",
-      rating: 2,
-      userId: 2,
-      productId: 2
-    });
-  } catch (error) {
-    throw error;
-  }
-}
+// async function createInitialReviews() {
+//   try {
+//     await createReview({
+//       title: "This cheese stinks",
+//       body: "I think this cheese has gone bad, delicious though.",
+//       rating: 4,
+//       userId: 1,
+//       productId: 6
+//     });
+//     await createReview({
+//       title: "low quality",
+//       body: "rips to shreds when I pull on it",
+//       rating: 2,
+//       userId: 2,
+//       productId: 2
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
 async function createInitialImage() {
   try {
@@ -536,75 +536,76 @@ async function createInitialProductCategories() {
 async function rebuildDB(force = true) {
   try {
     client.connect();
-
     if (force) {
       await dropTables();
     }
 
     await createTables();
     await createInitialProduct();
-    await createInitialUsers();
-    await createUserDetails();
+    // await createInitialUsers();
+    // await createUserDetails();
     await createInitialCategories();
     await createInitialImages();
-    await createInitialReviews();
+    // await createInitialReviews();
     await createInitialImage();
-    await createKevinCart();
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-
-async function testDB() {
-  try {
-    console.log("Starting to test database...");
-
-    console.log("Calling getAllProducts...");
-    const products = await getAllProducts();
-    console.log("getAllProducts result:", products);
-
-    console.log("Calling updateProducts...");
-    // const updatedProduct = await updateProduct(products[3].id, {
-    //   title: "Cheddar Cheese",
-    //   description: "Yummy in my tummy",
-    //   price: "4.99",
-    //   inventory: "50",
-    // });
-    // console.log("updateProduct result:", updatedProduct);
-
-    const getProduct = await getProductById(2);
-    console.log("gotten product:", getProduct);
-
-    const users = await getAllUsers();
-    console.log("getAllUsers result:", users);
-
-    const userInfo = await getUserInfo();
-    console.log("User Info is...", userInfo);
-
-    const categories = await getAllCategories();
-    console.log("getAllCategories results: ", categories);
-
-    const images = await getAllImages();
-    console.log("getAllImages...", images);
-
-    const reviews = await getAllReviews();
-    console.log("getAllReviews results: ", reviews);
-
-    // const deletedProduct = await deleteProduct(8);
-    // if (deletedProduct) {
-    //   console.log("successfully deleted product with ID: ", 8);
-    // } else {
-    //   console.log("Deletion unsuccessful :(");
-    // }
-
+    // await createKevinCart();
     await createInitialProductCategories();
-
-    console.log("Done testing database...");
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
-rebuildDB().then(testDB);
+// async function testDB() {
+//   try {
+//     console.log("Starting to test database...");
+
+//     console.log("Calling getAllProducts...");
+//     const products = await getAllProducts();
+//     console.log("getAllProducts result:", products);
+
+//     console.log("Calling updateProducts...");
+//     // const updatedProduct = await updateProduct(products[3].id, {
+//     //   title: "Cheddar Cheese",
+//     //   description: "Yummy in my tummy",
+//     //   price: "4.99",
+//     //   inventory: "50",
+//     // });
+//     // console.log("updateProduct result:", updatedProduct);
+
+//     const getProduct = await getProductById(2);
+//     console.log("gotten product:", getProduct);
+
+//     const users = await getAllUsers();
+//     console.log("getAllUsers result:", users);
+
+//     const userInfo = await getUserInfo();
+//     console.log("User Info is...", userInfo);
+
+//     const categories = await getAllCategories();
+//     console.log("getAllCategories results: ", categories);
+
+//     const images = await getAllImages();
+//     console.log("getAllImages...", images);
+
+//     const reviews = await getAllReviews();
+//     console.log("getAllReviews results: ", reviews);
+
+//     // const deletedProduct = await deleteProduct(8);
+//     // if (deletedProduct) {
+//     //   console.log("successfully deleted product with ID: ", 8);
+//     // } else {
+//     //   console.log("Deletion unsuccessful :(");
+//     // }
+
+//     await createInitialProductCategories();
+
+//     console.log("Done testing database...");
+//   } catch (error) {
+//     console.error(error);
+//     throw error;
+//   }
+// }
+
+rebuildDB()
+// .then(testDB);
